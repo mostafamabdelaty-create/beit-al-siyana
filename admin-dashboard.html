@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة التحكم المطورة - بيت الصيانة</title>
+    
+    <!-- Google Fonts: Cairo -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        :root {
+            --admin-bg: #f8fafc;
+            --sidebar-w: 260px;
+            --primary: #3b82f6;
+            --danger: #ef4444;
+            --success: #10b981;
+        }
+        body.admin-body {
+            background-color: var(--admin-bg);
+            font-family: 'Cairo', sans-serif;
+            display: flex;
+            margin: 0;
+            min-height: 100vh;
+        }
+        .admin-sidebar {
+            width: var(--sidebar-w);
+            background: #0b2239;
+            height: 100vh;
+            position: fixed;
+            right: 0;
+            top: 0;
+            color: white;
+            padding: 30px 0;
+            z-index: 100;
+        }
+        .admin-sidebar .logo {
+            text-align: center;
+            margin-bottom: 40px;
+            display: block;
+        }
+        .admin-sidebar .logo img {
+            width: 140px;
+            filter: brightness(0) invert(1);
+        }
+        .admin-nav {
+            list-style: none;
+            padding: 0;
+        }
+        .admin-nav li a {
+            color: #cbd5e1;
+            text-decoration: none;
+            display: block;
+            padding: 15px 30px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border-right: 4px solid transparent;
+            cursor: pointer;
+        }
+        .admin-nav li a:hover, .admin-nav li a.active {
+            background: rgba(255,255,255,0.05);
+            color: white;
+            border-color: var(--primary);
+        }
+        .admin-nav li a i {
+            margin-left: 10px;
+            width: 20px;
+        }
+        .admin-main {
+            flex: 1;
+            margin-right: var(--sidebar-w);
+            padding: 40px;
+            width: calc(100% - var(--sidebar-w));
+        }
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+        .admin-header h1 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #0b2239;
+            margin: 0;
+        }
+        
+        /* Stats Section */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+            border: 1px solid #e2e8f0;
+            text-align: center;
+        }
+        .stat-card i {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+        .stat-card .value {
+            display: block;
+            font-size: 2rem;
+            font-weight: 800;
+            color: #0b2239;
+        }
+        .stat-card .label {
+            color: #64748b;
+            font-weight: 600;
+        }
+
+        /* Content Sections */
+        .dashboard-section {
+            display: none;
+        }
+        .dashboard-section.active {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .content-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+            border: 1px solid #e2e8f0;
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+        .card-header {
+            padding: 20px 30px;
+            border-bottom: 1px solid #e2e8f0;
+            background: #fdfdfd;
+            font-weight: 800;
+            color: #0b2239;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        /* Tables */
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .admin-table th, .admin-table td {
+            padding: 15px 30px;
+            text-align: right;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .admin-table th {
+            background: #f8fafc;
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+        .badge {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+        .badge-pending { background: #fef3c7; color: #92400e; }
+        .badge-active { background: #d1fae5; color: #065f46; }
+        .badge-suspended { background: #fee2e2; color: #991b1b; }
+        
+        .action-btn {
+            padding: 8px 15px;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-success { background: var(--success); color: white; }
+        .btn-danger { background: var(--danger); color: white; }
+        
+        @media (max-width: 1024px) {
+            .admin-sidebar { display: none; }
+            .admin-main { margin-right: 0; padding: 20px; width: 100%; }
+        }
+    </style>
+</head>
+<body class="admin-body">
+
+    <aside class="admin-sidebar">
+        <a href="index.html" class="logo"><img src="Images/logo.svg" alt="بيت الصيانة"></a>
+        <nav>
+            <ul class="admin-nav" id="sidebarNav">
+                <li><a data-section="overview" class="active"><i class="fas fa-chart-line"></i> نظرة عامة</a></li>
+                <li><a data-section="join-requests"><i class="fas fa-user-plus"></i> طلبات الانضمام</a></li>
+                <li><a data-section="customers"><i class="fas fa-users"></i> العملاء</a></li>
+                <li><a data-section="packages"><i class="fas fa-box"></i> الباقات</a></li>
+                <li style="margin-top: 50px;"><a onclick="logout()" style="color: var(--danger);"><i class="fas fa-sign-out-alt"></i> خروج</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <main class="admin-main">
+        <header class="admin-header">
+            <h1 id="sectionTitle">نظرة عامة</h1>
+            <div id="adminName" style="color: #64748b; font-weight: 600;">مرحباً، المشرف</div>
+        </header>
+
+        <!-- 1. Overview Section -->
+        <div id="section-overview" class="dashboard-section active">
+            <div class="stats-grid" id="statsContainer">
+                <div class="stat-card">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <div class="label">جاري التحميل...</div>
+                </div>
+            </div>
+            <div class="content-card">
+                <div class="card-header">ملخص النشاط</div>
+                <div style="padding: 40px; text-align: center; color: #64748b;">
+                    اختر قسماً من القائمة الجانبية لإدارة المنصة.
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. Join Requests Section -->
+        <div id="section-join-requests" class="dashboard-section">
+            <div class="content-card">
+                <div class="card-header">طلبات الانضمام المعلقة</div>
+                <div style="overflow-x: auto;">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>الاسم</th>
+                                <th>التخصص</th>
+                                <th>المدينة</th>
+                                <th>التاريخ</th>
+                                <th>الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="joinRequestsBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. Customers Section -->
+        <div id="section-customers" class="dashboard-section">
+            <div class="content-card">
+                <div class="card-header">إدارة العملاء والفنيين</div>
+                <div style="overflow-x: auto;">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>الاسم</th>
+                                <th>البريد الإلكتروني</th>
+                                <th>الهاتف</th>
+                                <th>الدور</th>
+                                <th>الحالة</th>
+                                <th>الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="customersBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. Packages Section -->
+        <div id="section-packages" class="dashboard-section">
+            <div class="content-card">
+                <div class="card-header">
+                    <span>باقات الاشتراك</span>
+                    <button class="action-btn btn-primary" onclick="alert('سوف يتم إضافة نافذة الإضافة قريباً')">إضافة باقة +</button>
+                </div>
+                <div style="overflow-x: auto;">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>اسم الباقة</th>
+                                <th>السعر</th>
+                                <th>المدة</th>
+                                <th>الحالة</th>
+                                <th>الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="packagesBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const API_BASE = 'http://localhost:5000/api';
+        const token = localStorage.getItem('token');
+
+        if (!token) window.location.href = 'login.html';
+
+        // Navigation Logic
+        document.querySelectorAll('#sidebarNav a[data-section]').forEach(link => {
+            link.addEventListener('click', (e) => {
+                const section = link.getAttribute('data-section');
+                
+                // Update UI
+                document.querySelectorAll('.dashboard-section').forEach(s => s.classList.remove('active'));
+                document.getElementById(`section-${section}`).classList.add('active');
+                
+                document.querySelectorAll('#sidebarNav a').forEach(a => a.classList.remove('active'));
+                link.classList.add('active');
+                
+                document.getElementById('sectionTitle').innerText = link.innerText;
+
+                // Load Data
+                if(section === 'overview') loadStats();
+                if(section === 'join-requests') loadRequests();
+                if(section === 'customers') loadCustomers();
+                if(section === 'packages') loadPackages();
+            });
+        });
+
+        async function init() {
+            try {
+                const res = await fetch(`${API_BASE}/auth/me`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await res.json();
+                if (!res.ok || data.user.role !== 'admin') {
+                    window.location.href = 'index.html';
+                    return;
+                }
+                document.getElementById('adminName').innerText = `مرحباً، ${data.user.fullName}`;
+                loadStats();
+            } catch (err) { window.location.href = 'login.html'; }
+        }
+
+        async function loadStats() {
+            try {
+                const res = await fetch(`${API_BASE}/admin/dashboard`, { headers: { 'Authorization': `Bearer ${token}` } });
+                const result = await res.json();
+                if(result.success) {
+                    const s = result.data;
+                    document.getElementById('statsContainer').innerHTML = `
+                        <div class="stat-card"><i class="fas fa-users"></i><span class="value">${s.totalCustomers}</span><span class="label">العملاء</span></div>
+                        <div class="stat-card"><i class="fas fa-hard-hat"></i><span class="value">${s.totalTechnicians}</span><span class="label">الفنيين</span></div>
+                        <div class="stat-card"><i class="fas fa-calendar-alt"></i><span class="value">${s.totalBookings}</span><span class="label">الحجوزات</span></div>
+                        <div class="stat-card"><i class="fas fa-clock"></i><span class="value">${s.pendingJoinRequests}</span><span class="label">طلبات معلقة</span></div>
+                    `;
+                }
+            } catch (error) {
+                console.error('Error loading stats:', error);
+            }
+        }
+
+        async function loadRequests() {
+            try {
+                const res = await fetch(`${API_BASE}/join/admin`, { headers: { 'Authorization': `Bearer ${token}` } });
+                const result = await res.json();
+                const body = document.getElementById('joinRequestsBody');
+                if (result.success && result.data && result.data.length > 0) {
+                    const pendingRequests = result.data.filter(r => r.status === 'pending');
+                    if (pendingRequests.length > 0) {
+                        body.innerHTML = pendingRequests.map(req => `
+                            <tr>
+                                <td>${req.fullName}</td>
+                                <td>${req.specialty}</td>
+                                <td>${req.city}</td>
+                                <td>${new Date(req.createdAt).toLocaleDateString('ar-EG')}</td>
+                                <td>
+                                    <button class="action-btn btn-success" onclick="approve('${req._id}')">قبول</button>
+                                    <button class="action-btn btn-danger" onclick="reject('${req._id}')">رفض</button>
+                                </td>
+                            </tr>
+                        `).join('');
+                    } else {
+                        body.innerHTML = '<tr><td colspan="5" style="text-align:center">لا توجد طلبات معلقة</td></tr>';
+                    }
+                } else {
+                    body.innerHTML = '<tr><td colspan="5" style="text-align:center">لا توجد طلبات معلقة</td></tr>';
+                }
+            } catch (error) {
+                console.error('Error loading requests:', error);
+            }
+        }
+
+        async function loadCustomers() {
+            try {
+                // Fetch both customers and technicians
+                const [custRes, techRes] = await Promise.all([
+                    fetch(`${API_BASE}/admin/customers`, { headers: { 'Authorization': `Bearer ${token}` } }),
+                    fetch(`${API_BASE}/admin/technicians`, { headers: { 'Authorization': `Bearer ${token}` } })
+                ]);
+                
+                const custResult = await custRes.json();
+                const techResult = await techRes.json();
+                
+                let allUsers = [];
+                if (custResult.success) allUsers = [...allUsers, ...custResult.data];
+                if (techResult.success) allUsers = [...allUsers, ...techResult.data];
+
+                const body = document.getElementById('customersBody');
+                if (allUsers.length > 0) {
+                    body.innerHTML = allUsers.map(c => `
+                        <tr>
+                            <td>${c.fullName}</td>
+                            <td>${c.email}</td>
+                            <td>${c.phone}</td>
+                            <td>${c.role === 'customer' ? 'عميل' : 'فني'}</td>
+                            <td><span class="badge badge-${c.status === 'active' ? 'active' : 'suspended'}">${c.status === 'active' ? 'نشط' : 'موقف'}</span></td>
+                            <td>
+                                ${c.status === 'active' 
+                                    ? `<button class="action-btn btn-danger" onclick="toggleUser('${c._id}', 'suspend')">إيقاف</button>` 
+                                    : `<button class="action-btn btn-success" onclick="toggleUser('${c._id}', 'activate')">تفعيل</button>`}
+                            </td>
+                        </tr>
+                    `).join('');
+                } else {
+                    body.innerHTML = '<tr><td colspan="6" style="text-align:center">لا يوجد مستخدمين</td></tr>';
+                }
+            } catch (error) {
+                console.error('Error loading users:', error);
+            }
+        }
+
+        async function loadPackages() {
+            try {
+                const res = await fetch(`${API_BASE}/packages`);
+                const result = await res.json();
+                const body = document.getElementById('packagesBody');
+                if (result.success && result.data && result.data.length > 0) {
+                    body.innerHTML = result.data.map(p => `
+                        <tr>
+                            <td>${p.name}</td>
+                            <td>${p.price} ج.م</td>
+                            <td>${p.period === 'monthly' ? 'شهري' : (p.period === 'yearly' ? 'سنوي' : p.period)}</td>
+                            <td><span class="badge badge-active">مفعلة</span></td>
+                            <td>
+                                <button class="action-btn btn-primary" onclick="alert('سوف يتم إضافة التعديل قريباً')">تعديل</button>
+                            </td>
+                        </tr>
+                    `).join('');
+                } else {
+                    body.innerHTML = '<tr><td colspan="5" style="text-align:center">لا توجد باقات حالياً</td></tr>';
+                }
+            } catch (error) {
+                console.error('Error loading packages:', error);
+            }
+        }
+
+        async function toggleUser(id, action) {
+            try {
+                const res = await fetch(`${API_BASE}/admin/users/${id}/${action}`, {
+                    method: 'PUT',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (res.ok) {
+                    loadCustomers();
+                    loadStats();
+                }
+            } catch (error) {
+                console.error('Error toggling user status:', error);
+            }
+        }
+
+        async function approve(id) {
+            if (!confirm('هل أنت متأكد من قبول هذا الفني؟')) return;
+            try {
+                const res = await fetch(`${API_BASE}/join/admin/${id}/approve`, {
+                    method: 'PUT',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const result = await res.json();
+                if(result.success) {
+                    alert('تم القبول بنجاح! كلمة المرور المبدئية للفني هي: ' + result.data.tempPassword + '\nيجب عليه تغييرها عند أول تسجيل دخول.');
+                    loadRequests();
+                    loadStats();
+                } else {
+                    alert('حدث خطأ: ' + result.message);
+                }
+            } catch (error) {
+                console.error('Error approving request:', error);
+            }
+        }
+
+        async function reject(id) {
+            if (!confirm('هل أنت متأكد من رفض هذا الطلب؟')) return;
+            try {
+                const res = await fetch(`${API_BASE}/join/admin/${id}/reject`, {
+                    method: 'PUT',
+                    headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ adminNotes: 'Refused by admin' })
+                });
+                if(res.ok) {
+                    loadRequests();
+                    loadStats();
+                }
+            } catch (error) {
+                console.error('Error rejecting request:', error);
+            }
+        }
+
+        function logout() { localStorage.removeItem('token'); window.location.href = 'login.html'; }
+
+        init();
+    </script>
+</body>
+</html>

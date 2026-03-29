@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>بيت الصيانة | فنيين</title>
+  
+  <!-- Google Fonts: Cairo -->
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/services.css">
+  <link rel="stylesheet" href="css/plumbing.css">
+</head>
+<body class="page-services page-technicians">
+
+  <!-- Header -->
+  <header class="header">
+    <div class="container nav-wrapper">
+      <a href="index.html" class="logo">
+        <img src="Images\logo.svg" alt="بيت الصيانة" class="site-logo">
+      </a>
+      <nav class="nav-links">
+        <a href="index.html">الرئيسية</a>
+        <a href="index.html#about">نبذة عنا</a>
+        <a href="services.html" class="active">الخدمات</a>
+        <a href="pricing.html">الباقات</a>
+        <a href="index.html#support">الدعم</a>
+      </nav>
+      <div class="nav-actions">
+        <a href="login.html" class="btn btn-search nav-cta">تسجيل الدخول</a>
+        <button class="menu-toggle"><i class="fas fa-bars"></i></button>
+      </div>
+    </div>
+  </header>
+
+  <div class="about-wrapper">
+    <!-- Header Section -->
+    <section class="plumbing-header-section">
+      <div class="container" data-aos="fade-down">
+        <div class="plumbing-header-row">
+          <a href="services.html" class="back-to-services-btn">
+            <i class="fas fa-arrow-right"></i>
+            العودة إلى الخدمات
+          </a>
+          <h1 id="serviceTitle">فنيين</h1>
+        </div>
+      </div>
+    </section>
+
+    <!-- Filter Section -->
+    <section class="filter-section container" data-aos="fade-up" style="position: relative; z-index: 10;">
+      <div class="filter-wrapper">
+        <div class="filter-group" style="flex: 2;">
+          <label class="filter-group-label">المحافظة / المنطقة</label>
+          <select class="filter-select" id="govFilter">
+            <option value="all">كل المحافظات</option>
+            <option value="القاهرة">القاهرة</option>
+            <option value="الجيزة">الجيزة</option>
+            <option value="الإسكندرية">الإسكندرية</option>
+            <option value="القليوبية">القليوبية</option>
+            <option value="الدقهلية">الدقهلية</option>
+            <option value="الشرقية">الشرقية</option>
+            <option value="المنوفية">المنوفية</option>
+            <option value="الغربية">الغربية</option>
+            <option value="البحيرة">البحيرة</option>
+            <option value="كفر الشيخ">كفر الشيخ</option>
+            <option value="دمياط">دمياط</option>
+            <option value="بورسعيد">بورسعيد</option>
+            <option value="الإسماعيلية">الإسماعيلية</option>
+            <option value="السويس">السويس</option>
+            <option value="مطروح">مطروح</option>
+            <option value="شمال سيناء">شمال سيناء</option>
+            <option value="جنوب سيناء">جنوب سيناء</option>
+            <option value="بني سويف">بني سويف</option>
+            <option value="الفيوم">الفيوم</option>
+            <option value="المنيا">المنيا</option>
+            <option value="أسيوط">أسيوط</option>
+            <option value="سوهاج">سوهاج</option>
+            <option value="قنا">قنا</option>
+            <option value="الأقصر">الأقصر</option>
+            <option value="أسوان">أسوان</option>
+            <option value="البحر الأحمر">البحر الأحمر</option>
+            <option value="الوادي الجديد">الوادي الجديد</option>
+          </select>
+        </div>
+
+        <div class="filter-group" style="flex: 2;">
+          <label class="filter-group-label text-center">التقييم</label>
+          <select class="filter-select" id="ratingFilter">
+            <option value="all">كل التقييمات</option>
+            <option value="4.5">4.5+ نجوم</option>
+            <option value="4.0">4.0+ نجوم</option>
+            <option value="3.5">3.5+ نجوم</option>
+            <option value="3.0">3.0+ نجوم</option>
+          </select>
+        </div>
+
+        <div class="filter-group" style="flex: 2;">
+          <label class="filter-group-label text-center">سنوات الخبرة</label>
+          <select class="filter-select" id="expFilter">
+            <option value="all">كل الخبرات</option>
+            <option value="1">1+ سنة</option>
+            <option value="3">3+ سنوات</option>
+            <option value="5">5+ سنوات</option>
+            <option value="10">10+ سنوات</option>
+          </select>
+        </div>
+
+        <div class="filter-group" style="flex: 1.5; align-self: flex-end;">
+          <button class="filter-submit-btn" id="filterBtn">
+             <i class="fas fa-sliders-h"></i> تصفية النتائج
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Technicians Grid -->
+    <section class="tech-grid-section">
+      <div class="container">
+        <div class="tech-grid" id="techGrid">
+          <!-- Technicians will be loaded here dynamically -->
+          <div class="loading-state">جاري التحميل...</div>
+        </div>
+        <div id="noResultsMsg" style="display: none; text-align: center; padding: 40px; color: #64748b;">
+          لم يتم العثور على فنيين يطابقون خيارات التصفية هذه.
+        </div>
+      </div>
+    </section>
+
+    <!-- Bottom Back Button -->
+    <div class="container bottom-back-wrapper">
+      <a href="services.html" class="back-to-services-btn">
+        <i class="fas fa-arrow-right"></i>
+        العودة إلى الخدمات
+      </a>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <!-- Logo & About -->
+        <div class="footer-col" data-aos="fade-up" data-aos-delay="100">
+          <div class="footer-logo">
+            <img src="Images\logo.svg" alt="بيت الصيانة" class="site-logo-footer">
+          </div>
+          <p class="footer-about">مبادرة مصرية تهدف لرفع كفاءة الخدمات المنزلية ودعم العمالة الماهرة وتسهيل حياة المواطنين.</p>
+          <div class="footer-social">
+            <a href="#"><i class="fas fa-globe"></i></a>
+            <a href="#"><i class="fas fa-share-alt"></i></a>
+          </div>
+        </div>
+
+        <!-- Quick Links -->
+        <div class="footer-col" data-aos="fade-up" data-aos-delay="200">
+          <h4 class="footer-heading">روابط سريعة</h4>
+          <ul class="footer-links">
+            <li><a href="about.html">عن المنصة</a></li>
+            <li><a href="#">شروط الاستخدام</a></li>
+            <li><a href="#">سياسة الخصوصية</a></li>
+            <li><a href="join-technician.html">انضم كصنايعي</a></li>
+          </ul>
+        </div>
+
+        <!-- Contact Us -->
+        <div class="footer-col" data-aos="fade-up" data-aos-delay="300">
+          <h4 class="footer-heading">تواصل معنا</h4>
+          <ul class="footer-contact">
+            <li><i class="fas fa-map-marker-alt text-orange"></i> <span>القاهرة، مدينة نصر، شارع عباس العقاد</span></li>
+            <li>
+              <i class="fas fa-phone-alt text-orange"></i>
+              <div class="phone-numbers">
+                <span dir="ltr">+20 1018614843</span>
+              </div>
+            </li>
+            <li><i class="fas fa-envelope text-orange"></i> <span dir="ltr">contact@solahly.org</span></li>
+          </ul>
+        </div>
+
+        <!-- Newsletter -->
+        <div class="footer-col" data-aos="fade-up" data-aos-delay="400">
+          <h4 class="footer-heading">النشرة البريدية</h4>
+          <p class="footer-about">اشترك لتصلك نصائح صيانة منزلك وأحدث الصنايعية الموثوقين.</p>
+          <form class="newsletter-form">
+            <input type="email" placeholder="بريدك الإلكتروني" required>
+            <button type="submit"><i class="fas fa-paper-plane"></i></button>
+          </form>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2025 بيت الصيانة. جميع الحقوق محفوظة. منصة مجتمعية غير هادفة للربح.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Floating CTA Buttons -->
+  <div class="floating-cta" id="floatingCta">
+    <a href="https://wa.me/201018614843" target="_blank" class="floating-btn floating-whatsapp" id="floatingWhatsapp" aria-label="تواصل عبر واتساب">
+      <i class="fab fa-whatsapp"></i>
+      <span class="floating-btn-label">واتساب</span>
+    </a>
+    <a href="tel:+201018614843" class="floating-btn floating-call" id="floatingCall" aria-label="اتصل بنا">
+      <i class="fas fa-phone-alt"></i>
+      <span class="floating-btn-label">اتصل بنا</span>
+    </a>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/script.js"></script>
+</body>
+</html>
