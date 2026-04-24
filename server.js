@@ -3,6 +3,7 @@ const path = require('path');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
+const fs = require('fs'); // نقلناها فوق عشان تبقى جاهزة
 
 const connectDB = require('./src/config/db');
 dotenv.config();
@@ -21,8 +22,12 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Serve static files (CSS, JS, Images, HTML)
+// --- [التعديل الجوهري هنا] ---
+// تعريف مسارات الملفات الثابتة بشكل صريح لضمان ظهور الصور والتنسيق
 app.use(express.static(path.join(__dirname)));
+app.use('/css', express.static(path.join(__dirname, 'css')));
+app.use('/Images', express.static(path.join(__dirname, 'Images')));
+app.use('/js', express.static(path.join(__dirname, 'js')));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // API Routes
@@ -44,7 +49,6 @@ app.get('/', (req, res) => {
 // Catch-all: serve index.html for any unmatched route (SPA behavior)
 app.get('*', (req, res) => {
   const filePath = path.join(__dirname, req.path);
-  const fs = require('fs');
   if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
     res.sendFile(filePath);
   } else {
