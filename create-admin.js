@@ -9,21 +9,21 @@ async function createAdmin() {
     await mongoose.connect(process.env.MONGO_URI);
     console.log('✅ MongoDB connected');
 
-    let admin = await User.findOne({ email: 'atat@gmail.com' });
+    let admin = await User.findOne({ email: 'admin@gmail.com' });
 
     if (admin) {
       console.log('⚠️ الحساب موجود بالفعل، جاري تحديث بياناته ليصبح Admin..');
       admin.role = 'admin';
-      admin.password = 'atat1234';
+      admin.password = 'admin1234';
       admin.mustChangePassword = false;
       await admin.save();
       console.log('✅ تم تحديث بيانات الحساب بنجاح');
     } else {
       admin = new User({
         fullName: 'Admin',
-        email: 'atat@gmail.com',
+        email: 'admin@gmail.com',
         phone: '01000000000',
-        password: 'atat1234',
+        password: 'admin1234',
         role: 'admin',
         status: 'active',
         isVerified: true,
@@ -35,7 +35,7 @@ async function createAdmin() {
 
     console.log({
       email: admin.email,
-      password: 'atat1234',
+      password: 'admin1234',
       role: admin.role
     });
 

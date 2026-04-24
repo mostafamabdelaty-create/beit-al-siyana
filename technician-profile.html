@@ -27,10 +27,14 @@
 
     /* Profile Hero Card */
     .profile-hero {
+      --plan-accent: #3b82f6;
+      --plan-grad-from: #eff6ff;
+      --plan-grad-to: #dbeafe;
       background: white;
       border-radius: 16px;
       box-shadow: 0 10px 30px rgba(0,0,0,0.05);
       border: 1px solid #e2e8f0;
+      border-top: 4px solid var(--plan-accent);
       overflow: hidden;
       margin-bottom: 30px;
     }
@@ -57,6 +61,25 @@
       object-fit: cover;
     }
     .profile-info { flex: 1; }
+    .profile-info .badge-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+    .profile-info .plan-badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--plan-grad-from);
+      color: var(--plan-accent);
+      border: 1px solid var(--plan-accent);
+      padding: 5px 15px;
+      border-radius: 30px;
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
     .profile-info .verified-pill {
       display: inline-flex;
       align-items: center;
@@ -67,7 +90,6 @@
       border-radius: 30px;
       font-size: 0.85rem;
       font-weight: 700;
-      margin-bottom: 12px;
     }
     .profile-info .verified-pill i { font-size: 0.8rem; }
     .profile-info h1 {
@@ -104,7 +126,7 @@
       display: flex;
       gap: 15px;
       padding: 20px 35px;
-      background: #f8fafc;
+      background: linear-gradient(135deg, var(--plan-grad-from), var(--plan-grad-to));
       border-top: 1px solid #e2e8f0;
     }
     @media (max-width: 768px) {
@@ -218,36 +240,6 @@
       padding: 10px;
     }
 
-    /* Why Choose */
-    .why-list {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-    .why-item {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding: 15px 20px;
-      background: #f8fafc;
-      border-radius: 10px;
-      font-weight: 600;
-      color: #334155;
-      font-size: 1rem;
-      border: 1px solid #e2e8f0;
-    }
-    .why-item i {
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      background: #ecfdf5;
-      color: #10b981;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.8rem;
-      flex-shrink: 0;
-    }
 
     /* Reviews */
     .reviews-summary {
@@ -329,10 +321,11 @@
       margin-bottom: 12px;
     }
     .sidebar-contact-card .btn-profile-call:last-child { margin-bottom: 0; }
+
+
   </style>
 </head>
 <body>
-
   <!-- Header -->
   <header class="header">
     <div class="container nav-wrapper">
@@ -353,8 +346,6 @@
     </div>
   </header>
 
-  <div class="about-wrapper">
-
     <!-- Back Button -->
     <section style="padding-top: 30px; padding-bottom: 0;">
       <div class="container">
@@ -368,25 +359,42 @@
     <!-- Profile Hero -->
     <section style="padding: 0 0 30px;">
       <div class="container">
-        <div class="profile-hero" data-aos="fade-up">
+        <div class="profile-hero">
           <div class="profile-hero-top">
-            <div class="profile-img-wrap">
-              <img id="profImg" src="https://images.unsplash.com/photo-1540569014015-19a7be504e3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="صنايعي">
+            <div class="profile-img-wrap" style="background: #f1f5f9;">
+              <img id="profImg" alt="صنايعي" style="width: 100%; height: 100%; object-fit: cover;">
             </div>
             <div class="profile-info">
-              <div class="verified-pill"><i class="fas fa-check-circle"></i> هوية موثقة</div>
+              <div class="badge-row">
+                <div id="planBadgePill" class="plan-badge-pill" style="display:none;"></div>
+                <div id="verifiedPill" class="verified-pill"><i class="fas fa-check-circle"></i> هوية موثقة</div>
+              </div>
               <h1 id="profName">محمد أحمد علي</h1>
               <div class="profile-meta">
-                <span><i class="fas fa-star rating-star"></i> <span id="profRating">4.9</span> (<span id="profReviewsCount">120</span> تقييم)</span>
-                <span><i class="far fa-clock"></i> خبرة <span id="profExp">12</span> سنة</span>
+                <span class="rating-star"><i class="fas fa-star"></i> <span id="profRating">4.9</span></span>
+                <span class="reviews-count"><i class="fas fa-comments"></i> <span id="profReviewsCount">120</span> تقييم</span>
                 <span><i class="fas fa-map-marker-alt"></i> <span id="profLoc">مدينة نصر – القاهرة</span></span>
+                <span><i class="fas fa-briefcase"></i> خبرة <span id="profExp">12</span> سنة</span>
               </div>
+
+              <!-- Subscription Info for Clients -->
+              <div id="profSubInfo" style="display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 25px; padding: 15px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 12px; font-size: 0.9rem;">
+                 <span style="color: #166534; font-weight: 700;"><i class="fas fa-crown"></i> الباقة: <span id="profPlanName">مميز</span></span>
+                 <span style="color: #166534;"><i class="fas fa-calendar-alt"></i> عضو منذ: <span id="profJoinDate">يناير 2024</span></span>
+                 <span id="profDaysLeftContainer" style="color: #166534; font-weight: 700;"><i class="fas fa-hourglass-half"></i> متبقي: <span id="profDaysLeft">30</span> يوم</span>
+              </div>
+
               <p id="profShortDesc" class="profile-short-desc">متخصص في تأسيس وصيانة جميع أعمال الكهرباء المنزلية مع خبرة طويلة في تنفيذ التمديدات الكهربائية وصيانة الأعطال.</p>
             </div>
           </div>
-          <div class="profile-contact-bar">
+          <div class="profile-contact-bar" id="profileContactBar">
+            <!-- Hidden by JS if not logged in -->
+            <div id="contactLockedMsg" style="display:none; padding: 0 15px; color: #ef4444; font-weight: 600;">
+               <i class="fas fa-lock"></i> يرجى تسجيل الدخول لطلب الخدمة والتواصل مع الفني
+            </div>
             <a id="profCallBtn" href="tel:+201018614843" class="btn-profile-call call"><i class="fas fa-phone-alt"></i> اتصال</a>
             <a id="profWaBtn" href="https://wa.me/201018614843" target="_blank" class="btn-profile-call whatsapp"><i class="fab fa-whatsapp" style="font-size:1.2rem;"></i> واتساب</a>
+            <a id="profLoginBtn" href="login.html" class="btn-profile-call" style="display:none; background:#111827; color:white;"><i class="fas fa-sign-in-alt"></i> تسجيل دخول</a>
           </div>
         </div>
       </div>
@@ -403,8 +411,7 @@
             <div class="profile-card" data-aos="fade-up">
               <h2><i class="fas fa-user" style="background:#eff6ff; color:#3b82f6;"></i> نبذة عن الفني</h2>
               <div id="profAbout">
-                <p>محمد أحمد علي فني متخصص في تنفيذ وصيانة الأعمال الصيانة للمنازل والشقق.</p>
-                <p>يمتلك خبرة تزيد عن سنوات عديدة في هذا المجال، وقد نفذ العديد من الأعمال التي تشمل التأسيس والصيانة.</p>
+                <p>جاري تحميل البيانات...</p>
               </div>
             </div>
 
@@ -417,48 +424,51 @@
             </div>
 
             <!-- Gallery -->
-            <div class="profile-card" data-aos="fade-up">
+            <div id="galleryCard" class="profile-card" data-aos="fade-up" style="display:none;">
               <h2><i class="fas fa-images" style="background:#f0fdf4; color:#22c55e;"></i> بعض الأعمال السابقة</h2>
-              <p style="margin-bottom: 20px;">يمكن عرض مجموعة من الصور التي توضح الأعمال التي قام بها الفني سابقًا.</p>
-              <div class="gallery-grid">
-                <div class="gallery-item"><span><i class="fas fa-image" style="font-size:1.5rem; display:block; margin-bottom:8px;"></i>صور تركيب الإضاءة</span></div>
-                <div class="gallery-item"><span><i class="fas fa-image" style="font-size:1.5rem; display:block; margin-bottom:8px;"></i>صور تمديدات الكهرباء</span></div>
-                <div class="gallery-item"><span><i class="fas fa-image" style="font-size:1.5rem; display:block; margin-bottom:8px;"></i>صور لوحات الكهرباء</span></div>
-                <div class="gallery-item"><span><i class="fas fa-image" style="font-size:1.5rem; display:block; margin-bottom:8px;"></i>صور تشطيبات الكهرباء</span></div>
+              <p style="margin-bottom: 20px;">صور توضح جودة الأعمال التي نفذها الفني.</p>
+              <div id="profGallery" class="gallery-grid">
+                <!-- Images loaded dynamically -->
               </div>
             </div>
 
-            <!-- Why Choose -->
-            <div class="profile-card" data-aos="fade-up">
-              <h2><i class="fas fa-thumbs-up" style="background:#fae8ff; color:#d946ef;"></i> لماذا يختاره العملاء</h2>
-              <div class="why-list">
-                <div class="why-item"><i class="fas fa-check"></i> خبرة طويلة في المجال</div>
-                <div class="why-item"><i class="fas fa-check"></i> تنفيذ الأعمال بدقة واحترافية</div>
-                <div class="why-item"><i class="fas fa-check"></i> الالتزام بالمواعيد</div>
-                <div class="why-item"><i class="fas fa-check"></i> سرعة الاستجابة للعملاء</div>
-                <div class="why-item"><i class="fas fa-check"></i> استخدام أدوات مناسبة للعمل</div>
+            <!-- Videos -->
+            <div id="videosCard" class="profile-card" data-aos="fade-up" style="display:none;">
+              <h2><i class="fas fa-video" style="background:#fef2f2; color:#ef4444;"></i> معرض الفيديوهات</h2>
+              <p style="margin-bottom: 20px;">شاهد فيديوهات توضح مهارات الفني وطريقة تنفيذه للأعمال.</p>
+              <div id="profVideos" class="gallery-grid">
+                <!-- Videos will be loaded here -->
               </div>
             </div>
+
 
             <!-- Reviews -->
             <div class="profile-card" data-aos="fade-up">
               <h2><i class="fas fa-star" style="background:#fffbeb; color:#f59e0b;"></i> آراء العملاء</h2>
-              <div class="reviews-summary">
-                <div class="reviews-score">4.9</div>
+              <div id="reviewsSummary" class="reviews-summary" style="display:none;">
+                <div class="reviews-score" id="avgScore">0.0</div>
                 <div>
-                  <div class="reviews-stars">
-                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
-                  </div>
-                  <div class="reviews-count">بناءً على 120 تقييم</div>
+                  <div class="reviews-stars" id="avgStars"></div>
+                  <div class="reviews-count" id="reviewsCountText">لا توجد تقييمات بعد</div>
                 </div>
               </div>
-              <div class="review-card">
-                <p>"فني محترف جدًا وأنجز العمل بسرعة."</p>
-                <span class="review-author"><i class="fas fa-user-circle"></i> عميل من القاهرة</span>
+              
+              <div id="reviewsList">
+                <p class="text-center" style="color: #64748b; padding: 20px;">لا يوجد آراء حقيقية لهذا الفني حتى الآن.</p>
               </div>
-              <div class="review-card">
-                <p>"تعامل محترم والعمل تم بشكل ممتاز."</p>
-                <span class="review-author"><i class="fas fa-user-circle"></i> عميل من مدينة نصر</span>
+
+              <!-- Add Review Form (Only for logged in customers) -->
+              <div id="addReviewSection" style="display:none; margin-top: 30px; padding-top: 25px; border-top: 1px solid #e2e8f0;">
+                <h3 style="font-size: 1.1rem; margin-bottom: 15px;">أضف رأيك وتقييمك</h3>
+                <div class="rating-input" style="display: flex; gap: 8px; margin-bottom: 15px; color: #cbd5e1; font-size: 1.5rem; cursor: pointer;">
+                  <i class="fas fa-star star-btn" data-value="1"></i>
+                  <i class="fas fa-star star-btn" data-value="2"></i>
+                  <i class="fas fa-star star-btn" data-value="3"></i>
+                  <i class="fas fa-star star-btn" data-value="4"></i>
+                  <i class="fas fa-star star-btn" data-value="5"></i>
+                </div>
+                <textarea id="reviewText" placeholder="اكتب رأيك في تعامل الفني وجودة العمل..." style="width: 100%; height: 100px; border-radius: 10px; border: 1px solid #e2e8f0; padding: 12px; font-family: inherit; margin-bottom: 15px;"></textarea>
+                <button id="submitReviewBtn" class="btn btn-dark" style="width: 100%; border-radius: 8px;">إرسال التقييم</button>
               </div>
             </div>
           </div>
@@ -467,9 +477,13 @@
           <div class="sidebar-contact">
             <div class="sidebar-contact-card" data-aos="fade-up">
               <h3>تواصل مع الفني</h3>
+              <div id="sidebarLockedMsg" style="display:none; margin-bottom: 15px; background: #fff1f2; padding: 12px; border-radius: 8px; color: #e11d48; font-size: 0.85rem; font-weight: 600;">
+                 <i class="fas fa-lock"></i> يجب تسجيل الدخول للتواصل مع الفني
+              </div>
               <p>يمكنك التواصل مباشرة مع الفني لحجز الخدمة أو الاستفسار عن التفاصيل.</p>
-              <a href="tel:+201018614843" class="btn-profile-call call"><i class="fas fa-phone-alt"></i> اتصل الآن</a>
-              <a href="https://wa.me/201018614843?text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%D8%8C%20%D8%A3%D8%B1%D9%8A%D8%AF%20%D8%A7%D9%84%D8%A7%D8%B3%D8%AA%D9%81%D8%B3%D8%A7%D8%B1%20%D8%B9%D9%86%20%D8%AE%D8%AF%D9%85%D8%A7%D8%AA%20%D8%B5%D9%84%D8%AD%D9%84%D9%8A" target="_blank" class="btn-profile-call whatsapp"><i class="fab fa-whatsapp" style="font-size:1.2rem;"></i> تواصل عبر واتساب</a>
+              <a id="sideCallBtn" href="tel:+201018614843" class="btn-profile-call call"><i class="fas fa-phone-alt"></i> اتصل الآن</a>
+              <a id="sideWaBtn" href="https://wa.me/201018614843" target="_blank" class="btn-profile-call whatsapp"><i class="fab fa-whatsapp" style="font-size:1.2rem;"></i> تواصل عبر واتساب</a>
+              <a id="sideLoginBtn" href="login.html" class="btn-profile-call" style="display:none; background:#111827; color:white; justify-content: center;"><i class="fas fa-sign-in-alt"></i> تسجيل دخول</a>
             </div>
           </div>
 
@@ -485,8 +499,9 @@
             <h2>تحتاج إلى خدمة الآن؟</h2>
             <p style="max-width: 800px; margin-left: auto; margin-right: auto; line-height: 1.8;">إذا كنت تبحث عن فني كهرباء لتنفيذ أعمال الصيانة أو التأسيس، يمكنك التواصل مع الفني مباشرة.</p>
             <div class="cta-buttons" style="margin-top: 30px;">
-              <a href="tel:+201018614843" class="btn btn-white-pill">اتصل الآن</a>
-              <a href="https://wa.me/201018614843?text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%D8%8C%20%D8%A3%D8%B1%D9%8A%D8%AF%20%D8%A7%D9%84%D8%A7%D8%B3%D8%AA%D9%81%D8%B3%D8%A7%D8%B1%20%D8%B9%D9%86%20%D8%AE%D8%AF%D9%85%D8%A7%D8%AA%20%D8%B5%D9%84%D8%AD%D9%84%D9%8A" target="_blank" class="btn btn-dark-pill">تواصل عبر واتساب</a>
+              <a id="ctaCallBtn" href="#" class="btn btn-white-pill">اتصل الآن</a>
+              <a id="ctaWaBtn" href="#" target="_blank" class="btn btn-dark-pill">تواصل عبر واتساب</a>
+              <a id="ctaLoginBtn" href="login.html" class="btn btn-dark-pill" style="display:none; background:#111827;">تسجيل دخول للتواصل</a>
             </div>
           </div>
         </div>
@@ -523,48 +538,43 @@
           <h4 class="footer-heading">روابط سريعة</h4>
           <ul class="footer-links">
             <li><a href="about.html">عن المنصة</a></li>
-            <li><a href="#">شروط الاستخدام</a></li>
-            <li><a href="#">سياسة الخصوصية</a></li>
+            <li><a href="terms.html">شروط الاستخدام</a></li>
+            <li><a href="privacy.html">سياسة الخصوصية</a></li>
             <li><a href="join-technician.html">انضم كصنايعي</a></li>
           </ul>
         </div>
         <div class="footer-col" data-aos="fade-up" data-aos-delay="300">
           <h4 class="footer-heading">تواصل معنا</h4>
           <ul class="footer-contact">
-            <li><i class="fas fa-map-marker-alt text-orange"></i> <span>القاهرة، مدينة نصر، شارع عباس العقاد</span></li>
             <li>
               <i class="fas fa-phone-alt text-orange"></i>
               <div class="phone-numbers">
                 <span dir="ltr">+20 1018614843</span>
               </div>
             </li>
-            <li><i class="fas fa-envelope text-orange"></i> <span dir="ltr">contact@solahly.org</span></li>
+            <li><i class="fas fa-envelope text-orange"></i> <span dir="ltr">info@beitalsiyana.com</span></li>
           </ul>
-        </div>
-        <div class="footer-col" data-aos="fade-up" data-aos-delay="400">
-          <h4 class="footer-heading">النشرة البريدية</h4>
-          <p class="footer-about">اشترك لتصلك نصائح صيانة منزلك وأحدث الصنايعية الموثوقين.</p>
-          <form class="newsletter-form">
-            <input type="email" placeholder="بريدك الإلكتروني" required>
-            <button type="submit"><i class="fas fa-paper-plane"></i></button>
-          </form>
         </div>
       </div>
       <div class="footer-bottom">
-        <p>&copy; 2025 بيت الصيانة. جميع الحقوق محفوظة. منصة مجتمعية غير هادفة للربح.</p>
+        <p>&copy; 2025 بيت الصيانة. جميع الحقوق محفوظة. المنصة الأولى لخدمات الصيانة المنزلية في مصر.</p>
       </div>
     </div>
   </footer>
 
   <!-- Floating CTA Buttons -->
   <div class="floating-cta" id="floatingCta">
-    <a href="https://wa.me/201018614843?text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%D8%8C%20%D8%A3%D8%B1%D9%8A%D8%AF%20%D8%A7%D9%84%D8%A7%D8%B3%D8%AA%D9%81%D8%B3%D8%A7%D8%B1%20%D8%B9%D9%86%20%D8%AE%D8%AF%D9%85%D8%A7%D8%AA%20%D8%B5%D9%84%D8%AD%D9%84%D9%8A" target="_blank" class="floating-btn floating-whatsapp" id="floatingWhatsapp" aria-label="تواصل عبر واتساب">
+    <a href="#" target="_blank" class="floating-btn floating-whatsapp" id="floatingWhatsapp" aria-label="تواصل مع الفني عبر واتساب">
       <i class="fab fa-whatsapp"></i>
-      <span class="floating-btn-label">واتساب</span>
+      <span class="floating-btn-label">واتساب الفني</span>
     </a>
-    <a href="tel:+201018614843" class="floating-btn floating-call" id="floatingCall" aria-label="اتصل بنا">
+    <a href="#" class="floating-btn floating-call" id="floatingCall" aria-label="اتصل بالفني">
       <i class="fas fa-phone-alt"></i>
-      <span class="floating-btn-label">اتصل بنا</span>
+      <span class="floating-btn-label">اتصل بالفني</span>
+    </a>
+    <a href="login.html" class="floating-btn" id="floatingLogin" aria-label="تسجيل الدخول" style="display:none; background:#111827;">
+      <i class="fas fa-sign-in-alt"></i>
+      <span class="floating-btn-label">دخول</span>
     </a>
   </div>
 

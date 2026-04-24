@@ -13,7 +13,245 @@
   
   <!-- Main Stylesheet -->
   <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/services.css">
+  
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --secondary: #64748b;
+      --accent: #f59e0b;
+      --bg-gradient: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    }
+
+    body {
+      background: var(--bg-gradient);
+      min-height: 100vh;
+      font-family: 'Cairo', sans-serif;
+    }
+
+    .join-container {
+      max-width: 900px;
+      margin: 120px auto 60px;
+      padding: 0 20px;
+    }
+
+    .form-card {
+      background: white;
+      border-radius: 30px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.08);
+      padding: 50px;
+      border: 1px solid rgba(226, 232, 240, 0.8);
+      position: relative;
+    }
+
+    .form-header {
+      text-align: center;
+      margin-bottom: 45px;
+    }
+
+    .form-header h1 {
+      font-size: 2.4rem;
+      font-weight: 800;
+      color: #0f172a;
+      margin-bottom: 15px;
+      letter-spacing: -0.5px;
+    }
+
+    .form-header p {
+      color: #64748b;
+      font-size: 1.15rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .input-group {
+      margin-bottom: 25px;
+    }
+
+    .input-label {
+      display: block;
+      font-weight: 700;
+      color: #1e293b;
+      margin-bottom: 8px;
+      font-size: 0.95rem;
+    }
+
+    .input-wrapper {
+      position: relative;
+    }
+
+    .input-wrapper i {
+      position: absolute;
+      right: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--primary);
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+      pointer-events: none;
+    }
+
+    .input-control {
+      width: 100%;
+      padding: 16px 20px 16px 45px; /* space for icon on right */
+      padding-right: 48px; 
+      border: 2px solid #e2e8f0;
+      border-radius: 16px;
+      font-family: inherit;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      background: #f8fafc;
+      color: #1e293b;
+    }
+
+    .input-control:focus {
+      outline: none;
+      border-color: var(--primary);
+      background: white;
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+    }
+    
+    .input-control:focus + i,
+    .input-wrapper:focus-within i {
+      color: var(--primary-dark);
+      transform: translateY(-50%) scale(1.1);
+    }
+
+    select.input-control {
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: left 15px center;
+      background-size: 15px;
+    }
+
+    .row-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 25px;
+    }
+
+    @media (max-width: 768px) {
+      .row-grid { grid-template-columns: 1fr; }
+      .form-card { padding: 30px 20px; }
+      .form-header h1 { font-size: 1.8rem; }
+    }
+
+    /* Payment Box Redesign */
+    #paymentDetails {
+      background: #0f172a;
+      color: white !important;
+      border-radius: 24px;
+      padding: 35px;
+      margin: 35px 0;
+      border: 1px solid rgba(255,255,255,0.1);
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
+    }
+
+    .payment-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 25px;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+
+    .payment-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .payment-title i {
+      font-size: 1.6rem;
+      color: #38bdf8;
+    }
+
+    .payment-title h4 {
+      margin: 0;
+      font-size: 1.25rem;
+      font-weight: 800;
+    }
+
+    .price-badge {
+      background: rgba(56, 189, 248, 0.1);
+      color: #38bdf8;
+      padding: 8px 20px;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 700;
+      border: 1px solid rgba(56, 189, 248, 0.2);
+    }
+
+    .vodafone-box {
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 16px;
+      padding: 20px;
+      text-align: center;
+      margin: 20px 0;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .vodafone-number {
+      font-family: 'Cairo', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: #38bdf8;
+      letter-spacing: 2px;
+      display: block;
+    }
+
+    .submit-btn {
+      background: var(--primary);
+      color: white;
+      border: none;
+      width: 100%;
+      padding: 20px;
+      border-radius: 20px;
+      font-size: 1.2rem;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      box-shadow: 0 10px 20px -5px rgba(37, 99, 235, 0.4);
+    }
+
+    .submit-btn:hover {
+      background: var(--primary-dark);
+      transform: translateY(-3px);
+      box-shadow: 0 20px 30px -10px rgba(37, 99, 235, 0.5);
+    }
+
+    .submit-btn:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .preview-box {
+      margin-top: 15px;
+      display: none;
+      align-items: center;
+      gap: 15px;
+      padding: 12px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .preview-box img {
+      width: 50px;
+      height: 50px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+  </style>
 </head>
 <body class="page-join">
 
@@ -28,7 +266,7 @@
         <a href="about.html">نبذة عنا</a>
         <a href="services.html">الخدمات</a>
         <a href="pricing.html">الباقات</a>
-        <a href="support.html" class="active">الدعم</a>
+        <a href="support.html">الدعم</a>
       </nav>
       <div class="nav-actions">
         <a href="login.html" class="btn btn-search nav-cta">تسجيل الدخول</a>
@@ -37,225 +275,392 @@
     </div>
   </header>
 
-  <!-- Hero Section -->
-  <section class="about-hero" style="background-color: #0b2239; padding-top: 150px; padding-bottom: 80px;">
-    <div class="container text-center" data-aos="fade-up">
-      <div class="badge-pill" style="margin-bottom: 15px; background: rgba(255,106,0,0.2); color: #ff6a00;">مقدمي الخدمات</div>
-      <h1 style="color: white; margin-bottom: 30px;">هل أنت فني أو مقدم خدمة؟ <span style="color: #ff6a00;">انضم إلى بيت الصيانة</span></h1>
-      
-      <div style="max-width: 800px; margin: 0 auto;">
-        <p style="font-size: 1.1rem; color: #e0e0e0; margin-bottom: 15px;">إذا كنت تعمل في مجال السباكة، الكهرباء، النجارة، الدهانات، الأرضيات أو التشطيب وترغب في الوصول إلى عملاء جدد، يمكنك الانضمام إلى منصة بيت الصيانة.</p>
-        <p style="font-size: 1.1rem; color: #e0e0e0; margin-bottom: 15px;">نحن نعرض مجموعة من الفنيين المتخصصين على الموقع لمساعدة العملاء في العثور على الحرفي المناسب بسهولة.</p>
-        <p style="font-size: 1.1rem; color: white; font-weight: 600;">إذا كنت فنيًا محترفًا وتريد أن يظهر اسمك وخدماتك على منصة بيت الصيانة، يمكنك التواصل معنا لإضافة بياناتك إلى الموقع.</p>
+  <div class="join-container">
+    <div class="form-card" data-aos="fade-up">
+      <div class="form-header">
+        <h1>انضم كفني محترف</h1>
+        <p>ابدأ رحلتك مع بيت الصيانة الآن وافتح لخدماتك آفاقاً جديدة للوصول لآلاف العملاء.</p>
       </div>
-    </div>
-  </section>
 
-  <!-- Benefits Section -->
-  <section class="why-us section-padding bg-light">
-    <div class="container text-center">
-      <div class="section-header" data-aos="fade-up">
-        <h2>لماذا تنضم إلى بيت الصيانة؟</h2>
-        <p>الانضمام إلى بيت الصيانة يمنحك فرصة للوصول إلى عملاء يبحثون عن خدمات الصيانة والتشطيب.</p>
-      </div>
-      <div class="why-us-grid" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 30px;">
-        <div class="why-item" data-aos="fade-up" data-aos-delay="0" style="flex: 1; min-width: 200px; max-width: 250px;">
-          <i class="fas fa-users" style="color: #ff6a00;"></i>
-          <h4>الوصول إلى عملاء جدد</h4>
-        </div>
-        <div class="why-item" data-aos="fade-up" data-aos-delay="100" style="flex: 1; min-width: 200px; max-width: 250px;">
-           <i class="fas fa-chart-line" style="color: #ff6a00;"></i>
-           <h4>زيادة فرص الحصول على أعمال جديدة</h4>
-        </div>
-        <div class="why-item" data-aos="fade-up" data-aos-delay="200" style="flex: 1; min-width: 200px; max-width: 250px;">
-           <i class="fas fa-briefcase" style="color: #ff6a00;"></i>
-           <h4>عرض خدماتك بشكل احترافي</h4>
-        </div>
-        <div class="why-item" data-aos="fade-up" data-aos-delay="300" style="flex: 1; min-width: 200px; max-width: 250px;">
-           <i class="fas fa-comments" style="color: #ff6a00;"></i>
-           <h4>تسهيل تواصل العملاء معك</h4>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Process Section -->
-  <section class="prob-sol-section section-padding">
-    <div class="container container-medium">
-      <div class="section-header text-center" data-aos="fade-up">
-        <h2>ماذا يحدث بعد التواصل معنا؟</h2>
-        <p>عند تواصلك معنا، سيقوم فريقنا بمراجعة بياناتك وإضافة ملفك التعريفي إلى المنصة.</p>
-      </div>
-      
-      <div data-aos="fade-up" data-aos-delay="100" style="background: #fff; padding: 40px; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.05); border-right: 6px solid #0056b3; margin-top: 40px;">
-        <h3 style="color: #0b2239; margin-bottom: 20px;">البيانات المطلوبة لملفك التعريفي:</h3>
-        
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 30px;">
-          <div style="display: flex; align-items: center; background: #f8f9fa; padding: 15px; border-radius: 10px;">
-            <i class="fas fa-user text-primary" style="margin-left: 15px; font-size: 1.2rem;"></i>
-            <span style="font-weight: 600;">اسم الفني</span>
-          </div>
-          <div style="display: flex; align-items: center; background: #f8f9fa; padding: 15px; border-radius: 10px;">
-            <i class="fas fa-tools text-primary" style="margin-left: 15px; font-size: 1.2rem;"></i>
-            <span style="font-weight: 600;">التخصص (سباكة، كهرباء، نجارة...)</span>
-          </div>
-          <div style="display: flex; align-items: center; background: #f8f9fa; padding: 15px; border-radius: 10px;">
-            <i class="fas fa-calendar-alt text-primary" style="margin-left: 15px; font-size: 1.2rem;"></i>
-            <span style="font-weight: 600;">سنوات الخبرة</span>
-          </div>
-          <div style="display: flex; align-items: center; background: #f8f9fa; padding: 15px; border-radius: 10px;">
-            <i class="fas fa-file-alt text-primary" style="margin-left: 15px; font-size: 1.2rem;"></i>
-            <span style="font-weight: 600;">وصف مختصر للخدمات المتاحة</span>
-          </div>
-          <div style="display: flex; align-items: center; background: #f8f9fa; padding: 15px; border-radius: 10px;">
-            <i class="fas fa-phone-alt text-primary" style="margin-left: 15px; font-size: 1.2rem;"></i>
-            <span style="font-weight: 600;">رقم الهاتف للتواصل</span>
-          </div>
-          <div style="display: flex; align-items: center; background: #f8f9fa; padding: 15px; border-radius: 10px;">
-            <i class="fab fa-whatsapp text-primary" style="margin-left: 15px; font-size: 1.2rem;"></i>
-            <span style="font-weight: 600;">رابط واتساب</span>
-          </div>
-          <div style="display: flex; align-items: center; background: #f8f9fa; padding: 15px; border-radius: 10px;">
-            <i class="fas fa-camera text-primary" style="margin-left: 15px; font-size: 1.2rem;"></i>
-            <span style="font-weight: 600;">صورة توضيحية لأعمالك</span>
-          </div>
-        </div>
-        
-        <div style="background-color: rgba(40, 167, 69, 0.1); padding: 20px; border-radius: 10px; text-align: center; border: 1px dashed #28a745;">
-          <p style="margin: 0; font-weight: 700; color: #28a745; font-size: 1.1rem;">بعد إضافة بياناتك، سيتمكن العملاء من العثور عليك بسهولة والتواصل معك مباشرة لطلب خدماتك.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Join Form Section -->
-  <section class="section-padding" style="background-color: #f1f5f9;">
-    <div class="container container-medium">
-      <div class="home-cta" data-aos="fade-up" style="background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); text-align: right;">
-        <h2 style="color: #0b2239; margin-bottom: 20px; text-align: center;">سجل بياناتك للإنضمام</h2>
-        <p style="text-align: center; color: #64748b; margin-bottom: 30px;">قم بتعبئة النموذج وسيقوم فريق بيت الصيانة بمراجعة طلبك وإضافة ملفك للمنصة.</p>
-        
-        <form id="joinTechnicianForm" style="display: flex; flex-direction: column; gap: 20px;">
-          <div style="display: flex; gap: 20px; flex-wrap: wrap;">
-            <div style="flex: 1; min-width: 250px;">
-              <label for="joinName" style="font-weight: 600; margin-bottom: 8px; display: block; color: #334155;">الاسم بالكامل <span style="color:red">*</span></label>
-              <input type="text" id="joinName" name="name" required placeholder="أدخل اسمك ثلاثي" style="width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-family: inherit;">
+      <form id="joinTechnicianForm" enctype="multipart/form-data">
+        <div class="row-grid">
+          <div class="input-group">
+            <label class="input-label">الاسم بالكامل <span class="text-danger">*</span></label>
+            <div class="input-wrapper">
+              <input type="text" name="fullName" class="input-control" required placeholder="أدخل اسمك الثلاثي">
+              <i class="fas fa-user-circle"></i>
             </div>
-            <div style="flex: 1; min-width: 250px;">
-              <label for="joinPhone" style="font-weight: 600; margin-bottom: 8px; display: block; color: #334155;">رقم الهاتف (الواتساب) <span style="color:red">*</span></label>
-              <input type="tel" id="joinPhone" name="phone" required placeholder="مثال: 01012345678" style="width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-family: inherit;">
+          </div>
+          <div class="input-group">
+            <label class="input-label">رقم الهاتف (واتساب) <span class="text-danger">*</span></label>
+            <div class="input-wrapper">
+              <input type="tel" name="phone" class="input-control" required placeholder="010XXXXXXXX">
+              <i class="fab fa-whatsapp"></i>
             </div>
+          </div>
+        </div>
+
+        <div class="row-grid">
+          <div class="input-group">
+            <label class="input-label">البريد الإلكتروني <span class="text-danger">*</span></label>
+            <div class="input-wrapper">
+              <input type="email" name="email" class="input-control" required placeholder="name@example.com">
+              <i class="fas fa-envelope"></i>
+            </div>
+          </div>
+          <div class="input-group">
+            <label class="input-label">كلمة المرور <span class="text-danger">*</span></label>
+            <div class="input-wrapper">
+              <input type="password" name="password" class="input-control" required minlength="6" placeholder="أدخل كلمة مرور قوية">
+              <i class="fas fa-lock"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="row-grid">
+          <div class="input-group">
+            <label class="input-label">المحافظة <span class="text-danger">*</span></label>
+            <div class="input-wrapper">
+              <select name="city" class="input-control" required>
+                <option value="" disabled selected>اختر المحافظة...</option>
+                <option value="القاهرة">القاهرة</option>
+                <option value="الجيزة">الجيزة</option>
+                <option value="الإسكندرية">الإسكندرية</option>
+                <option value="الدقهلية">الدقهلية</option>
+                <option value="البحر الأحمر">البحر الأحمر</option>
+                <option value="البحيرة">البحيرة</option>
+                <option value="الفيوم">الفيوم</option>
+                <option value="الغربية">الغربية</option>
+                <option value="الإسماعيلية">الإسماعيلية</option>
+                <option value="المنوفية">المنوفية</option>
+                <option value="المنيا">المنيا</option>
+                <option value="القليوبية">القليوبية</option>
+                <option value="الوادي الجديد">الوادي الجديد</option>
+                <option value="السويس">السويس</option>
+                <option value="الشرقية">الشرقية</option>
+                <option value="دمياط">دمياط</option>
+                <option value="بورسعيد">بورسعيد</option>
+                <option value="جنوب سيناء">جنوب سيناء</option>
+                <option value="كفر الشيخ">كفر الشيخ</option>
+                <option value="مطروح">مطروح</option>
+                <option value="قنا">قنا</option>
+                <option value="شمال سيناء">شمال سيناء</option>
+                <option value="سوهاج">سوهاج</option>
+                <option value="بني سويف">بني سويف</option>
+                <option value="الأقصر">الأقصر</option>
+                <option value="أسوان">أسوان</option>
+                <option value="أسيوط">أسيوط</option>
+              </select>
+              <i class="fas fa-map-marker-alt"></i>
+            </div>
+          </div>
+          <div class="input-group">
+            <label class="input-label">العنوان بالتفصيل <span class="text-danger">*</span></label>
+            <div class="input-wrapper">
+              <input type="text" name="address" class="input-control" required placeholder="مثال: الحي الرابع، شارع 10">
+              <i class="fas fa-map-signs"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="row-grid">
+          <div class="input-group">
+            <label class="input-label">التخصص الأساسي <span class="text-danger">*</span></label>
+            <div class="input-wrapper">
+              <select name="specialty" class="input-control" required>
+                <option value="" disabled selected>اختر تخصصك...</option>
+                <option value="سباكة">سباكة</option>
+                <option value="كهرباء">كهرباء</option>
+                <option value="نجارة">نجارة</option>
+                <option value="دهانات">دهانات</option>
+                <option value="أرضيات">أرضيات</option>
+                <option value="تشطيب">تشطيب</option>
+                <option value="أخرى">أخرى</option>
+              </select>
+              <i class="fas fa-screwdriver-wrench"></i>
+            </div>
+          </div>
+          <div class="input-group">
+            <label class="input-label">سنوات الخبرة <span class="text-danger">*</span></label>
+            <div class="input-wrapper">
+              <input type="number" name="yearsOfExperience" class="input-control" required placeholder="كم سنة تعمل في هذا المجال؟">
+              <i class="fas fa-medal"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label class="input-label">اختر الباقة المناسبة <span class="text-danger">*</span></label>
+          <div class="input-wrapper">
+            <select id="joinPackage" name="package" class="input-control" required>
+              <option value="" disabled selected>جاري تحميل الباقات...</option>
+            </select>
+            <i class="fas fa-gem"></i>
+          </div>
+        </div>
+
+        <div class="input-group" id="durationContainer" style="display: none;">
+          <label class="input-label">مدة الاشتراك المفضلة <span class="text-danger">*</span></label>
+          <div class="input-wrapper">
+            <select id="joinDuration" name="duration" class="input-control">
+            </select>
+            <i class="fas fa-calendar-check"></i>
+          </div>
+        </div>
+
+        <!-- Payment Details Section -->
+        <div id="paymentDetails" style="display: none;">
+          <div class="payment-header">
+            <div class="payment-title">
+              <i class="fas fa-shield-halved"></i>
+              <div>
+                <h4>إتمام عملية الاشتراك</h4>
+                <div id="paymentDurationText" style="font-size: 0.9rem; color: #38bdf8; margin-top: 5px; font-weight: 600;"></div>
+              </div>
+            </div>
+            <div class="price-badge">المبلغ: <span id="packagePriceText">0</span> ج.م</div>
           </div>
           
-          <div style="display: flex; gap: 20px; flex-wrap: wrap;">
-            <div style="flex: 1; min-width: 250px;">
-              <label for="joinEmail" style="font-weight: 600; margin-bottom: 8px; display: block; color: #334155;">البريد الإلكتروني (اختياري)</label>
-              <input type="email" id="joinEmail" name="email" placeholder="example@email.com" style="width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-family: inherit;">
-            </div>
-            <div style="flex: 1; min-width: 250px;">
-              <label for="joinLocation" style="font-weight: 600; margin-bottom: 8px; display: block; color: #334155;">المنطقة / المحافظة <span style="color:red">*</span></label>
-              <input type="text" id="joinLocation" name="location" required placeholder="مثال: مدينة نصر، القاهرة" style="width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-family: inherit;">
-            </div>
+          <div class="vodafone-box">
+            <p style="margin-bottom: 10px; opacity: 0.9; font-size: 0.95rem;">يرجى تحويل المبلغ عبر فودافون كاش للرقم:</p>
+            <span class="vodafone-number">01018614843</span>
           </div>
           
-          <div style="display: flex; gap: 20px; flex-wrap: wrap;">
-            <div style="flex: 1; min-width: 250px;">
-              <label for="joinServices" style="font-weight: 600; margin-bottom: 8px; display: block; color: #334155;">التخصص <span style="color:red">*</span></label>
-              <input type="text" id="joinServices" name="services" required placeholder="مثال: سباكة، كهرباء" style="width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-family: inherit;">
-            </div>
-            <div style="flex: 1; min-width: 250px;">
-              <label for="joinExp" style="font-weight: 600; margin-bottom: 8px; display: block; color: #334155;">سنوات الخبرة</label>
-              <input type="number" id="joinExp" name="experience" min="0" placeholder="مثال: 5" style="width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-family: inherit;">
+          <div style="margin-top: 25px;">
+            <label class="input-label" style="color: white; opacity: 0.9;"><i class="fas fa-cloud-upload-alt"></i>صورة إيصال التحويل <span class="text-danger">*</span></label>
+            <input type="file" id="paymentFile" name="paymentScreenshot" accept="image/*" class="input-control" style="background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.1); color: white;">
+            
+            <div id="paymentPreview" class="preview-box">
+              <i class="fas fa-file-image" style="color: #38bdf8;"></i>
+              <span id="fileNameDisplay" style="font-size: 0.85rem; opacity: 0.8; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1;"></span>
+              <img id="filePreviewThumb" src="" alt="معاينة">
             </div>
           </div>
+        </div>
 
-          <div>
-            <label for="joinBio" style="font-weight: 600; margin-bottom: 8px; display: block; color: #334155;">نبذة عنك وعن خدماتك <span style="color:red">*</span></label>
-            <textarea id="joinBio" name="bio" rows="4" required placeholder="اكتب نبذة مختصرة تظهر للعملاء..." style="width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-family: inherit; resize: vertical;"></textarea>
+        <div class="input-group">
+          <label class="input-label">نبذة عن خبراتك وخدماتك <span class="text-danger">*</span></label>
+          <div class="input-wrapper">
+            <textarea name="bio" rows="4" class="input-control" required placeholder="أخبر العملاء لماذا يجب عليهم اختيارك؟ اكتب تخصصاتك الدقيقة وأعمالك السابقة." style="padding-top: 20px;"></textarea>
+            <i class="fas fa-comment-dots" style="top: 25px;"></i>
           </div>
+        </div>
 
-          <div id="joinFormStatus" style="display: none; padding: 15px; border-radius: 8px; font-weight: 600; text-align: center;"></div>
+        <div id="joinFormStatus" style="display: none; padding: 20px; border-radius: 16px; margin-bottom: 25px; text-align: center; font-weight: 700;"></div>
 
-          <button type="submit" id="joinSubmitBtn" class="btn btn-primary" style="width: 100%; padding: 15px; border-radius: 30px; font-size: 1.1rem; border: none; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 10px;">
-            إرسال طلب الانضمام <i class="fas fa-paper-plane"></i>
-          </button>
-        </form>
-      </div>
+        <button type="submit" id="joinSubmitBtn" class="submit-btn">
+          <span>إرسال طلب الانضمام</span>
+          <i class="fas fa-paper-plane"></i>
+        </button>
+      </form>
     </div>
-  </section>
+  </div>
 
-  <!-- Footer -->
   <footer class="footer">
     <div class="container">
       <div class="footer-grid">
-        <!-- Logo & About -->
-        <div class="footer-col" data-aos="fade-up" data-aos-delay="100">
-          <div class="footer-logo">
-            <img src="Images\logo.svg" alt="بيت الصيانة" class="site-logo-footer">
-          </div>
-          <p class="footer-about">مبادرة مصرية تهدف لرفع كفاءة الخدمات المنزلية ودعم العمالة الماهرة وتسهيل حياة المواطنين.</p>
-          <div class="footer-social">
-            <a href="#"><i class="fas fa-globe"></i></a>
-            <a href="#"><i class="fas fa-share-alt"></i></a>
-          </div>
+        <div class="footer-col">
+          <img src="Images\logo.svg" alt="بيت الصيانة" class="site-logo-footer" style="max-width: 150px; margin-bottom: 20px;">
+          <p class="footer-about">نحن نربط بين أفضل الفنيين والعملاء الباحثين عن الجودة والموثوقية في خدمات الصيانة.</p>
         </div>
-
-        <!-- Quick Links -->
-        <div class="footer-col" data-aos="fade-up" data-aos-delay="200">
+        <div class="footer-col">
           <h4 class="footer-heading">روابط سريعة</h4>
           <ul class="footer-links">
+            <li><a href="index.html">الرئيسية</a></li>
             <li><a href="about.html">عن المنصة</a></li>
-            <li><a href="#">شروط الاستخدام</a></li>
-            <li><a href="#">سياسة الخصوصية</a></li>
-            <li><a href="join-technician.html">انضم كصنايعي</a></li>
+            <li><a href="pricing.html">الباقات</a></li>
           </ul>
         </div>
-
-        <!-- Contact Us -->
-        <div class="footer-col" data-aos="fade-up" data-aos-delay="300">
+        <div class="footer-col">
           <h4 class="footer-heading">تواصل معنا</h4>
-          <ul class="footer-contact">
-            <li><i class="fas fa-map-marker-alt text-orange"></i> <span>القاهرة، مدينة نصر، شارع عباس العقاد</span></li>
-            <li>
-              <i class="fas fa-phone-alt text-orange"></i>
-              <div class="phone-numbers">
-                <span dir="ltr">+20 1018614843</span>
-              </div>
-            </li>
-            <li><i class="fas fa-envelope text-orange"></i> <span dir="ltr">contact@solahly.org</span></li>
-          </ul>
-        </div>
-
-        <!-- Newsletter -->
-        <div class="footer-col" data-aos="fade-up" data-aos-delay="400">
-          <h4 class="footer-heading">النشرة البريدية</h4>
-          <p class="footer-about">اشترك لتصلك نصائح صيانة منزلك وأحدث الصنايعية الموثوقين.</p>
-          <form class="newsletter-form">
-            <input type="email" placeholder="بريدك الإلكتروني" required>
-            <button type="submit"><i class="fas fa-paper-plane"></i></button>
-          </form>
+          <p style="color: #94a3b8;"><i class="fas fa-phone-alt" style="margin-left: 10px;"></i> 01018614843</p>
+          <p style="color: #94a3b8;"><i class="fas fa-envelope" style="margin-left: 10px;"></i> info@beitalsiyana.com</p>
         </div>
       </div>
-
       <div class="footer-bottom">
-        <p>&copy; 2025 بيت الصيانة. جميع الحقوق محفوظة. منصة مجتمعية غير هادفة للربح.</p>
+        <p>© 2025 بيت الصيانة. جميع الحقوق محفوظة.</p>
       </div>
     </div>
   </footer>
 
-  <!-- Floating CTA Buttons -->
-  <div class="floating-cta" id="floatingCta">
-    <a href="https://wa.me/201018614843?text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%D8%8C%20%D8%A3%D8%B1%D9%8A%D8%AF%20%D8%A7%D9%84%D8%A7%D8%B3%D8%AA%D9%81%D8%B3%D8%A7%D8%B1%20%D8%B9%D9%86%20%D8%AE%D8%AF%D9%85%D8%A7%D8%AA%20%D8%B5%D9%84%D8%AD%D9%84%D9%8A" target="_blank" class="floating-btn floating-whatsapp" id="floatingWhatsapp" aria-label="تواصل عبر واتساب">
-      <i class="fab fa-whatsapp"></i>
-      <span class="floating-btn-label">واتساب</span>
-    </a>
-    <a href="tel:+201018614843" class="floating-btn floating-call" id="floatingCall" aria-label="اتصل بنا">
-      <i class="fas fa-phone-alt"></i>
-      <span class="floating-btn-label">اتصل بنا</span>
-    </a>
-  </div>
-
-  <!-- Scripts -->
   <script src="js/script.js"></script>
+  <script>
+    const packageSelect = document.getElementById('joinPackage');
+    const durationContainer = document.getElementById('durationContainer');
+    const durationSelect = document.getElementById('joinDuration');
+    const paymentDetails = document.getElementById('paymentDetails');
+    const priceText = document.getElementById('packagePriceText');
+    const paymentFile = document.getElementById('paymentFile');
+    let allPlans = [];
+
+    const periodLabels = {
+      'days': 'يوم',
+      'months': 'شهر',
+      'years': 'سنة',
+      'monthly': 'شهر',
+      'quarterly': '3 أشهر',
+      'yearly': 'سنة'
+    };
+
+    async function loadPackages() {
+      try {
+        const res = await fetch('/api/packages');
+        const result = await res.json();
+        if (result.success && result.data) {
+          allPlans = result.data;
+          packageSelect.innerHTML = '<option value="" disabled selected>اختر الباقة...</option>';
+          allPlans.forEach(pkg => {
+            const opt = document.createElement('option');
+            opt.value = pkg.id;
+            opt.textContent = pkg.name;
+            packageSelect.appendChild(opt);
+          });
+
+          const urlParams = new URLSearchParams(window.location.search);
+          const urlPlanId = urlParams.get('planId');
+          if (urlPlanId) {
+            packageSelect.value = urlPlanId;
+            handlePlanSelection(urlPlanId);
+          }
+        }
+      } catch (err) {
+        console.error('Error fetching plans:', err);
+      }
+    }
+    loadPackages();
+
+    const paymentDurationText = document.getElementById('paymentDurationText');
+
+    function handlePlanSelection(planId) {
+      const plan = allPlans.find(p => p.id === planId);
+      if (!plan) return;
+
+      durationContainer.style.display = 'none';
+      durationSelect.innerHTML = '';
+
+      if (plan.pricingOptions && plan.pricingOptions.length > 0) {
+        durationContainer.style.display = 'block';
+        plan.pricingOptions.forEach((opt, idx) => {
+          const durationStr = `${opt.duration} ${periodLabels[opt.unit] || opt.unit}`;
+          const displayText = opt.label ? `${opt.label} (${durationStr})` : durationStr;
+          
+          const optionEl = document.createElement('option');
+          optionEl.value = idx;
+          optionEl.textContent = `${displayText} - ${opt.price} ج.م`;
+          durationSelect.appendChild(optionEl);
+        });
+        const firstOpt = plan.pricingOptions[0];
+        const durationStr = `${firstOpt.duration} ${periodLabels[firstOpt.unit] || firstOpt.unit}`;
+        updatePriceAndPayment(firstOpt.price, `لمدة ${durationStr}`);
+      } else {
+        updatePriceAndPayment(plan.price, '');
+      }
+    }
+
+    function updatePriceAndPayment(price, durationStr) {
+      if (price === 0) {
+        paymentDetails.style.display = 'none';
+        paymentFile.required = false;
+      } else {
+        paymentDetails.style.display = 'block';
+        paymentFile.required = true;
+        priceText.innerText = price;
+        paymentDurationText.innerText = durationStr || '';
+        paymentDurationText.style.display = durationStr ? 'block' : 'none';
+      }
+    }
+
+    packageSelect.addEventListener('change', function() {
+      handlePlanSelection(this.value);
+    });
+
+    durationSelect.addEventListener('change', function() {
+      const plan = allPlans.find(p => p.id === packageSelect.value);
+      if (plan && plan.pricingOptions) {
+        const selectedOpt = plan.pricingOptions[this.value];
+        if (selectedOpt) {
+          const durationStr = `${selectedOpt.duration} ${periodLabels[selectedOpt.unit] || selectedOpt.unit}`;
+          updatePriceAndPayment(selectedOpt.price, `لمدة ${durationStr}`);
+        }
+      }
+    });
+
+    paymentFile.addEventListener('change', function() {
+      const preview = document.getElementById('paymentPreview');
+      const fileName = document.getElementById('fileNameDisplay');
+      const thumb = document.getElementById('filePreviewThumb');
+      
+      if (this.files && this.files[0]) {
+        const file = this.files[0];
+        fileName.innerText = file.name;
+        
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          thumb.src = e.target.result;
+        }
+        reader.readAsDataURL(file);
+        preview.style.display = 'flex';
+      } else {
+        preview.style.display = 'none';
+      }
+    });
+
+    document.getElementById('joinTechnicianForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const submitBtn = document.getElementById('joinSubmitBtn');
+      const statusDiv = document.getElementById('joinFormStatus');
+      
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<span>جاري إرسال الطلب...</span> <i class="fas fa-spinner fa-spin"></i>';
+      statusDiv.style.display = 'none';
+
+      const formData = new FormData(this);
+      
+      // Ensure we get the correct price
+      const plan = allPlans.find(p => p.id === packageSelect.value);
+      let finalPrice = 0;
+      if (plan) {
+        if (plan.pricingOptions && plan.pricingOptions.length > 0) {
+          finalPrice = plan.pricingOptions[durationSelect.value].price;
+        } else {
+          finalPrice = plan.price;
+        }
+      }
+      formData.append('price', finalPrice);
+
+      try {
+        const response = await fetch('/api/join', {
+          method: 'POST',
+          body: formData
+        });
+
+        const result = await response.json();
+
+        if (response.ok && result.success) {
+          statusDiv.style.display = 'block';
+          statusDiv.style.backgroundColor = '#dcfce7';
+          statusDiv.style.color = '#166534';
+          statusDiv.innerText = 'تهانينا! تم إرسال طلبك بنجاح. سنقوم بمراجعته والرد عليك في أقرب وقت.';
+          this.reset();
+          paymentDetails.style.display = 'none';
+          document.getElementById('paymentPreview').style.display = 'none';
+        } else {
+          statusDiv.style.display = 'block';
+          statusDiv.style.backgroundColor = '#fee2e2';
+          statusDiv.style.color = '#991b1b';
+          statusDiv.innerText = result.message || 'عذراً، حدث خطأ أثناء إرسال الطلب. يرجى المحاولة لاحقاً.';
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        statusDiv.style.display = 'block';
+        statusDiv.style.backgroundColor = '#fee2e2';
+        statusDiv.style.color = '#991b1b';
+        statusDiv.innerText = 'عذراً، هناك مشكلة في الاتصال. تأكد من جودة الإنترنت وحاول مجدداً.';
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<span>إرسال طلب الانضمام</span> <i class="fas fa-paper-plane"></i>';
+      }
+    });
+  </script>
 </body>
 </html>

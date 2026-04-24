@@ -675,7 +675,7 @@ body {
 }
 .footer-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 30px;
   margin-bottom: 50px;
 }
@@ -888,9 +888,9 @@ body {
   font-size: 0.85rem;
   font-weight: 700;
   white-space: nowrap;
-  opacity: 0;
+  opacity: 1;
   pointer-events: none;
-  transform: translateX(10px);
+  transform: translateX(0);
   transition: all 0.3s ease;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
@@ -905,9 +905,8 @@ body {
   background: #111827;
   border-radius: 2px;
 }
-.floating-btn:hover .floating-btn-label {
-  opacity: 1;
-  transform: translateX(0);
+.floating-btn:hover {
+  transform: scale(1.1);
 }
 .floating-whatsapp {
   background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);

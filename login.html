@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>تسجيل الدخول - صلحلي</title>
+  <title>تسجيل الدخول - بيت الصيانة</title>
   
   <!-- Google Fonts: Cairo -->
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -123,7 +123,7 @@
   <div class="login-container">
     <div class="login-card" data-aos="fade-up">
       <div class="login-header">
-        <a href="index.html"><img src="Images/logo.svg" alt="صلحلي"></a>
+        <a href="index.html"><img src="Images/logo.svg" alt="بيت الصيانة"></a>
         <h1>تسجيل الدخول</h1>
       </div>
       
@@ -142,8 +142,10 @@
         <button type="submit" class="login-btn">دخول</button>
       </form>
       
-      <div class="login-footer">
-        ليس لديك حساب؟ <a href="join-technician.html">انضم كفني الآن</a>
+      <div class="login-footer" style="background: #f1f5f9; padding: 15px; border-radius: 12px; margin-top: 30px;">
+        ليس لديك حساب؟ <br><br>
+        <a href="register-customer.html" style="display: block; background: #3b82f6; color: white; padding: 10px; border-radius: 8px; margin-bottom: 10px; text-decoration: none;">إنشاء حساب عميل جديد</a>
+        <a href="join-technician.html" style="display: block; border: 1px solid #3b82f6; padding: 10px; border-radius: 8px; text-decoration: none;">انضم كفني الآن</a>
       </div>
       
       <a href="index.html" class="back-home"><i class="fas fa-arrow-right"></i> العودة للرئيسية</a>
@@ -165,7 +167,7 @@
     statusDiv.innerText = 'جاري التحقق...';
 
     try {
-      const response = await fetch('http://localhost:5000/api/auth/login', {
+      const response = await fetch('/api/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -190,9 +192,18 @@
         if (result.token) {
           localStorage.setItem('token', result.token);
         }
+        if (result.user && result.user.role) {
+          localStorage.setItem('userRole', result.user.role);
+        }
 
         setTimeout(() => {
-          window.location.href = 'admin-dashboard.html';
+          if (result.user && result.user.role === 'admin') {
+            window.location.href = 'admin-dashboard.html';
+          } else if (result.user && result.user.role === 'technician') {
+            window.location.href = 'technician-dashboard.html';
+          } else {
+            window.location.href = 'index.html';
+          }
         }, 1500);
       } else {
         statusDiv.style.backgroundColor = '#fee2e2';

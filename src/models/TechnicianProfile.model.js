@@ -12,9 +12,11 @@ const technicianProfileSchema = new mongoose.Schema(
     yearsOfExperience: { type: Number, required: true },
     bio: { type: String, required: true },
     city: { type: String, required: true },
+    address: { type: String, required: false },
     whatsapp: { type: String, required: true },
     profileImage: { type: String },
     galleryImages: [{ type: String }],
+    galleryVideos: [{ type: String }],
     ratingAverage: { type: Number, default: 0 },
     reviewsCount: { type: Number, default: 0 },
     isTrusted: { type: Boolean, default: false },
@@ -22,6 +24,8 @@ const technicianProfileSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId, 
       ref: 'Plan' 
     },
+    subscriptionStartDate: { type: Date },
+    subscriptionExpiry: { type: Date },
   },
   { timestamps: true }
 );

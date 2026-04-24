@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>حسابي | بيت الصيانة</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    :root {
+      --profile-bg: #f8fafc;
+      --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+    }
+    body { background-color: var(--profile-bg); min-height: 100vh; font-family: 'Cairo', sans-serif; }
+    
+    .profile-hero {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      height: 200px;
+      width: 100%;
+      position: relative;
+    }
+
+    .profile-content {
+      max-width: 900px;
+      margin: -100px auto 60px;
+      padding: 0 20px;
+      position: relative;
+      z-index: 10;
+    }
+
+    .main-card {
+      background: white;
+      border-radius: 24px;
+      padding: 40px;
+      box-shadow: var(--card-shadow);
+      border: 1px solid rgba(226, 232, 240, 0.8);
+    }
+
+    .profile-top {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .avatar-wrapper {
+      position: relative;
+      margin-bottom: 20px;
+      cursor: pointer;
+    }
+    .avatar-wrapper:hover .avatar-overlay {
+      opacity: 1;
+    }
+    .avatar-overlay {
+      position: absolute;
+      top: 6px; left: 6px; right: 6px; bottom: 6px;
+      background: rgba(0,0,0,0.4);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.5rem;
+      opacity: 0;
+      transition: 0.3s;
+    }
+    .avatar-img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 6px solid white;
+      box-shadow: 0 10px 20px rgba(37, 99, 235, 0.2);
+    }
+
+    .avatar-large {
+      width: 120px;
+      height: 120px;
+      background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      font-weight: 800;
+      border: 6px solid white;
+      box-shadow: 0 10px 20px rgba(37, 99, 235, 0.2);
+    }
+
+    .role-badge {
+      background: #eff6ff;
+      color: #2563eb;
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      margin-top: 10px;
+      display: inline-block;
+    }
+
+    .profile-name {
+      font-size: 2rem;
+      font-weight: 800;
+      color: #0f172a;
+      margin: 15px 0 5px;
+    }
+
+    .profile-email {
+      color: #64748b;
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    .section-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #0f172a;
+      margin-bottom: 25px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .section-title i { color: #3b82f6; }
+
+    .details-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    }
+
+    .detail-card {
+      background: #f8fafc;
+      padding: 24px;
+      border-radius: 20px;
+      border: 1px solid #f1f5f9;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .detail-card:hover {
+      background: white;
+      border-color: #3b82f6;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+      transform: translateY(-2px);
+    }
+
+    .detail-icon {
+      width: 54px;
+      height: 54px;
+      background: white;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      color: #3b82f6;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    }
+
+    .detail-info { flex: 1; }
+    .detail-label { display: block; font-size: 0.85rem; color: #64748b; font-weight: 700; margin-bottom: 4px; }
+    .detail-value { display: block; font-size: 1.1rem; color: #1e293b; font-weight: 700; }
+
+    .actions-bar {
+      margin-top: 50px;
+      padding-top: 30px;
+      border-top: 1px solid #f1f5f9;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .btn-logout {
+      background: #fff1f2;
+      color: #e11d48;
+      border: none;
+      padding: 14px 40px;
+      border-radius: 14px;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .btn-logout:hover { background: #ffe4e6; transform: translateY(-2px); }
+
+    .loading-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: white;
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .spinner {
+      width: 50px;
+      height: 50px;
+      border: 5px solid #f3f3f3;
+      border-top: 5px solid #3b82f6;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+    #locationSection { display: none; }
+
+    /* Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.5);
+      backdrop-filter: blur(4px);
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-content {
+      background-color: white;
+      padding: 30px;
+      border-radius: 24px;
+      width: 90%;
+      max-width: 500px;
+      box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+    }
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .modal-header h2 { font-size: 1.5rem; font-weight: 800; color: #0f172a; margin: 0; }
+    .close-modal { cursor: pointer; font-size: 1.5rem; color: #64748b; }
+    
+    .form-group { margin-bottom: 15px; }
+    .form-group label { display: block; font-weight: 700; margin-bottom: 8px; color: #334155; }
+    .form-group input, .form-group select {
+      width: 100%;
+      padding: 12px;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 12px;
+      font-family: inherit;
+      font-size: 1rem;
+    }
+    .modal-actions {
+      display: flex;
+      gap: 15px;
+      margin-top: 25px;
+    }
+    .btn-save {
+      flex: 1;
+      background: #3b82f6;
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .btn-cancel {
+      flex: 1;
+      background: #f1f5f9;
+      color: #64748b;
+      border: none;
+      padding: 12px;
+      border-radius: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div id="loadingOverlay" class="loading-overlay">
+    <div class="spinner"></div>
+    <p style="margin-top: 20px; font-weight: 700; color: #64748b;">جاري تحميل بياناتك...</p>
+  </div>
+
+  <header class="header">
+    <div class="container nav-wrapper">
+      <a href="index.html" class="logo">
+        <img src="Images/logo.svg" alt="بيت الصيانة" class="site-logo">
+      </a>
+      <nav class="nav-links">
+        <a href="index.html">الرئيسية</a>
+        <a href="services.html">الخدمات</a>
+        <a href="support.html">الدعم</a>
+      </nav>
+      <div class="nav-actions">
+        <button onclick="handleLogout()" class="btn btn-search">خروج</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="profile-hero"></div>
+
+  <div class="profile-content">
+    <div class="main-card">
+      <div class="profile-top">
+        <div class="avatar-wrapper" onclick="document.getElementById('avatarInput').click()">
+          <div id="avatarContainer">
+            <div class="avatar-large" id="userInitial">..</div>
+          </div>
+          <div class="avatar-overlay">
+            <i class="fas fa-camera"></i>
+          </div>
+          <input type="file" id="avatarInput" style="display:none" accept="image/*" onchange="handleAvatarUpload(this)">
+        </div>
+        <div class="role-badge"><i class="fas fa-user"></i> حساب عميل</div>
+        <h1 class="profile-name" id="userName">...</h1>
+        <p class="profile-email" id="userEmailHeader">...</p>
+        <button class="btn btn-primary" onclick="openEditModal()" style="margin-top: 20px; border-radius: 12px; padding: 10px 25px;">
+          <i class="fas fa-edit"></i> تعديل البيانات
+        </button>
+      </div>
+
+      <h2 class="section-title"><i class="fas fa-id-card"></i> المعلومات الشخصية</h2>
+      <div class="details-grid">
+        <div class="detail-card">
+          <div class="detail-icon"><i class="fas fa-envelope"></i></div>
+          <div class="detail-info">
+            <span class="detail-label">البريد الإلكتروني</span>
+            <span class="detail-value" id="userEmail">...</span>
+          </div>
+        </div>
+        <div class="detail-card">
+          <div class="detail-icon"><i class="fas fa-phone-alt"></i></div>
+          <div class="detail-info">
+            <span class="detail-label">رقم الهاتف</span>
+            <span class="detail-value" id="userPhone">...</span>
+          </div>
+        </div>
+        <div class="detail-card" id="cityCard" style="display:none;">
+          <div class="detail-icon"><i class="fas fa-map-marker-alt"></i></div>
+          <div class="detail-info">
+            <span class="detail-label">المدينة</span>
+            <span class="detail-value" id="userCity">...</span>
+          </div>
+        </div>
+        <div class="detail-card" id="addressCard" style="display:none;">
+          <div class="detail-icon"><i class="fas fa-home"></i></div>
+          <div class="detail-info">
+            <span class="detail-label">العنوان بالتفصيل</span>
+            <span class="detail-value" id="userAddress">...</span>
+          </div>
+        </div>
+        <div class="detail-card">
+          <div class="detail-icon"><i class="fas fa-calendar-check"></i></div>
+          <div class="detail-info">
+            <span class="detail-label">تاريخ الانضمام</span>
+            <span class="detail-value" id="userJoined">...</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="actions-bar">
+        <button class="btn-logout" onclick="handleLogout()">
+          <i class="fas fa-sign-out-alt"></i> تسجيل الخروج
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Profile Modal -->
+  <div id="editModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>تعديل البيانات الشخصية</h2>
+        <span class="close-modal" onclick="closeEditModal()">&times;</span>
+      </div>
+      <form id="editProfileForm">
+        <div class="form-group">
+          <label>الاسم بالكامل</label>
+          <input type="text" id="editName" required>
+        </div>
+        <div class="form-group">
+          <label>البريد الإلكتروني (Gmail)</label>
+          <input type="email" id="editEmail" required>
+        </div>
+        <div class="form-group">
+          <label>كلمة المرور الجديدة (اتركها فارغة إذا لا تريد التغيير)</label>
+          <input type="password" id="editPassword" placeholder="••••••••">
+        </div>
+        <div class="form-group">
+          <label>رقم الهاتف</label>
+          <input type="text" id="editPhone" required>
+        </div>
+        <div class="form-group">
+          <label>المدينة</label>
+          <input type="text" id="editCity">
+        </div>
+        <div class="form-group">
+          <label>العنوان بالتفصيل</label>
+          <input type="text" id="editAddress">
+        </div>
+        <div class="modal-actions">
+          <button type="submit" class="btn-save">حفظ التغييرات</button>
+          <button type="button" class="btn-cancel" onclick="closeEditModal()">إلغاء</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const token = localStorage.getItem('token');
+    if (!token) window.location.href = 'login.html';
+
+    let currentUserData = null;
+    let currentProfileData = null;
+
+    async function loadUserData() {
+      try {
+        const res = await fetch('/api/auth/me', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const result = await res.json();
+        
+        if (result.success) {
+          const user = result.user;
+          const profile = result.profile || {};
+          
+          currentUserData = user;
+          currentProfileData = profile;
+
+          document.getElementById('userName').innerText = user.fullName;
+          document.getElementById('userEmailHeader').innerText = user.email;
+          document.getElementById('userEmail').innerText = user.email;
+          document.getElementById('userPhone').innerText = user.phone || 'غير مسجل';
+          
+          if (profile.profileImage) {
+            const imgSrc = profile.profileImage.startsWith('/') ? profile.profileImage : '/' + profile.profileImage;
+            document.getElementById('avatarContainer').innerHTML = `<img src="${imgSrc}" class="avatar-img" alt="بروفايل">`;
+          } else {
+            document.getElementById('userInitial').innerText = user.fullName.charAt(0);
+          }
+          
+          if (user.createdAt) {
+            document.getElementById('userJoined').innerText = new Date(user.createdAt).toLocaleDateString('ar-EG', { year: 'numeric', month: 'long' });
+          } else {
+            document.getElementById('userJoined').innerText = 'يناير 2024';
+          }
+
+          // Handle City Visibility - Only show if exists
+          if (profile.city && profile.city.trim() !== '') {
+            document.getElementById('cityCard').style.display = 'flex';
+            document.getElementById('userCity').innerText = profile.city;
+          }
+
+          // Handle Address Visibility - Only show if exists
+          if (profile.address && profile.address.trim() !== '') {
+            document.getElementById('addressCard').style.display = 'flex';
+            document.getElementById('userAddress').innerText = profile.address;
+          }
+
+          setTimeout(() => {
+            document.getElementById('loadingOverlay').style.opacity = '0';
+            setTimeout(() => document.getElementById('loadingOverlay').style.display = 'none', 500);
+          }, 300);
+        } else {
+          handleLogout();
+        }
+      } catch (err) {
+        console.error('Failed to load profile');
+        setTimeout(() => window.location.href = 'login.html', 2000);
+      }
+    }
+
+    async function handleAvatarUpload(input) {
+      if (!input.files || !input.files[0]) return;
+      
+      const formData = new FormData();
+      formData.append('media', input.files[0]);
+
+      document.getElementById('loadingOverlay').style.display = 'flex';
+      document.getElementById('loadingOverlay').style.opacity = '1';
+
+      try {
+        const res = await fetch('/api/customers/profile-image', {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${token}` },
+          body: formData
+        });
+        const result = await res.json();
+        if (result.success) {
+          window.location.reload();
+        } else {
+          alert('فشل رفع الصورة: ' + result.message);
+          document.getElementById('loadingOverlay').style.display = 'none';
+        }
+      } catch (err) {
+        console.error('Upload Error:', err);
+        alert('حدث خطأ أثناء الرفع');
+        document.getElementById('loadingOverlay').style.display = 'none';
+      }
+    }
+
+    function handleLogout() {
+      localStorage.removeItem('token');
+      localStorage.removeItem('userRole');
+      window.location.href = 'index.html';
+    }
+
+    // Modal Handlers
+    function openEditModal() {
+      if (!currentUserData) return;
+      document.getElementById('editName').value = currentUserData.fullName;
+      document.getElementById('editEmail').value = currentUserData.email;
+      document.getElementById('editPassword').value = '';
+      document.getElementById('editPhone').value = currentUserData.phone || '';
+      document.getElementById('editCity').value = currentProfileData?.city || '';
+      document.getElementById('editAddress').value = currentProfileData?.address || '';
+      
+      document.getElementById('editModal').style.display = 'flex';
+    }
+
+    function closeEditModal() {
+      document.getElementById('editModal').style.display = 'none';
+    }
+
+    document.getElementById('editProfileForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const updatedData = {
+        fullName: document.getElementById('editName').value,
+        email: document.getElementById('editEmail').value,
+        password: document.getElementById('editPassword').value,
+        phone: document.getElementById('editPhone').value,
+        city: document.getElementById('editCity').value,
+        address: document.getElementById('editAddress').value
+      };
+
+      try {
+        const res = await fetch('/api/customers/profile', {
+          method: 'PUT',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(updatedData)
+        });
+        
+        const result = await res.json();
+        if (result.success) {
+          alert('تم تحديث البيانات بنجاح');
+          location.reload();
+        } else {
+          alert('فشل التحديث: ' + result.message);
+        }
+      } catch (err) {
+        console.error('Update Error:', err);
+        alert('حدث خطأ أثناء تحديث البيانات');
+      }
+    });
+
+    // Close modal on click outside
+    window.onclick = function(event) {
+      const modal = document.getElementById('editModal');
+      if (event.target == modal) {
+        closeEditModal();
+      }
+    }
+
+    loadUserData();
+  </script>
+</body>
+</html>

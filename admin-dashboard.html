@@ -29,6 +29,8 @@
         }
         .admin-sidebar {
             width: var(--sidebar-w);
+            min-width: var(--sidebar-w);
+            max-width: var(--sidebar-w);
             background: #0b2239;
             height: 100vh;
             position: fixed;
@@ -100,25 +102,54 @@
             background: white;
             padding: 25px;
             border-radius: 20px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
-            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             text-align: center;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid #f1f5f9;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
+            border-color: var(--primary-light);
         }
         .stat-card i {
             font-size: 2rem;
             color: var(--primary);
             margin-bottom: 15px;
+            background: #f0f7ff;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 15px;
+            transition: 0.3s;
+        }
+        .stat-card:hover i {
+            background: var(--primary);
+            color: white;
+            transform: rotate(-10deg);
         }
         .stat-card .value {
-            display: block;
-            font-size: 2rem;
+            font-size: 2.2rem;
             font-weight: 800;
-            color: #0b2239;
+            color: #0f172a;
+            margin-bottom: 5px;
+            display: block;
         }
         .stat-card .label {
             color: #64748b;
+            font-size: 0.95rem;
             font-weight: 600;
         }
+
 
         /* Content Sections */
         .dashboard-section {
@@ -190,7 +221,135 @@
         .btn-primary { background: var(--primary); color: white; }
         .btn-success { background: var(--success); color: white; }
         .btn-danger { background: var(--danger); color: white; }
-        
+
+        .packages-layout {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
+        }
+        .plan-form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        .plan-textarea {
+            width: 100%;
+            min-height: 90px;
+            resize: vertical;
+            border: 1px solid #dbe4ef;
+            border-radius: 10px;
+            padding: 10px 12px;
+            font-family: inherit;
+        }
+        .admin-input,
+        .admin-select {
+            width: 100%;
+            border: 1px solid #dbe4ef;
+            border-radius: 10px;
+            padding: 10px 12px;
+            font-family: inherit;
+            background: #fff;
+        }
+        .admin-check-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+            gap: 10px;
+            margin: 12px 0 16px;
+        }
+        .admin-check {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            color: #334155;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 10px 12px;
+        }
+        .action-btn {
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-success { background: var(--success); color: white; }
+        .btn-danger { background: var(--danger); color: white; }
+        .btn-suspended { background: #64748b; color: white; }
+        .action-btn:hover { opacity: 0.9; transform: scale(1.05); }
+
+        .badge {
+            padding: 5px 12px;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+        .badge-active { background: #dcfce7; color: #166534; }
+        .badge-suspended { background: #f1f5f9; color: #475569; }
+
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .admin-table th {
+            text-align: right;
+            padding: 15px 24px;
+            background: #f8fafc;
+            color: #64748b;
+            font-size: 0.85rem;
+            font-weight: 700;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .admin-table td {
+            padding: 15px 24px;
+            border-bottom: 1px solid #f1f5f9;
+            color: #1e293b;
+            font-size: 0.95rem;
+        }
+
+        /* Image Modal */
+        .admin-modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(8px);
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .admin-modal.active { display: flex; }
+        .modal-content-img {
+            max-width: 90%;
+            max-height: 85vh;
+            border-radius: 15px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            border: 4px solid white;
+        }
+        .modal-close {
+            position: absolute;
+            top: 25px;
+            right: 35px;
+            color: white;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .modal-close:hover { color: var(--primary); transform: scale(1.1); }
+
         @media (max-width: 1024px) {
             .admin-sidebar { display: none; }
             .admin-main { margin-right: 0; padding: 20px; width: 100%; }
@@ -206,6 +365,7 @@
                 <li><a data-section="overview" class="active"><i class="fas fa-chart-line"></i> نظرة عامة</a></li>
                 <li><a data-section="join-requests"><i class="fas fa-user-plus"></i> طلبات الانضمام</a></li>
                 <li><a data-section="customers"><i class="fas fa-users"></i> العملاء</a></li>
+                <li><a data-section="technicians"><i class="fas fa-tools"></i> الفنيين</a></li>
                 <li><a data-section="packages"><i class="fas fa-box"></i> الباقات</a></li>
                 <li style="margin-top: 50px;"><a onclick="logout()" style="color: var(--danger);"><i class="fas fa-sign-out-alt"></i> خروج</a></li>
             </ul>
@@ -220,19 +380,71 @@
 
         <!-- 1. Overview Section -->
         <div id="section-overview" class="dashboard-section active">
-            <div class="stats-grid" id="statsContainer">
+            <div class="stats-grid" id="statsContainer" style="margin-bottom: 30px;">
                 <div class="stat-card">
                     <i class="fas fa-spinner fa-spin"></i>
                     <div class="label">جاري التحميل...</div>
                 </div>
             </div>
-            <div class="content-card">
-                <div class="card-header">ملخص النشاط</div>
-                <div style="padding: 40px; text-align: center; color: #64748b;">
-                    اختر قسماً من القائمة الجانبية لإدارة المنصة.
+
+            <div class="content-card" style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color: white; border: none; position: relative; overflow: hidden;">
+                <div style="position: absolute; top: -50px; right: -50px; width: 200px; height: 200px; background: rgba(59, 130, 246, 0.1); border-radius: 50%; filter: blur(50px);"></div>
+                <div style="position: relative; z-index: 1; padding: 40px;">
+                    <h2 style="font-size: 1.8rem; margin-bottom: 15px;">مرحباً بك في لوحة الإدارة</h2>
+                    <p style="color: #cbd5e1; font-size: 1.1rem; max-width: 600px; line-height: 1.6;">
+                        من هنا يمكنك متابعة أداء المنصة، مراجعة طلبات الفنيين الجدد، وإدارة قاعدة بيانات العملاء والباقات. استخدم القائمة الجانبية أو البطاقات في الأعلى للوصول السريع.
+                    </p>
+                    <div style="display: flex; gap: 15px; margin-top: 30px; flex-wrap: wrap;">
+                        <button class="action-btn btn-primary" onclick="document.querySelector('[data-section=\'join-requests\']').click()" style="padding: 12px 25px; font-size: 1rem; border-radius: 12px;">
+                            <i class="fas fa-plus-circle"></i> مراجعة الطلبات المعلقة
+                        </button>
+                        <button class="action-btn btn-success" onclick="document.querySelector('[data-section=\'packages\']').click()" style="padding: 12px 25px; font-size: 1rem; border-radius: 12px;">
+                            <i class="fas fa-cog"></i> إعدادات الباقات
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; margin-top: 30px;">
+                <div class="content-card" style="margin-top: 0;">
+                    <div class="card-header" style="border-bottom: 1px solid #f1f5f9;"><i class="fas fa-info-circle" style="color: var(--primary);"></i> إرشادات سريعة</div>
+                    <div style="padding: 20px;">
+                        <ul style="list-style: none; padding: 0;">
+                            <li style="margin-bottom: 15px; display: flex; gap: 10px; align-items: start;">
+                                <i class="fas fa-check-circle" style="color: #10b981; margin-top: 5px;"></i>
+                                <span>تأكد من مراجعة صور الإيصالات قبل قبول أي طلب انضمام أو تجديد.</span>
+                            </li>
+                            <li style="margin-bottom: 15px; display: flex; gap: 10px; align-items: start;">
+                                <i class="fas fa-check-circle" style="color: #10b981; margin-top: 5px;"></i>
+                                <span>يمكنك إيقاف أو تفعيل حسابات الفنيين والعملاء من أقسامهم المخصصة.</span>
+                            </li>
+                            <li style="display: flex; gap: 10px; align-items: start;">
+                                <i class="fas fa-check-circle" style="color: #10b981; margin-top: 5px;"></i>
+                                <span>تعديل الباقات يظهر فوراً للمستخدمين في الموقع الرئيسي.</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="content-card" style="margin-top: 0;">
+                    <div class="card-header" style="border-bottom: 1px solid #f1f5f9;"><i class="fas fa-shield-alt" style="color: var(--primary);"></i> حالة النظام</div>
+                    <div style="padding: 20px; display: flex; flex-direction: column; gap: 20px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="color: #64748b;">اتصال قاعدة البيانات</span>
+                            <span class="badge badge-active">متصل</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="color: #64748b;">نظام الإشعارات</span>
+                            <span class="badge badge-active">نشط</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="color: #64748b;">تحديث التلقائي</span>
+                            <span class="badge badge-active">مفعل</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
+
 
         <!-- 2. Join Requests Section -->
         <div id="section-join-requests" class="dashboard-section">
@@ -245,6 +457,10 @@
                                 <th>الاسم</th>
                                 <th>التخصص</th>
                                 <th>المدينة</th>
+                                <th>الباقة</th>
+                                <th>السعر</th>
+                                <th>نوع الطلب</th>
+                                <th>التحويل</th>
                                 <th>التاريخ</th>
                                 <th>الإجراءات</th>
                             </tr>
@@ -258,7 +474,7 @@
         <!-- 3. Customers Section -->
         <div id="section-customers" class="dashboard-section">
             <div class="content-card">
-                <div class="card-header">إدارة العملاء والفنيين</div>
+                <div class="card-header">إدارة العملاء</div>
                 <div style="overflow-x: auto;">
                     <table class="admin-table">
                         <thead>
@@ -266,12 +482,32 @@
                                 <th>الاسم</th>
                                 <th>البريد الإلكتروني</th>
                                 <th>الهاتف</th>
-                                <th>الدور</th>
                                 <th>الحالة</th>
                                 <th>الإجراءات</th>
                             </tr>
                         </thead>
-                        <tbody id="customersBody"></tbody>
+                        <tbody id="customersTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3b. Technicians Section -->
+        <div id="section-technicians" class="dashboard-section">
+            <div class="content-card">
+                <div class="card-header">إدارة الفنيين</div>
+                <div style="overflow-x: auto;">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>الاسم</th>
+                                <th>البريد الإلكتروني</th>
+                                <th>الهاتف</th>
+                                <th>الحالة</th>
+                                <th>الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="techniciansTableBody"></tbody>
                     </table>
                 </div>
             </div>
@@ -279,240 +515,220 @@
 
         <!-- 4. Packages Section -->
         <div id="section-packages" class="dashboard-section">
-            <div class="content-card">
-                <div class="card-header">
-                    <span>باقات الاشتراك</span>
-                    <button class="action-btn btn-primary" onclick="alert('سوف يتم إضافة نافذة الإضافة قريباً')">إضافة باقة +</button>
+            <div class="packages-layout">
+                <div class="content-card">
+                    <div class="card-header">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <i class="fas fa-edit" style="color: var(--primary);"></i>
+                            <span>إضافة / تعديل باقة</span>
+                        </div>
+                        <div class="admin-row-actions">
+                            <button class="action-btn btn-primary" id="savePlanBtn"><i class="fas fa-save"></i> حفظ الباقة</button>
+                            <button class="action-btn" id="resetPlanBtn"><i class="fas fa-eraser"></i> تفريغ</button>
+                        </div>
+                    </div>
+                    <div style="padding: 24px;">
+                        <input type="hidden" id="planEditId">
+
+                        <!-- Basic Info Group -->
+                        <div style="margin-bottom: 25px;">
+                            <h4 style="margin: 0 0 15px; font-size: 0.95rem; color: #64748b; font-weight: 700; display: flex; align-items: center; gap: 8px;">
+                                <i class="fas fa-info-circle"></i> البيانات الأساسية
+                            </h4>
+                            <div class="plan-form-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                                <div class="admin-input-group">
+                                    <label>اسم الباقة</label>
+                                    <input class="admin-input" id="planNameInput" placeholder="مثل: الباقة الاحترافية">
+                                </div>
+                                <div class="admin-input-group">
+                                    <label>السعر (ج.م)</label>
+                                    <input class="admin-input" id="planPriceInput" type="number" min="0" step="0.01" placeholder="0.00">
+                                </div>
+                                <div class="admin-input-group">
+                                    <label>دورة الفوترة</label>
+                                    <select class="admin-select" id="planPeriodInput">
+                                        <option value="monthly">شهري</option>
+                                        <option value="quarterly">ربع سنوي</option>
+                                        <option value="yearly">سنوي</option>
+                                        <option value="one_time">مرة واحدة</option>
+                                    </select>
+                                </div>
+                                <div class="admin-input-group">
+                                    <label>المظهر (Theme)</label>
+                                    <select class="admin-select" id="planThemeInput">
+                                        <option value="starter">مظهر البداية (أزرق هادئ)</option>
+                                        <option value="professional">مظهر احترافي (أزرق غامق)</option>
+                                        <option value="premium">مظهر مميزة (بنفسجي)</option>
+                                        <option value="custom">مظهر مخصص (تيل)</option>
+                                    </select>
+                                </div>
+                                <div class="admin-input-group">
+                                    <label>أولوية الظهور</label>
+                                    <input class="admin-input" id="planPriorityInput" type="number" min="0" step="1" placeholder="مثال: 1">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Advanced Pricing Options -->
+                        <div style="margin-bottom: 25px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 15px; padding: 20px;">
+                            <h4 style="margin: 0 0 15px; font-size: 0.95rem; color: #1e293b; font-weight: 800; display: flex; align-items: center; gap: 8px;">
+                                <i class="fas fa-tags" style="color: #2563eb;"></i> خيارات الاشتراك المتعددة
+                            </h4>
+                            <p style="font-size: 0.8rem; color: #64748b; margin-bottom: 15px;">أضف خيارات اشتراك مختلفة لهذه الباقة (مثلاً: 5 أيام بسعر معين، شهر بسعر آخر، سنة، إلخ).</p>
+                            
+                            <div style="overflow-x: auto;">
+                                <table class="admin-table" style="background: white; border-radius: 10px; border: 1px solid #e2e8f0; margin-bottom: 10px;">
+                                    <thead style="background: #f1f5f9;">
+                                        <tr>
+                                            <th style="padding: 10px;">المدة</th>
+                                            <th style="padding: 10px;">الوحدة</th>
+                                            <th style="padding: 10px;">السعر (ج.م)</th>
+                                            <th style="padding: 10px;">التسمية (مثلاً: 5 أيام)</th>
+                                            <th style="padding: 10px; width: 50px;">حذف</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="pricingOptionsList">
+                                        <!-- Rows added dynamically -->
+                                    </tbody>
+                                </table>
+                            </div>
+                            <button class="action-btn" type="button" onclick="addPricingOptionRow()" style="background: #111827; color: white; border-radius: 8px; width: 100%; justify-content: center; padding: 10px;">
+                                <i class="fas fa-plus"></i> إضافة خيار اشتراك جديد
+                            </button>
+                        </div>
+
+                        <!-- Content & Limits Group -->
+                        <div style="margin-bottom: 25px;">
+                            <h4 style="margin: 0 0 15px; font-size: 0.95rem; color: #64748b; font-weight: 700; display: flex; align-items: center; gap: 8px;">
+                                <i class="fas fa-list-ul"></i> المحتوى والمميزات والقيود
+                            </h4>
+                            
+                            <div class="plan-form-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 15px;">
+                                <div class="admin-input-group">
+                                    <label>أقصى عدد صور</label>
+                                    <input class="admin-input" id="planMaxImagesInput" type="number" min="0" placeholder="0 = غير محدود">
+                                </div>
+                                <div class="admin-input-group">
+                                    <label>أقصى عدد فيديوهات</label>
+                                    <input class="admin-input" id="planMaxVideosInput" type="number" min="0" placeholder="0 = غير محدود">
+                                </div>
+                            </div>
+
+                            <div class="plan-form-grid" style="grid-template-columns: 1fr 1fr; gap: 15px;">
+                                <div class="admin-input-group">
+                                    <label>وصف مختصر</label>
+                                    <input class="admin-input" id="planDescInput" placeholder="وصف يظهر تحت اسم الباقة...">
+                                </div>
+                                <div class="admin-input-group">
+                                    <label>قائمة المميزات (ميزة في كل سطر)</label>
+                                    <textarea class="plan-textarea" id="planFeaturesInput" placeholder="مثال:&#10;ظهور متصدر&#10;إضافة 10 صور"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Style & Appearance Group -->
+                        <div style="margin-bottom: 25px;">
+                            <h4 style="margin: 0 0 15px; font-size: 0.95rem; color: #64748b; font-weight: 700; display: flex; align-items: center; gap: 8px;">
+                                <i class="fas fa-palette"></i> المظهر والألوان المتقدمة
+                            </h4>
+                            <div class="plan-form-grid" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px;">
+                                <div class="admin-input-group">
+                                    <label>اللون الأساسي</label>
+                                    <div style="display: flex; gap: 5px;">
+                                        <input type="color" id="planAccentColorPicker" style="height: 40px; width: 50px; border: 1px solid #ddd; border-radius: 8px; cursor: pointer;">
+                                        <input class="admin-input" id="planAccentInput" placeholder="#2563eb">
+                                    </div>
+                                </div>
+                                <div class="admin-input-group">
+                                    <label style="display: flex; align-items: center; gap: 5px;">
+                                        <input type="checkbox" id="planIsGradientInput"> تفعيل التدرج اللوني
+                                    </label>
+                                    <div style="display: flex; gap: 5px; margin-top: 5px;">
+                                        <input type="color" id="planGradFromPicker" style="height: 30px; width: 40px; border: 1px solid #ddd; border-radius: 5px;">
+                                        <input class="admin-input" id="planGradFromInput" placeholder="#eff6ff" style="font-size: 0.8rem; padding: 5px;">
+                                    </div>
+                                    <div style="display: flex; gap: 5px; margin-top: 5px;">
+                                        <input type="color" id="planGradToPicker" style="height: 30px; width: 40px; border: 1px solid #ddd; border-radius: 5px;">
+                                        <input class="admin-input" id="planGradToInput" placeholder="#dbeafe" style="font-size: 0.8rem; padding: 5px;">
+                                    </div>
+                                </div>
+                                <div class="admin-input-group">
+                                    <label>النص المميز (Badge)</label>
+                                    <input class="admin-input" id="planBadgeInput" placeholder="مثل: الأكثر طلباً">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Settings (Checkboxes) -->
+                        <div class="admin-check-grid" style="grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));">
+                            <label class="admin-check"><input type="checkbox" id="planPlatformVis"> ظهور في المنصة</label>
+                            <label class="admin-check"><input type="checkbox" id="planContactInfo"> إضافة بيانات التواصل</label>
+                            <label class="admin-check"><input type="checkbox" id="planWorkImages"> إضافة صور الأعمال</label>
+                            <label class="admin-check"><input type="checkbox" id="planWorkVideos"> إضافة فيديوهات الأعمال</label>
+                            <label class="admin-check"><input type="checkbox" id="planTopListing"> ظهور أعلى في القائمة</label>
+                            <label class="admin-check"><input type="checkbox" id="planTrustedBadge"> علامة فني موثوق</label>
+                            <label class="admin-check"><input type="checkbox" id="planTopProfile"> ظهور في أعلى الصفحة</label>
+                            <label class="admin-check" style="background: #fffbeb;"><input type="checkbox" id="planPopularInput"> باقة مميزة (Popular)</label>
+                            <label class="admin-check" style="background: #f0fdf4;"><input type="checkbox" id="planActiveInput" checked> الباقة مفعلة</label>
+                        </div>
+
+                        <div id="planStatusBox" class="status-box"></div>
+                    </div>
                 </div>
-                <div style="overflow-x: auto;">
-                    <table class="admin-table">
-                        <thead>
-                            <tr>
-                                <th>اسم الباقة</th>
-                                <th>السعر</th>
-                                <th>المدة</th>
-                                <th>الحالة</th>
-                                <th>الإجراءات</th>
-                            </tr>
-                        </thead>
-                        <tbody id="packagesBody"></tbody>
-                    </table>
+
+                <div class="content-card">
+                    <div class="card-header">
+                        <span>باقات الاشتراك الحالية</span>
+                    </div>
+                    <div style="overflow-x: auto;">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>اسم الباقة</th>
+                                    <th>السعر</th>
+                                    <th>المدة</th>
+                                    <th>الأولوية</th>
+                                    <th>الحالة</th>
+                                    <th>الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="packagesBody"></tbody>
+                        </table>
+                    </div>
                 </div>
+
+
             </div>
         </div>
     </main>
 
-    <script>
-        const API_BASE = 'http://localhost:5000/api';
-        const token = localStorage.getItem('token');
+    <!-- Image Preview Modal -->
+    <div id="imageModal" class="admin-modal" onclick="closeImageModal()">
+        <span class="modal-close" onclick="closeImageModal()">&times;</span>
+        <img id="modalImg" class="modal-content-img" src="" alt="Screenshot Preview">
+    </div>
 
-        if (!token) window.location.href = 'login.html';
+    <!-- Technician Details Modal -->
+    <div id="techDetailsModal" class="admin-modal">
+        <div class="modal-card" style="background: white; border-radius: 20px; width: 90%; max-width: 700px; max-height: 90vh; overflow-y: auto; padding: 30px; position: relative;">
+            <span class="modal-close" style="color: #64748b; top: 15px; right: 20px; font-size: 30px;" onclick="closeTechModal()">&times;</span>
+            <div style="border-bottom: 2px solid #f1f5f9; padding-bottom: 15px; margin-bottom: 20px;">
+                <h2 style="margin: 0; color: #0f172a; font-size: 1.5rem; display: flex; align-items: center; gap: 10px;">
+                    <i class="fas fa-id-card" style="color: var(--primary);"></i> ملف الفني
+                </h2>
+            </div>
+            
+            <div id="techDetailsContent" style="display: flex; flex-direction: column; gap: 15px;">
+                <!-- Content will be injected via JS -->
+            </div>
+            
+            <div style="margin-top: 25px; text-align: left; border-top: 2px solid #f1f5f9; padding-top: 20px;">
+                <button class="action-btn btn-primary" onclick="closeTechModal()" style="padding: 10px 25px; font-size: 1.1rem; border-radius: 10px;">إغلاق</button>
+            </div>
+        </div>
+    </div>
 
-        // Navigation Logic
-        document.querySelectorAll('#sidebarNav a[data-section]').forEach(link => {
-            link.addEventListener('click', (e) => {
-                const section = link.getAttribute('data-section');
-                
-                // Update UI
-                document.querySelectorAll('.dashboard-section').forEach(s => s.classList.remove('active'));
-                document.getElementById(`section-${section}`).classList.add('active');
-                
-                document.querySelectorAll('#sidebarNav a').forEach(a => a.classList.remove('active'));
-                link.classList.add('active');
-                
-                document.getElementById('sectionTitle').innerText = link.innerText;
-
-                // Load Data
-                if(section === 'overview') loadStats();
-                if(section === 'join-requests') loadRequests();
-                if(section === 'customers') loadCustomers();
-                if(section === 'packages') loadPackages();
-            });
-        });
-
-        async function init() {
-            try {
-                const res = await fetch(`${API_BASE}/auth/me`, {
-                    headers: { 'Authorization': `Bearer ${token}` }
-                });
-                const data = await res.json();
-                if (!res.ok || data.user.role !== 'admin') {
-                    window.location.href = 'index.html';
-                    return;
-                }
-                document.getElementById('adminName').innerText = `مرحباً، ${data.user.fullName}`;
-                loadStats();
-            } catch (err) { window.location.href = 'login.html'; }
-        }
-
-        async function loadStats() {
-            try {
-                const res = await fetch(`${API_BASE}/admin/dashboard`, { headers: { 'Authorization': `Bearer ${token}` } });
-                const result = await res.json();
-                if(result.success) {
-                    const s = result.data;
-                    document.getElementById('statsContainer').innerHTML = `
-                        <div class="stat-card"><i class="fas fa-users"></i><span class="value">${s.totalCustomers}</span><span class="label">العملاء</span></div>
-                        <div class="stat-card"><i class="fas fa-hard-hat"></i><span class="value">${s.totalTechnicians}</span><span class="label">الفنيين</span></div>
-                        <div class="stat-card"><i class="fas fa-calendar-alt"></i><span class="value">${s.totalBookings}</span><span class="label">الحجوزات</span></div>
-                        <div class="stat-card"><i class="fas fa-clock"></i><span class="value">${s.pendingJoinRequests}</span><span class="label">طلبات معلقة</span></div>
-                    `;
-                }
-            } catch (error) {
-                console.error('Error loading stats:', error);
-            }
-        }
-
-        async function loadRequests() {
-            try {
-                const res = await fetch(`${API_BASE}/join/admin`, { headers: { 'Authorization': `Bearer ${token}` } });
-                const result = await res.json();
-                const body = document.getElementById('joinRequestsBody');
-                if (result.success && result.data && result.data.length > 0) {
-                    const pendingRequests = result.data.filter(r => r.status === 'pending');
-                    if (pendingRequests.length > 0) {
-                        body.innerHTML = pendingRequests.map(req => `
-                            <tr>
-                                <td>${req.fullName}</td>
-                                <td>${req.specialty}</td>
-                                <td>${req.city}</td>
-                                <td>${new Date(req.createdAt).toLocaleDateString('ar-EG')}</td>
-                                <td>
-                                    <button class="action-btn btn-success" onclick="approve('${req._id}')">قبول</button>
-                                    <button class="action-btn btn-danger" onclick="reject('${req._id}')">رفض</button>
-                                </td>
-                            </tr>
-                        `).join('');
-                    } else {
-                        body.innerHTML = '<tr><td colspan="5" style="text-align:center">لا توجد طلبات معلقة</td></tr>';
-                    }
-                } else {
-                    body.innerHTML = '<tr><td colspan="5" style="text-align:center">لا توجد طلبات معلقة</td></tr>';
-                }
-            } catch (error) {
-                console.error('Error loading requests:', error);
-            }
-        }
-
-        async function loadCustomers() {
-            try {
-                // Fetch both customers and technicians
-                const [custRes, techRes] = await Promise.all([
-                    fetch(`${API_BASE}/admin/customers`, { headers: { 'Authorization': `Bearer ${token}` } }),
-                    fetch(`${API_BASE}/admin/technicians`, { headers: { 'Authorization': `Bearer ${token}` } })
-                ]);
-                
-                const custResult = await custRes.json();
-                const techResult = await techRes.json();
-                
-                let allUsers = [];
-                if (custResult.success) allUsers = [...allUsers, ...custResult.data];
-                if (techResult.success) allUsers = [...allUsers, ...techResult.data];
-
-                const body = document.getElementById('customersBody');
-                if (allUsers.length > 0) {
-                    body.innerHTML = allUsers.map(c => `
-                        <tr>
-                            <td>${c.fullName}</td>
-                            <td>${c.email}</td>
-                            <td>${c.phone}</td>
-                            <td>${c.role === 'customer' ? 'عميل' : 'فني'}</td>
-                            <td><span class="badge badge-${c.status === 'active' ? 'active' : 'suspended'}">${c.status === 'active' ? 'نشط' : 'موقف'}</span></td>
-                            <td>
-                                ${c.status === 'active' 
-                                    ? `<button class="action-btn btn-danger" onclick="toggleUser('${c._id}', 'suspend')">إيقاف</button>` 
-                                    : `<button class="action-btn btn-success" onclick="toggleUser('${c._id}', 'activate')">تفعيل</button>`}
-                            </td>
-                        </tr>
-                    `).join('');
-                } else {
-                    body.innerHTML = '<tr><td colspan="6" style="text-align:center">لا يوجد مستخدمين</td></tr>';
-                }
-            } catch (error) {
-                console.error('Error loading users:', error);
-            }
-        }
-
-        async function loadPackages() {
-            try {
-                const res = await fetch(`${API_BASE}/packages`);
-                const result = await res.json();
-                const body = document.getElementById('packagesBody');
-                if (result.success && result.data && result.data.length > 0) {
-                    body.innerHTML = result.data.map(p => `
-                        <tr>
-                            <td>${p.name}</td>
-                            <td>${p.price} ج.م</td>
-                            <td>${p.period === 'monthly' ? 'شهري' : (p.period === 'yearly' ? 'سنوي' : p.period)}</td>
-                            <td><span class="badge badge-active">مفعلة</span></td>
-                            <td>
-                                <button class="action-btn btn-primary" onclick="alert('سوف يتم إضافة التعديل قريباً')">تعديل</button>
-                            </td>
-                        </tr>
-                    `).join('');
-                } else {
-                    body.innerHTML = '<tr><td colspan="5" style="text-align:center">لا توجد باقات حالياً</td></tr>';
-                }
-            } catch (error) {
-                console.error('Error loading packages:', error);
-            }
-        }
-
-        async function toggleUser(id, action) {
-            try {
-                const res = await fetch(`${API_BASE}/admin/users/${id}/${action}`, {
-                    method: 'PUT',
-                    headers: { 'Authorization': `Bearer ${token}` }
-                });
-                if (res.ok) {
-                    loadCustomers();
-                    loadStats();
-                }
-            } catch (error) {
-                console.error('Error toggling user status:', error);
-            }
-        }
-
-        async function approve(id) {
-            if (!confirm('هل أنت متأكد من قبول هذا الفني؟')) return;
-            try {
-                const res = await fetch(`${API_BASE}/join/admin/${id}/approve`, {
-                    method: 'PUT',
-                    headers: { 'Authorization': `Bearer ${token}` }
-                });
-                const result = await res.json();
-                if(result.success) {
-                    alert('تم القبول بنجاح! كلمة المرور المبدئية للفني هي: ' + result.data.tempPassword + '\nيجب عليه تغييرها عند أول تسجيل دخول.');
-                    loadRequests();
-                    loadStats();
-                } else {
-                    alert('حدث خطأ: ' + result.message);
-                }
-            } catch (error) {
-                console.error('Error approving request:', error);
-            }
-        }
-
-        async function reject(id) {
-            if (!confirm('هل أنت متأكد من رفض هذا الطلب؟')) return;
-            try {
-                const res = await fetch(`${API_BASE}/join/admin/${id}/reject`, {
-                    method: 'PUT',
-                    headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ adminNotes: 'Refused by admin' })
-                });
-                if(res.ok) {
-                    loadRequests();
-                    loadStats();
-                }
-            } catch (error) {
-                console.error('Error rejecting request:', error);
-            }
-        }
-
-        function logout() { localStorage.removeItem('token'); window.location.href = 'login.html'; }
-
-        init();
-    </script>
+    <script src="js/admin-dashboard.js"></script>
 </body>
 </html>
+
+

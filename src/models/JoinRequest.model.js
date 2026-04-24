@@ -6,6 +6,7 @@ const joinRequestSchema = new mongoose.Schema(
     email: { type: String, required: true },
     phone: { type: String, required: true },
     city: { type: String, required: true },
+    address: { type: String },
     specialty: { type: String, required: true },
     yearsOfExperience: { type: Number, required: true },
     bio: { type: String, required: true },
@@ -21,8 +22,20 @@ const joinRequestSchema = new mongoose.Schema(
       enum: ['pending', 'approved', 'rejected'], 
       default: 'pending' 
     },
+    package: { 
+      type: String, 
+      enum: ['starter', 'professional', 'premium'], 
+      required: true 
+    },
+    type: {
+      type: String,
+      enum: ['join', 'renew'],
+      default: 'join'
+    },
+    price: { type: Number, default: 0 },
+    paymentScreenshot: { type: String },
+    password: { type: String, required: true },
     adminNotes: { type: String },
-    temporaryPassword: { type: String },
     approvedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     approvedAt: { type: Date },
     rejectedAt: { type: Date },

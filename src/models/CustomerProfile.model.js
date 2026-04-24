@@ -8,8 +8,9 @@ const customerProfileSchema = new mongoose.Schema(
       required: true, 
       unique: true 
     },
-    address: { type: String, required: true },
-    city: { type: String, required: true },
+    address: { type: String },
+    city: { type: String },
+    profileImage: { type: String },
     notes: { type: String },
   },
   { timestamps: true }

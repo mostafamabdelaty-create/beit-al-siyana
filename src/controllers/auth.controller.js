@@ -118,5 +118,21 @@ exports.changePassword = async (req, res) => {
 
 // @GET /api/auth/me
 exports.getMe = async (req, res) => {
-  res.json({ success: true, user: req.user });
+  try {
+    let profile = null;
+    if (req.user.role === 'customer') {
+      profile = await CustomerProfile.findOne({ userId: req.user._id });
+    } else if (req.user.role === 'technician') {
+      const TechnicianProfile = require('../models/TechnicianProfile.model');
+      profile = await TechnicianProfile.findOne({ userId: req.user._id });
+    }
+    
+    res.json({ 
+      success: true, 
+      user: req.user,
+      profile: profile 
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
 };

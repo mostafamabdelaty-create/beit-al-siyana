@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>إنشاء حساب جديد - بيت الصيانة</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root { --primary: #3b82f6; --dark: #0f172a; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Cairo', sans-serif; background: #f8fafc; color: #1e293b; display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 20px; }
+    .card { background: white; width: 100%; max-width: 450px; padding: 40px; border-radius: 24px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); border: 1px solid #e2e8f0; }
+    .header { text-align: center; margin-bottom: 30px; }
+    .header img { width: 150px; margin-bottom: 20px; }
+    .header h1 { font-size: 1.5rem; font-weight: 800; color: var(--dark); }
+    .form-group { margin-bottom: 20px; }
+    .form-group label { display: block; font-weight: 700; margin-bottom: 8px; font-size: 0.9rem; }
+    .form-group input { width: 100%; padding: 12px 16px; border: 2px solid #e2e8f0; border-radius: 12px; font-family: inherit; font-size: 1rem; transition: all 0.2s; }
+    .form-group input:focus { border-color: var(--primary); outline: none; box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1); }
+    .btn { width: 100%; background: var(--primary); color: white; border: none; padding: 14px; border-radius: 12px; font-weight: 700; font-size: 1.1rem; cursor: pointer; transition: 0.3s; }
+    .btn:hover { background: #2563eb; transform: translateY(-2px); }
+    .footer { text-align: center; margin-top: 25px; font-size: 0.95rem; }
+    .footer a { color: var(--primary); font-weight: 700; text-decoration: none; }
+    #status { display: none; padding: 12px; border-radius: 10px; margin-bottom: 20px; text-align: center; font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="header">
+      <img src="Images/logo.svg" alt="بيت الصيانة">
+      <h1>إنشاء حساب عميل جديد</h1>
+      <p style="color: #64748b; font-size: 0.9rem; margin-top: 5px;">سجل لتتمكن من طلب الخدمات والتقييم</p>
+    </div>
+
+    <div id="status"></div>
+
+    <form id="regForm">
+      <div class="form-group">
+        <label>الاسم بالكامل</label>
+        <input type="text" id="name" required placeholder="مثال: أحمد محمد">
+      </div>
+      <div class="form-group">
+        <label>البريد الإلكتروني</label>
+        <input type="email" id="email" required placeholder="name@example.com">
+      </div>
+      <div class="form-group">
+        <label>رقم الهاتف</label>
+        <input type="tel" id="phone" required placeholder="01xxxxxxxxx">
+      </div>
+      <div class="form-group">
+        <label>كلمة المرور</label>
+        <input type="password" id="pass" required placeholder="••••••••" minlength="6">
+      </div>
+      <button type="submit" class="btn">إنشاء الحساب</button>
+    </form>
+
+    <div class="footer">
+      لديك حساب بالفعل؟ <a href="login.html">تسجيل الدخول</a>
+      <br><br>
+      <a href="index.html" style="color: #94a3b8;"><i class="fas fa-arrow-right"></i> العودة للرئيسية</a>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('regForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const status = document.getElementById('status');
+      const data = {
+        fullName: document.getElementById('name').value,
+        email: document.getElementById('email').value,
+        phone: document.getElementById('phone').value,
+        password: document.getElementById('pass').value
+      };
+
+      status.style.display = 'block';
+      status.style.background = '#eff6ff';
+      status.style.color = '#1d4ed8';
+      status.innerText = 'جاري المعالجة...';
+
+      try {
+        const res = await fetch('/api/auth/register-customer', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+        const result = await res.json();
+
+        if (result.success) {
+          status.style.background = '#d1fae5';
+          status.style.color = '#065f46';
+          status.innerText = 'تم التسجيل بنجاح! جاري الدخول...';
+          localStorage.setItem('token', result.token);
+          localStorage.setItem('userRole', 'customer');
+          setTimeout(() => window.location.href = 'index.html', 1000);
+        } else {
+          status.style.background = '#fee2e2';
+          status.style.color = '#991b1b';
+          status.innerText = result.message || 'خطأ في البيانات';
+        }
+      } catch (err) {
+        status.innerText = 'تعذر الاتصال بالسيرفر';
+      }
+    });
+  </script>
+</body>
+</html>

@@ -98,6 +98,9 @@
 
 /* Individual Tech Card */
 .tech-card {
+  --plan-accent: #3b82f6;
+  --plan-grad-from: #eff6ff;
+  --plan-grad-to: #dbeafe;
   background: var(--white);
   border-radius: 20px;
   overflow: hidden;
@@ -106,6 +109,7 @@
   display: flex;
   flex-direction: column;
   cursor: pointer;
+  border-top: 4px solid var(--plan-accent);
 }
 .tech-card:hover {
   transform: translateY(-5px);
@@ -127,6 +131,23 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 15px;
+  gap: 10px;
+}
+.tech-badges {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.plan-badge {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid;
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  white-space: nowrap;
 }
 .tech-name {
   font-size: 1.4rem;
@@ -144,6 +165,21 @@
   display: inline-flex;
   align-items: center;
   gap: 5px;
+}
+
+.tech-card.plan-theme-professional .verified-badge {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.tech-card.plan-theme-premium .verified-badge {
+  background: #f3e8ff;
+  color: #7c3aed;
+}
+
+.tech-card.plan-theme-custom .verified-badge {
+  background: #ccfbf1;
+  color: #0f766e;
 }
 .tech-meta {
   display: flex;
@@ -366,4 +402,3 @@
   .filter-wrapper { padding: 15px; margin-top: -10px; }
   .filter-group { min-width: 100%; }
 }
-

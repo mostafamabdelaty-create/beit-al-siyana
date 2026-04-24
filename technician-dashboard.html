@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة تحكم الفني - بيت الصيانة</title>
+    
+    <!-- Google Fonts: Cairo -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        :root {
+            --tech-primary: #2563eb;
+            --tech-bg: #f1f5f9;
+            --sidebar-w: 260px;
+        }
+        body.tech-dashboard {
+            background-color: var(--tech-bg);
+            font-family: 'Cairo', sans-serif;
+            display: flex;
+            margin: 0;
+            min-height: 100vh;
+        }
+        .tech-sidebar {
+            width: var(--sidebar-w);
+            background: #0f172a;
+            height: 100vh;
+            position: fixed;
+            right: 0;
+            top: 0;
+            color: white;
+            padding: 30px 0;
+            z-index: 100;
+        }
+        .tech-sidebar .logo {
+            text-align: center;
+            margin-bottom: 40px;
+            display: block;
+        }
+        .tech-sidebar .logo img {
+            width: 130px;
+            filter: brightness(0) invert(1);
+        }
+        .tech-nav {
+            list-style: none;
+            padding: 0;
+        }
+        .tech-nav li a {
+            color: #94a3b8;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            padding: 15px 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border-right: 4px solid transparent;
+            cursor: pointer;
+        }
+        .tech-nav li a i { margin-left: 12px; width: 20px; text-align: center; }
+        .tech-nav li a:hover, .tech-nav li a.active {
+            background: rgba(255,255,255,0.05);
+            color: white;
+            border-color: var(--tech-primary);
+        }
+        .view-profile-btn {
+            display: block;
+            margin: 20px;
+            background: #3b82f6;
+            color: white;
+            text-align: center;
+            padding: 12px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: 0.3s;
+        }
+        .view-profile-btn:hover { background: #2563eb; transform: translateY(-2px); }
+
+        .tech-main {
+            flex: 1;
+            margin-right: var(--sidebar-w);
+            padding: 40px;
+            width: calc(100% - var(--sidebar-w));
+        }
+        .tech-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        .tech-header h1 { font-size: 1.8rem; font-weight: 800; color: #0f172a; margin: 0; }
+
+        .dashboard-section { display: none; animation: fadeIn 0.4s ease; }
+        .dashboard-section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+            border: 1px solid #e2e8f0;
+            margin-bottom: 25px;
+        }
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: #0f172a;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .card-title i { color: var(--tech-primary); }
+
+        /* Forms */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; font-weight: 700; color: #334155; margin-bottom: 8px; }
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 12px;
+            font-family: inherit;
+            font-size: 1rem;
+        }
+        .form-control:focus { border-color: var(--tech-primary); outline: none; box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1); }
+
+        .btn-save {
+            background: var(--tech-primary);
+            color: white;
+            border: none;
+            padding: 12px 40px;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-save:hover { background: #1d4ed8; transform: translateY(-2px); }
+
+        /* Plan Info Box */
+        .plan-info-box {
+            background: linear-gradient(135deg, #eff6ff, #dbeafe);
+            border: 1px solid #bfdbfe;
+            border-radius: 16px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+        .plan-info-text h4 { margin: 0 0 5px; color: #1e40af; font-weight: 800; }
+        .plan-info-text p { margin: 0; color: #3b82f6; font-weight: 600; font-size: 0.9rem; }
+        .plan-badge {
+            background: #2563eb;
+            color: white;
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-weight: 800;
+            font-size: 0.85rem;
+        }
+
+        /* Media Upload Grid */
+        .media-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .media-item {
+            aspect-ratio: 1;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            border: 1px solid #e2e8f0;
+        }
+        .media-item img, .media-item video { width: 100%; height: 100%; object-fit: cover; }
+        .media-item .delete-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: rgba(239, 68, 68, 0.9);
+            color: white;
+            border: none;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+        }
+        .upload-placeholder {
+            aspect-ratio: 1;
+            border: 2px dashed #cbd5e1;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #64748b;
+        }
+        .upload-placeholder:hover { background: #f8fafc; border-color: var(--tech-primary); color: var(--tech-primary); }
+        .upload-placeholder i { font-size: 1.5rem; margin-bottom: 8px; }
+
+        .lock-overlay {
+            background: rgba(255,255,255,0.8);
+            backdrop-filter: blur(2px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 40px;
+            border-radius: 15px;
+            border: 1px dashed #cbd5e1;
+        }
+        .lock-overlay i { font-size: 2.5rem; color: #94a3b8; margin-bottom: 15px; }
+        .lock-overlay h3 { margin: 0 0 10px; color: #475569; }
+        .lock-overlay p { margin: 0; color: #64748b; font-size: 0.9rem; }
+
+        @media (max-width: 1024px) {
+            .tech-sidebar { display: none; }
+            .tech-main { margin-right: 0; padding: 20px; width: 100%; }
+        }
+    </style>
+</head>
+<body class="tech-dashboard">
+
+    <aside class="tech-sidebar">
+        <a href="index.html" class="logo"><img src="Images/logo.svg" alt="بيت الصيانة"></a>
+        <nav>
+            <ul class="tech-nav" id="techSidebarNav">
+                <li><a data-section="profile" class="active"><i class="fas fa-user-circle"></i> الملف الشخصي</a></li>
+                <li><a data-section="gallery"><i class="fas fa-images"></i> معرض الأعمال</a></li>
+                <li><a data-section="subscription"><i class="fas fa-crown"></i> اشتراكي</a></li>
+                <li style="margin-top: 50px;"><a onclick="logout()" style="color: #ef4444;"><i class="fas fa-sign-out-alt"></i> خروج</a></li>
+            </ul>
+            <a id="viewPublicProfile" href="#" class="view-profile-btn" style="margin: 20px; display: block; background: #3b82f6; color: white; text-align: center; padding: 12px; border-radius: 12px; text-decoration: none; font-weight: 700;">
+                <i class="fas fa-eye"></i> معاينة البروفايل
+            </a>
+        </nav>
+    </aside>
+
+    <main class="tech-main">
+        <header class="tech-header">
+            <h1 id="techGreeting">مرحباً، ...</h1>
+            <div id="techPlanBadge" class="plan-badge">باقة ...</div>
+        </header>
+
+        <div id="techStatusMsg" style="display: none; padding: 15px; border-radius: 12px; margin-bottom: 25px; font-weight: 700; text-align: center;"></div>
+
+        <!-- Subscription Alert -->
+        <div id="subExpiryAlert" style="display: none; background: #fff7ed; border: 1.5px solid #ffedd5; color: #9a3412; padding: 15px; border-radius: 15px; margin-bottom: 25px; align-items: center; gap: 15px;">
+            <i class="fas fa-exclamation-triangle" style="font-size: 1.5rem;"></i>
+            <div>
+                <strong style="display: block; margin-bottom: 3px;">تنبيه بانتهاء الاشتراك</strong>
+                <span>باقي <span id="daysLeftAlert">...</span> أيام على انتهاء اشتراكك. يرجى التجديد لضمان استمرار ظهورك للعملاء.</span>
+            </div>
+        </div>
+
+        <!-- 1. Profile Section -->
+        <div id="section-profile" class="dashboard-section active">
+            <div class="card">
+                <div class="card-title"><i class="fas fa-id-card"></i> البيانات الأساسية</div>
+                <form id="techProfileForm">
+                    <!-- Profile Image Upload -->
+                    <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 30px; gap: 15px;">
+                        <div id="profileImagePreview" style="width: 120px; height: 120px; border-radius: 50%; background: #f1f5f9; border: 2px solid #e2e8f0; display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative;">
+                            <img id="techProfileImg" src="Images/default-user.png" style="width: 100%; height: 100%; object-fit: cover; display: none;">
+                            <i id="techProfileIcon" class="fas fa-user" style="font-size: 3rem; color: #94a3b8;"></i>
+                        </div>
+                        <button type="button" class="btn-save" style="font-size: 0.85rem; padding: 6px 15px;" onclick="document.getElementById('profileImageInput').click()">
+                            <i class="fas fa-camera"></i> تغيير الصورة الشخصية
+                        </button>
+                        <input type="file" id="profileImageInput" accept="image/*" style="display:none;" onchange="handleProfileImageUpload(this.files[0])">
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>الاسم بالكامل</label>
+                            <input type="text" id="techFullName" name="fullName" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>رقم الهاتف (الواتساب)</label>
+                            <input type="tel" id="techPhone" name="phone" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>التخصص</label>
+                            <select id="techSpecialty" name="specialty" class="form-control">
+                                <option value="سباكة">سباكة</option>
+                                <option value="كهرباء">كهرباء</option>
+                                <option value="نجارة">نجارة</option>
+                                <option value="دهانات">دهانات</option>
+                                <option value="أرضيات">أرضيات</option>
+                                <option value="تشطيب">تشطيب</option>
+                                <option value="أخرى">أخرى</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>المحافظة</label>
+                            <select id="techCity" name="city" class="form-control" required>
+                                <option value="القاهرة">القاهرة</option>
+                                <option value="الجيزة">الجيزة</option>
+                                <option value="الإسكندرية">الإسكندرية</option>
+                                <option value="الدقهلية">الدقهلية</option>
+                                <option value="البحر الأحمر">البحر الأحمر</option>
+                                <option value="البحيرة">البحيرة</option>
+                                <option value="الفيوم">الفيوم</option>
+                                <option value="الغربية">الغربية</option>
+                                <option value="الإسماعيلية">الإسماعيلية</option>
+                                <option value="المنوفية">المنوفية</option>
+                                <option value="المنيا">المنيا</option>
+                                <option value="القليوبية">القليوبية</option>
+                                <option value="الوادي الجديد">الوادي الجديد</option>
+                                <option value="السويس">السويس</option>
+                                <option value="الشرقية">الشرقية</option>
+                                <option value="دمياط">دمياط</option>
+                                <option value="بورسعيد">بورسعيد</option>
+                                <option value="جنوب سيناء">جنوب سيناء</option>
+                                <option value="كفر الشيخ">كفر الشيخ</option>
+                                <option value="مطروح">مطروح</option>
+                                <option value="قنا">قنا</option>
+                                <option value="شمال سيناء">شمال سيناء</option>
+                                <option value="سوهاج">سوهاج</option>
+                                <option value="بني سويف">بني سويف</option>
+                                <option value="الأقصر">الأقصر</option>
+                                <option value="أسوان">أسوان</option>
+                                <option value="أسيوط">أسيوط</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>العنوان بالتفصيل</label>
+                            <input type="text" id="techAddress" name="address" class="form-control" placeholder="مثال: 12 شارع التحرير، الدقي">
+                        </div>
+                        <div class="form-group">
+                            <label>سنوات الخبرة</label>
+                            <input type="number" id="techExp" name="yearsOfExperience" class="form-control" min="0">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>نبذة عنك (تظهر للعملاء)</label>
+                        <textarea id="techBio" name="bio" class="form-control" rows="4" style="resize: vertical;"></textarea>
+                    </div>
+                    <button type="submit" class="btn-save">حفظ التغييرات</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- 2. Gallery Section -->
+        <div id="section-gallery" class="dashboard-section">
+            <!-- Images Card -->
+            <div class="card">
+                <div class="card-title" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                    <span><i class="fas fa-camera"></i> صور الأعمال السابقة</span>
+                    <button class="btn-save" style="padding: 5px 15px; font-size: 0.9rem;" onclick="document.getElementById('imageUploadInput').click()">
+                        <i class="fas fa-upload"></i> ارفع صور
+                    </button>
+                </div>
+                <div id="imagesContainer">
+                    <div id="imagesGrid" class="media-grid"></div>
+                </div>
+                <div id="imagesLock" class="lock-overlay" style="display:none;">
+                    <i class="fas fa-lock"></i>
+                    <h3>هذه الميزة غير متاحة في باقتك الحالية</h3>
+                    <p>قم بالترقية إلى الباقة الاحترافية أو المميزة لإضافة صور أعمالك.</p>
+                </div>
+            </div>
+
+            <!-- Videos Card -->
+            <div class="card">
+                <div class="card-title" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                    <span><i class="fas fa-video"></i> فيديوهات العمل</span>
+                    <button class="btn-save" style="padding: 5px 15px; font-size: 0.9rem;" onclick="document.getElementById('videoUploadInput').click()">
+                        <i class="fas fa-upload"></i> ارفع فيديو
+                    </button>
+                </div>
+                <div id="videosContainer">
+                    <div id="videosGrid" class="media-grid"></div>
+                </div>
+                <div id="videosLock" class="lock-overlay" style="display:none;">
+                    <i class="fas fa-lock"></i>
+                    <h3>هذه الميزة غير متاحة في باقتك الحالية</h3>
+                    <p>قم بالترقية إلى الباقة الاحترافية لإضافة فيديو واحد، أو الباقة المميزة لمعرض فيديوهات كامل.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. Subscription Section -->
+        <div id="section-subscription" class="dashboard-section">
+            <div class="card">
+                <div class="card-title"><i class="fas fa-crown"></i> حالة الاشتراك</div>
+                <div class="plan-info-box">
+                    <div class="plan-info-text">
+                        <h4 id="subPlanName">باقة ...</h4>
+                        <p>تاريخ التسجيل: <span id="subRegDate">...</span></p>
+                        <p id="subPlanExpiry">ساري حتى: ...</p>
+                    </div>
+                </div>
+                
+                <div id="daysLeftCounter" style="background: #f8fafc; padding: 15px; border-radius: 12px; border: 1px solid #e2e8f0; margin-bottom: 20px; text-align: center;">
+                    <span style="color: #64748b; font-weight: 700;">متبقي على انتهاء الاشتراك: </span>
+                    <strong id="daysLeftText" style="color: #0f172a; font-size: 1.2rem; font-weight: 800;">... يوم</strong>
+                </div>
+
+                <!-- Renew Form -->
+                <div style="border-top: 1px solid #e2e8f0; padding-top: 25px; margin-top: 25px;">
+                    <div class="card-title"><i class="fas fa-sync-alt"></i> تجديد الاشتراك</div>
+                    <form id="renewForm">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>اختر الباقة للتجديد</label>
+                                <select id="renewPackage" class="form-control" required>
+                                    <option value="starter">باقة البداية (مجانية)</option>
+                                    <option value="professional">الباقة الاحترافية (50 ج.م / شهر)</option>
+                                    <option value="premium">الباقة المميزة (100 ج.م / شهر)</option>
+                                </select>
+                            </div>
+                            <div class="form-group" id="renewPaymentDetails" style="display: none;">
+                                <label>رقم الكاش للتحويل</label>
+                                <div style="padding: 12px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 12px; color: #166534; font-weight: 800; text-align: center;">
+                                    01018614843
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div id="renewUploadArea" style="display: none; margin-top: 15px;">
+                            <label style="display: block; font-weight: 700; color: #334155; margin-bottom: 8px;">ارفع صورة إيصال التحويل</label>
+                            <input type="file" id="renewScreenshot" class="form-control" accept="image/*">
+                        </div>
+
+                        <button type="submit" class="btn-save" style="margin-top: 20px; width: 100%;">إرسال طلب التجديد</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Hidden File Inputs -->
+    <input type="file" id="imageUploadInput" accept="image/*" multiple style="display:none;">
+    <input type="file" id="videoUploadInput" accept="video/*" multiple style="display:none;">
+
+    <script src="js/technician-dashboard.js"></script>
+</body>
+</html>

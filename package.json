@@ -1,7 +1,7 @@
 {
-  "name": "sallahly-backend",
+  "name": "beit-al-siyana-backend",
   "version": "1.0.0",
-  "description": "Sallahly - Home Maintenance Platform API",
+  "description": "Beit Al Siyana - Home Maintenance Platform API",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
