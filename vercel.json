@@ -12,16 +12,12 @@
       "dest": "server.js"
     },
     {
-      "src": "/static/(.*)",
-      "dest": "/static/$1"
-    },
-    {
-      "src": "/(.*\\.(js|css|png|jpg|jpeg|gif|svg|ico))$",
+      "src": "/(.*\\.(js|css|png|jpg|jpeg|gif|svg|ico|webp|woff|woff2|ttf|eot))",
       "dest": "/$1"
     },
     {
       "src": "/(.*)",
-      "dest": "/"
+      "dest": "server.js"
     }
   ]
 }
