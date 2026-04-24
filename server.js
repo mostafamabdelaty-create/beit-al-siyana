@@ -13,13 +13,19 @@ connectDB();
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(__dirname));
+
+// Serve static files (CSS, JS, Images, HTML)
+app.use(express.static(path.join(__dirname)));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// Routes
+// API Routes
 app.use('/api/auth', require('./src/routes/auth.routes'));
 app.use('/api/technicians', require('./src/routes/technician.routes'));
 app.use('/api/services', require('./src/routes/service.routes'));
@@ -30,9 +36,20 @@ app.use('/api/join', require('./src/routes/join.routes'));
 app.use('/api/customers', require('./src/routes/customer.routes'));
 app.use('/api/reviews', require('./src/routes/review.routes'));
 
-// Serve frontend
+// Serve HTML pages
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+// Catch-all: serve index.html for any unmatched route (SPA behavior)
+app.get('*', (req, res) => {
+  const filePath = path.join(__dirname, req.path);
+  const fs = require('fs');
+  if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
+    res.sendFile(filePath);
+  } else {
+    res.sendFile(path.join(__dirname, 'index.html'));
+  }
 });
 
 // Error handler
@@ -41,7 +58,13 @@ app.use((err, req, res, next) => {
   res.status(500).json({ success: false, message: 'Something went wrong!' });
 });
 
+// For local dev
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on: http://localhost:${PORT}`);
-});
+if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(`🚀 Server running on: http://localhost:${PORT}`);
+  });
+}
+
+// Export for Vercel Serverless
+module.exports = app;
