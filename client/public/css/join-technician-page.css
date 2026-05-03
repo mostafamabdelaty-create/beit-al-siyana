@@ -1,0 +1,238 @@
+
+    :root {
+      --primary: #FF5C1A;
+      --primary-dark: #1d4ed8;
+      --secondary: #64748b;
+      --accent: #f59e0b;
+      --bg-gradient: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    }
+
+    body {
+      background: var(--bg-gradient);
+      min-height: 100vh;
+      font-family: 'Cairo', sans-serif;
+    }
+
+    .join-container {
+      max-width: 900px;
+      margin: 120px auto 60px;
+      padding: 0 20px;
+    }
+
+    .form-card {
+      background: white;
+      border-radius: 30px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.08);
+      padding: 50px;
+      border: 1px solid rgba(226, 232, 240, 0.8);
+      position: relative;
+    }
+
+    .form-header {
+      text-align: center;
+      margin-bottom: 45px;
+    }
+
+    .form-header h1 {
+      font-size: 2.4rem;
+      font-weight: 800;
+      color: #0f172a;
+      margin-bottom: 15px;
+      letter-spacing: -0.5px;
+    }
+
+    .form-header p {
+      color: #64748b;
+      font-size: 1.15rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .input-group {
+      margin-bottom: 25px;
+    }
+
+    .input-label {
+      display: block;
+      font-weight: 700;
+      color: #1e293b;
+      margin-bottom: 8px;
+      font-size: 0.95rem;
+    }
+
+    .input-wrapper {
+      position: relative;
+    }
+
+    .input-wrapper i {
+      position: absolute;
+      right: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--primary);
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+      pointer-events: none;
+    }
+
+    .input-control {
+      width: 100%;
+      padding: 16px 20px 16px 45px; /* space for icon on right */
+      padding-right: 48px; 
+      border: 2px solid #e2e8f0;
+      border-radius: 16px;
+      font-family: inherit;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      background: #f8fafc;
+      color: #1e293b;
+    }
+
+    .input-control:focus {
+      outline: none;
+      border-color: var(--primary);
+      background: white;
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+    }
+    
+    .input-control:focus + i,
+    .input-wrapper:focus-within i {
+      color: var(--primary-dark);
+      transform: translateY(-50%) scale(1.1);
+    }
+
+    select.input-control {
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: left 15px center;
+      background-size: 15px;
+    }
+
+    .row-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 25px;
+    }
+
+    @media (max-width: 768px) {
+      .row-grid { grid-template-columns: 1fr; }
+      .form-card { padding: 30px 20px; }
+      .form-header h1 { font-size: 1.8rem; }
+    }
+
+    /* Payment Box Redesign */
+    #paymentDetails {
+      background: #111111;
+      color: white !important;
+      border-radius: 24px;
+      padding: 35px;
+      margin: 35px 0;
+      border: 1px solid rgba(255,255,255,0.1);
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
+    }
+
+    .payment-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 25px;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+
+    .payment-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .payment-title i {
+      font-size: 1.6rem;
+      color: #34D399;
+    }
+
+    .payment-title h4 {
+      margin: 0;
+      font-size: 1.25rem;
+      font-weight: 800;
+    }
+
+    .price-badge {
+      background: rgba(52, 211, 153, 0.1);
+      color: #34D399;
+      padding: 8px 20px;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 700;
+      border: 1px solid rgba(52, 211, 153, 0.2);
+    }
+
+    .vodafone-box {
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 16px;
+      padding: 20px;
+      text-align: center;
+      margin: 20px 0;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .vodafone-number {
+      font-family: 'Cairo', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: #34D399;
+      letter-spacing: 2px;
+      display: block;
+    }
+
+    .submit-btn {
+      background: var(--primary);
+      color: white;
+      border: none;
+      width: 100%;
+      padding: 20px;
+      border-radius: 20px;
+      font-size: 1.2rem;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      box-shadow: 0 10px 20px -5px rgba(22, 163, 74, 0.4);
+    }
+
+    .submit-btn:hover {
+      background: var(--primary-dark);
+      transform: translateY(-3px);
+      box-shadow: 0 20px 30px -10px rgba(22, 163, 74, 0.5);
+    }
+
+    .submit-btn:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .preview-box {
+      margin-top: 15px;
+      display: none;
+      align-items: center;
+      gap: 15px;
+      padding: 12px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .preview-box img {
+      width: 50px;
+      height: 50px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+  

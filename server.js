@@ -8,10 +8,18 @@ const fs = require('fs'); // نقلناها فوق عشان تبقى جاهزة
 const connectDB = require('./src/config/db');
 dotenv.config();
 
+// Ensure upload directories exist
+const uploadDirs = ['uploads/gallery', 'uploads/profiles', 'uploads/videos', 'uploads/screenshots'];
+uploadDirs.forEach(dir => {
+  if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+});
+
 // Connect to Database
 connectDB();
 
 const app = express();
+const reactDistPath = path.join(__dirname, 'client', 'dist');
+const hasReactBuild = fs.existsSync(path.join(reactDistPath, 'index.html'));
 
 // Middleware
 app.use(cors({
@@ -24,11 +32,16 @@ app.use(express.urlencoded({ extended: true }));
 
 // --- [التعديل الجوهري هنا] ---
 // تعريف مسارات الملفات الثابتة بشكل صريح لضمان ظهور الصور والتنسيق
-app.use(express.static(path.join(__dirname)));
-app.use('/css', express.static(path.join(__dirname, 'css')));
-app.use('/Images', express.static(path.join(__dirname, 'Images')));
-app.use('/js', express.static(path.join(__dirname, 'js')));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+if (hasReactBuild) {
+  app.use(express.static(reactDistPath));
+} else {
+  app.use(express.static(path.join(__dirname)));
+  app.use('/css', express.static(path.join(__dirname, 'css')));
+  app.use('/Images', express.static(path.join(__dirname, 'Images')));
+  app.use('/js', express.static(path.join(__dirname, 'js')));
+}
 
 // API Routes
 app.use('/api/auth', require('./src/routes/auth.routes'));
@@ -41,20 +54,26 @@ app.use('/api/join', require('./src/routes/join.routes'));
 app.use('/api/customers', require('./src/routes/customer.routes'));
 app.use('/api/reviews', require('./src/routes/review.routes'));
 
-// Serve HTML pages
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
-});
-
-// Catch-all: serve index.html for any unmatched route (SPA behavior)
-app.get('*', (req, res) => {
-  const filePath = path.join(__dirname, req.path);
-  if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
-    res.sendFile(filePath);
-  } else {
+if (hasReactBuild) {
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(reactDistPath, 'index.html'));
+  });
+} else {
+  // Serve HTML pages
+  app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
-  }
-});
+  });
+
+  // Catch-all: serve index.html for any unmatched route (SPA behavior)
+  app.get('*', (req, res) => {
+    const filePath = path.join(__dirname, req.path);
+    if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
+      res.sendFile(filePath);
+    } else {
+      res.sendFile(path.join(__dirname, 'index.html'));
+    }
+  });
+}
 
 // Error handler
 app.use((err, req, res, next) => {

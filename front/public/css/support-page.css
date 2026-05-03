@@ -1,0 +1,74 @@
+
+    .faq-accordion-item {
+      background: var(--white);
+      border-radius: var(--border-radius);
+      margin-bottom: 15px;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border-color);
+      overflow: hidden;
+      transition: var(--transition);
+    }
+    .faq-accordion-item:hover {
+      box-shadow: var(--shadow-md);
+    }
+    .faq-accordion-btn {
+      width: 100%;
+      background: none;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 24px;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      transition: var(--transition);
+    }
+    .faq-accordion-btn:hover { color: var(--primary-color); }
+    .faq-accordion-btn .faq-icon {
+      font-size: 1rem;
+      color: var(--text-lighter);
+      transition: transform 0.35s ease, color 0.3s ease;
+    }
+    .faq-accordion-item.active .faq-accordion-btn .faq-icon {
+      transform: rotate(180deg);
+      color: var(--primary-color);
+    }
+    .faq-accordion-item.active .faq-accordion-btn {
+      color: var(--primary-color);
+    }
+    .faq-accordion-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease, padding 0.4s ease;
+      padding: 0 24px;
+    }
+    .faq-accordion-item.active .faq-accordion-body {
+      max-height: 500px;
+      padding: 0 24px 24px;
+    }
+    .faq-accordion-body p {
+      color: var(--text-light);
+      font-size: 1.05rem;
+      line-height: 1.8;
+      margin: 0 0 8px;
+    }
+    .faq-accordion-body ul {
+      list-style: none;
+      padding: 0;
+      margin: 10px 0 0;
+    }
+    .faq-accordion-body ul li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+      font-size: 1rem;
+      color: #334155;
+    }
+    .faq-accordion-body ul li i {
+      font-size: 0.85rem;
+    }
+  

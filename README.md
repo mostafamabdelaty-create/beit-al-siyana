@@ -1,109 +1,81 @@
-# 🔧 Sallahly Backend API
+﻿# Beit Al Siyana - Monorepo Layout
 
-## Setup
+This project is now split into:
+
+- `front/` -> React + Vite frontend (deploy to Vercel)
+- `back/` -> Express + MongoDB backend API (deploy to Railway)
+
+## Local Run
+
+### Quick run from project root
 
 ```bash
-# 1. Install dependencies
+npm run dev:back
+npm run dev:front
+```
+
+Or install both dependencies from root:
+
+```bash
+npm run install:all
+```
+
+### 1) Run backend
+
+```bash
+cd back
 npm install
-
-# 2. Create .env file
-cp .env.example .env
-# عدّل الـ MONGODB_URI و JWT_SECRET
-
-# 3. Run in development
 npm run dev
+```
 
-# 4. Run in production
+Backend runs on `http://localhost:5000`.
+
+### 2) Run frontend
+
+```bash
+cd front
+npm install
+npm run dev
+```
+
+Frontend runs on `http://localhost:5173`.
+
+## Deployment
+
+### Backend (Railway)
+
+1. Deploy folder: `back`
+2. Set env vars from `back/.env.example`:
+   - `MONGO_URI`
+   - `JWT_SECRET`
+   - `JWT_EXPIRES_IN`
+   - `NODE_ENV=production`
+   - `CORS_ORIGIN=https://your-frontend.vercel.app`
+3. Start command:
+
+```bash
 npm start
 ```
 
----
+### Frontend (Vercel)
 
-## 📡 API Endpoints
+1. Deploy folder: `front`
+2. Set env var from `front/.env.example`:
+   - `VITE_API_BASE_URL=https://your-backend.up.railway.app`
 
-### Auth `/api/auth`
-| Method | Endpoint | Description | Auth |
-|--------|----------|-------------|------|
-| POST | `/register` | تسجيل عميل جديد | ❌ |
-| POST | `/login` | تسجيل دخول | ❌ |
-| GET | `/me` | بيانات المستخدم الحالي | ✅ |
+`front/vercel.json` already rewrites routes to `index.html`.
 
-### Technicians `/api/technicians`
-| Method | Endpoint | Description | Auth |
-|--------|----------|-------------|------|
-| GET | `/` | جلب كل الفنيين (فلتر: service, location, available) | ❌ |
-| GET | `/:id` | تفاصيل فني | ❌ |
-| POST | `/:id/reviews` | إضافة تقييم | ✅ Client |
-| POST | `/` | إضافة فني | ✅ Admin |
-| PUT | `/:id` | تعديل فني | ✅ Admin |
-| DELETE | `/:id` | حذف فني | ✅ Admin |
+## Post Deploy (Admin)
 
-### Services `/api/services`
-| Method | Endpoint | Description | Auth |
-|--------|----------|-------------|------|
-| GET | `/` | جلب كل الخدمات | ❌ |
-| POST | `/` | إضافة خدمة | ✅ Admin |
-| PUT | `/:id` | تعديل خدمة | ✅ Admin |
-| DELETE | `/:id` | حذف خدمة | ✅ Admin |
+After backend is live, create/update admin account:
 
-### Bookings `/api/bookings`
-| Method | Endpoint | Description | Auth |
-|--------|----------|-------------|------|
-| POST | `/` | طلب حجز جديد | ✅ Client |
-| GET | `/my` | طلباتي | ✅ Client |
-| DELETE | `/:id` | إلغاء طلب | ✅ Client |
-| GET | `/` | كل الطلبات | ✅ Admin |
-| PUT | `/:id/status` | تغيير حالة طلب | ✅ Admin |
-
-### Packages `/api/packages`
-| Method | Endpoint | Description | Auth |
-|--------|----------|-------------|------|
-| GET | `/` | جلب الباقات | ❌ |
-| POST | `/` | إضافة باقة | ✅ Admin |
-| PUT | `/:id` | تعديل باقة | ✅ Admin |
-| DELETE | `/:id` | حذف باقة | ✅ Admin |
-
-### Join Requests `/api/join`
-| Method | Endpoint | Description | Auth |
-|--------|----------|-------------|------|
-| POST | `/` | تقديم طلب انضمام كفني | ❌ |
-| GET | `/` | كل الطلبات | ✅ Admin |
-| PUT | `/:id/approve` | قبول طلب + إنشاء فني تلقائي | ✅ Admin |
-| PUT | `/:id/reject` | رفض طلب | ✅ Admin |
-
-### Admin `/api/admin`
-| Method | Endpoint | Description | Auth |
-|--------|----------|-------------|------|
-| GET | `/stats` | إحصائيات Dashboard | ✅ Admin |
-| GET | `/users` | كل المستخدمين | ✅ Admin |
-| PUT | `/users/:id/toggle` | تفعيل/إيقاف مستخدم | ✅ Admin |
-
----
-
-## 🔐 Authentication
-
-أضف الـ token في الـ headers:
-```
-Authorization: Bearer <your_token>
+```bash
+cd back
+npm run create-admin
 ```
 
----
+Optional seed command:
 
-## 📦 Booking Status Flow
+```bash
+npm run seed-plans
 ```
-pending → confirmed → in_progress → completed
-                  ↘ cancelled
-```
-
----
-
-## 🗄️ Database Models
-
-- **User** - العملاء والأدمن
-- **Technician** - الفنيين مع التقييمات
-- **Service** - أنواع الخدمات
-- **Booking** - طلبات الحجز
-- **Package** - باقات الأسعار
-- **JoinRequest** - طلبات انضمام الفنيين
-# beit-al-siyana
-# beit-al-siyana

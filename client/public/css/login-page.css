@@ -1,0 +1,104 @@
+
+    body.login-page {
+      background-color: #f8fafc;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .login-container {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+    .login-card {
+      background: white;
+      max-width: 450px;
+      width: 100%;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+      border: 1px solid #e2e8f0;
+    }
+    .login-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .login-header img {
+      width: 150px;
+      margin-bottom: 20px;
+      filter: invert(1);
+    }
+    .login-header h1 {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: #0b2239;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    .form-group label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #334155;
+    }
+    .form-group input {
+      width: 100%;
+      padding: 12px 15px;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 12px;
+      font-family: inherit;
+      transition: all 0.3s ease;
+    }
+    .form-group input:focus {
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+      outline: none;
+    }
+    .login-btn {
+      width: 100%;
+      background: var(--primary-color, #3b82f6);
+      color: white;
+      border: none;
+      padding: 14px;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 10px;
+    }
+    .login-btn:hover {
+      background: #2563eb;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(37, 99, 235, 0.2);
+    }
+    .login-footer {
+      text-align: center;
+      margin-top: 25px;
+      color: #64748b;
+      font-size: 0.95rem;
+    }
+    .login-footer a {
+      color: #3b82f6;
+      font-weight: 700;
+      text-decoration: none;
+    }
+    .login-footer a:hover {
+      text-decoration: underline;
+    }
+    .back-home {
+      display: block;
+      text-align: center;
+      margin-top: 30px;
+      color: #94a3b8;
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.3s ease;
+    }
+    .back-home:hover {
+      color: #334155;
+    }
+  

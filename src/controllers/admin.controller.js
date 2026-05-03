@@ -28,6 +28,7 @@ const formatTechnicianWithPlan = (user, profile) => ({
   city: profile?.city || '',
   address: profile?.address || '',
   yearsOfExperience: profile?.yearsOfExperience || 0,
+  requestCount: profile?.requestCount || 0,
   subscriptionExpiry: profile?.subscriptionExpiry || null,
   subscriptionStartDate: profile?.subscriptionStartDate || null,
   currentPlan: formatPlanSummary(profile?.currentPlanId)
@@ -43,6 +44,10 @@ exports.getDashboardStats = async (req, res) => {
     const totalServices = await Service.countDocuments();
     const totalPlans = await Plan.countDocuments();
 
+    // Calculate total requests across all technicians
+    const profiles = await TechnicianProfile.find({}, 'requestCount');
+    const totalRequests = profiles.reduce((sum, p) => sum + (p.requestCount || 0), 0);
+
     res.json({
       success: true,
       data: {
@@ -51,7 +56,8 @@ exports.getDashboardStats = async (req, res) => {
         totalBookings,
         pendingJoinRequests,
         totalServices,
-        totalPlans
+        totalPlans,
+        totalRequests
       }
     });
   } catch (error) {
@@ -170,6 +176,26 @@ exports.activateUser = async (req, res) => {
   try {
     const user = await User.findByIdAndUpdate(req.params.id, { status: 'active' }, { new: true });
     res.json({ success: true, message: 'تم تفعيل الحساب بنجاح', data: user });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// @PUT /api/admin/users/:id/reset-password
+exports.resetUserPassword = async (req, res) => {
+  try {
+    const { newPassword } = req.body;
+    if (!newPassword || newPassword.length < 4) {
+      return res.status(400).json({ success: false, message: 'كلمة المرور يجب أن تكون 4 أحرف على الأقل' });
+    }
+    
+    const user = await User.findById(req.params.id);
+    if (!user) return res.status(404).json({ success: false, message: 'المستخدم غير موجود' });
+
+    user.password = newPassword;
+    await user.save(); // This triggers the pre('save') hook in User model to hash it.
+
+    res.json({ success: true, message: 'تم تغيير كلمة المرور بنجاح' });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }

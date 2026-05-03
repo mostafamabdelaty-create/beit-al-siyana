@@ -47,7 +47,12 @@ const planSchema = new mongoose.Schema(
       accentColor: { type: String, default: '#2563eb' },
       gradientFrom: { type: String, default: '' },
       gradientTo: { type: String, default: '' },
-      isGradient: { type: Boolean, default: false }
+      isGradient: { type: Boolean, default: true },
+      titleColor: { type: String, default: '#111827' },
+      priceColor: { type: String, default: '#111827' },
+      btnTextColor: { type: String, default: '#ffffff' },
+      borderColor: { type: String, default: '#3b82f6' },
+      iconColor: { type: String, default: '#10b981' }
     }
   },
   { timestamps: true }

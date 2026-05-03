@@ -7,7 +7,8 @@ const {
   updateProfile, 
   uploadProfileImage,
   addToGallery, 
-  removeFromGallery 
+  removeFromGallery,
+  trackRequest
 } = require('../controllers/technician.controller');
 const { protect } = require('../middleware/auth.middleware');
 const { authorize } = require('../middleware/role.middleware');
@@ -40,6 +41,7 @@ router.get('/me', protect, authorize('technician'), getMe);
 router.get('/', getTechnicians);
 router.get('/service/:serviceName', getTechniciansByService);
 router.get('/:id', getTechnicianById);
+router.post('/:id/track-request', trackRequest);
 router.put('/profile', protect, authorize('technician'), mustChangePassword, updateProfile);
 router.post('/profile-image', protect, authorize('technician'), mustChangePassword, upload.single('media'), uploadProfileImage);
 router.post('/gallery', protect, authorize('technician'), mustChangePassword, upload.single('media'), addToGallery);

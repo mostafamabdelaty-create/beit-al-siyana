@@ -111,7 +111,10 @@ const toTechnicianCard = (profile) => {
     name: profile.userId.fullName,
     phone: profile.userId.phone,
     profileImage: profile.profileImage,
+    specialty: profile.specialty,
+    customSpecialty: profile.customSpecialty,
     services: splitServices(profile.specialty),
+
     experience: profile.yearsOfExperience,
     location: profile.city,
     bio: profile.bio,
@@ -121,6 +124,7 @@ const toTechnicianCard = (profile) => {
     isTrusted: profile.isTrusted || trustedByPlan,
     isPinned: topInListing,
     planRank: planPriority,
+    requestCount: profile.requestCount || 0,
     plan
   };
 };
@@ -186,7 +190,10 @@ exports.getTechnicianById = async (req, res) => {
       email: profile.userId.email,
       phone: profile.userId.phone,
       profileImage: profile.profileImage,
+      specialty: profile.specialty,
+      customSpecialty: profile.customSpecialty,
       services: splitServices(profile.specialty),
+
       experience: profile.yearsOfExperience,
       location: profile.city,
       bio: profile.bio,
@@ -196,6 +203,7 @@ exports.getTechnicianById = async (req, res) => {
       rating: profile.ratingAverage,
       reviewsCount: profile.reviewsCount,
       isTrusted: profile.isTrusted || trustedByPlan,
+      requestCount: profile.requestCount || 0,
       plan
     };
 
@@ -217,18 +225,7 @@ exports.getMe = async (req, res) => {
     // Downgrade if expired
     await checkAndDowngradeIfExpired(profile);
 
-    // Auto-Fix: Cap yearly/long subscriptions to 1 month from start
-    if (profile.subscriptionExpiry && profile.subscriptionStartDate) {
-      const start = new Date(profile.subscriptionStartDate);
-      const expiry = new Date(profile.subscriptionExpiry);
-      // If more than 31 days difference
-      if ((expiry - start) > (31 * 24 * 60 * 60 * 1000)) {
-        const newExpiry = new Date(start);
-        newExpiry.setMonth(start.getMonth() + 1);
-        profile.subscriptionExpiry = newExpiry;
-        await profile.save();
-      }
-    }
+    // Note: Subscription duration is managed by admin through plan assignment
 
     const plan = normalizePlan(profile.currentPlanId);
     
@@ -241,7 +238,9 @@ exports.getMe = async (req, res) => {
       },
       profile: {
         specialty: profile.specialty || '',
+        customSpecialty: profile.customSpecialty || '',
         yearsOfExperience: profile.yearsOfExperience || 0,
+
         bio: profile.bio || '',
         city: profile.city || '',
         address: profile.address || '',
@@ -251,7 +250,8 @@ exports.getMe = async (req, res) => {
         galleryVideos: profile.galleryVideos || [],
         isTrusted: !!profile.isTrusted,
         subscriptionStartDate: profile.subscriptionStartDate,
-        subscriptionExpiry: profile.subscriptionExpiry
+        subscriptionExpiry: profile.subscriptionExpiry,
+        requestCount: profile.requestCount || 0
       },
       plan
     };
@@ -266,9 +266,16 @@ exports.getMe = async (req, res) => {
 // @PUT /api/technicians/profile (Technician Only)
 exports.updateProfile = async (req, res) => {
   try {
+    // Only allow technician to update these specific fields
+    const allowedFields = ['specialty', 'customSpecialty', 'bio', 'city', 'address', 'whatsapp', 'yearsOfExperience'];
+    const updates = {};
+    allowedFields.forEach(field => {
+      if (req.body[field] !== undefined) updates[field] = req.body[field];
+    });
+
     const profile = await TechnicianProfile.findOneAndUpdate(
       { userId: req.user._id },
-      req.body,
+      updates,
       { new: true }
     );
     res.json({ success: true, data: profile });
@@ -354,6 +361,20 @@ exports.removeFromGallery = async (req, res) => {
 
     await profile.save();
     res.json({ success: true, message: 'تم الحذف بنجاح' });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+// @POST /api/technicians/:id/track-request (Public)
+exports.trackRequest = async (req, res) => {
+  try {
+    const profile = await TechnicianProfile.findOneAndUpdate(
+      { userId: req.params.id },
+      { $inc: { requestCount: 1 } },
+      { new: true }
+    );
+    if (!profile) return res.status(404).json({ success: false, message: 'الفني غير موجود' });
+    res.json({ success: true, requestCount: profile.requestCount });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }

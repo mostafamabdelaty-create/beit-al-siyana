@@ -55,7 +55,15 @@ exports.getAllBookings = async (req, res) => {
 // @PUT /api/bookings/:id
 exports.updateBookingStatus = async (req, res) => {
   try {
-    const booking = await ServiceRequest.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const { status, notes } = req.body;
+    const updates = {};
+    if (status) updates.status = status;
+    if (notes !== undefined) updates.notes = notes;
+
+    const booking = await ServiceRequest.findByIdAndUpdate(req.params.id, updates, { new: true });
+    if (!booking) {
+      return res.status(404).json({ success: false, message: 'الطلب غير موجود' });
+    }
     res.json({ success: true, data: booking });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });

@@ -7,6 +7,7 @@ const {
   getAllCustomers, 
   suspendUser, 
   activateUser,
+  resetUserPassword,
   deleteUser
 } = require('../controllers/admin.controller');
 const { protect } = require('../middleware/auth.middleware');
@@ -22,6 +23,7 @@ router.put('/technicians/:id/plan', assignPlanToTechnician);
 router.get('/customers', getAllCustomers);
 router.put('/users/:id/suspend', suspendUser);
 router.put('/users/:id/activate', activateUser);
+router.put('/users/:id/reset-password', resetUserPassword);
 router.delete('/users/:id', deleteUser);
 
 module.exports = router;

@@ -1,3 +1,16 @@
 node_modules/
-.env
+front/node_modules/
+back/node_modules/
+
+front/dist/
+back/uploads/
+
+back/.env
+back/.env.local
+back/.env.production
+
+front/.env
+front/.env.local
+front/.env.production
+
 *.log

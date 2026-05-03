@@ -8,6 +8,7 @@ const joinRequestSchema = new mongoose.Schema(
     city: { type: String, required: true },
     address: { type: String },
     specialty: { type: String, required: true },
+    customSpecialty: { type: String },
     yearsOfExperience: { type: Number, required: true },
     bio: { type: String, required: true },
     whatsapp: { type: String, required: true },
@@ -33,6 +34,8 @@ const joinRequestSchema = new mongoose.Schema(
       default: 'join'
     },
     price: { type: Number, default: 0 },
+    duration: { type: Number, default: 1 },
+    durationUnit: { type: String, default: 'months' },
     paymentScreenshot: { type: String },
     password: { type: String, required: true },
     adminNotes: { type: String },

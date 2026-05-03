@@ -10,6 +10,8 @@ exports.submitJoinRequest = async (req, res) => {
     if (req.file) {
       data.paymentScreenshot = req.file.path;
     }
+    if (req.body.duration) data.duration = Number(req.body.duration);
+    if (req.body.durationUnit) data.durationUnit = req.body.durationUnit;
 
     // Fix 1: whatsapp is required — use phone as fallback if not sent
     if (!data.whatsapp && data.phone) {
@@ -64,7 +66,19 @@ exports.approveJoinRequest = async (req, res) => {
 
     let startDate = new Date();
     let expiryDate = new Date();
-    expiryDate.setMonth(startDate.getMonth() + 1);
+    
+    const dVal = request.duration || 1;
+    const dUnit = request.durationUnit || 'months';
+
+    const addDuration = (date, amount, unit) => {
+      const d = new Date(date);
+      if (unit === 'days') d.setDate(d.getDate() + amount);
+      else if (unit === 'years') d.setFullYear(d.getFullYear() + amount);
+      else d.setMonth(d.getMonth() + amount);
+      return d;
+    };
+    
+    expiryDate = addDuration(startDate, dVal, dUnit);
 
     if (request.type === 'renew') {
       // HANDLE RENEWAL
@@ -78,10 +92,9 @@ exports.approveJoinRequest = async (req, res) => {
         const now = new Date();
         
         if (currentExpiry > now) {
-          // Cumulative: add 1 month to current expiry
+          // Cumulative: add to current expiry
           startDate = currentExpiry;
-          expiryDate = new Date(currentExpiry);
-          expiryDate.setMonth(startDate.getMonth() + 1);
+          expiryDate = addDuration(currentExpiry, dVal, dUnit);
         }
       }
 
@@ -110,7 +123,9 @@ exports.approveJoinRequest = async (req, res) => {
       await TechnicianProfile.create({
         userId: user._id,
         specialty: request.specialty,
+        customSpecialty: request.customSpecialty,
         yearsOfExperience: request.yearsOfExperience,
+
         bio: request.bio,
         city: request.city,
         address: request.address,
