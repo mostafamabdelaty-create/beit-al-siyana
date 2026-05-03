@@ -33,6 +33,13 @@ function TechnicianDashboardPage() {
     bio: ''
   });
 
+  // Password Form State
+  const [passwordForm, setPasswordForm] = useState({
+    currentPassword: '',
+    newPassword: '',
+    confirmPassword: ''
+  });
+
   // Renew Form State
   const [renewForm, setRenewForm] = useState({
     package: '',
@@ -186,6 +193,35 @@ function TechnicianDashboardPage() {
       if (result.success) {
         showStatus('تم تحديث البيانات بنجاح', 'success');
         fetchTechData();
+      } else {
+        throw new Error(result.message);
+      }
+    } catch (err) {
+      showStatus(err.message, 'error');
+    }
+  };
+
+  const handlePasswordUpdate = async (e) => {
+    e.preventDefault();
+    if (passwordForm.newPassword !== passwordForm.confirmPassword) {
+      return showStatus('كلمة المرور الجديدة غير متطابقة', 'error');
+    }
+
+    try {
+      const res = await fetch(toApiUrl('/auth/change-password'), {
+        method: 'POST',
+        headers: authHeaders(true),
+        body: JSON.stringify({
+          currentPassword: passwordForm.currentPassword,
+          newPassword: passwordForm.newPassword,
+          confirmPassword: passwordForm.confirmPassword
+        })
+      });
+
+      const result = await res.json();
+      if (result.success) {
+        showStatus('تم تغيير كلمة المرور بنجاح', 'success');
+        setPasswordForm({ currentPassword: '', newPassword: '', confirmPassword: '' });
       } else {
         throw new Error(result.message);
       }
@@ -493,6 +529,49 @@ function TechnicianDashboardPage() {
                   <textarea className="form-control" rows="4" style={{ resize: 'vertical' }} value={profileForm.bio} onChange={e => setProfileForm({ ...profileForm, bio: e.target.value })}></textarea>
                 </div>
                 <button type="submit" className="btn-save">حفظ التغييرات</button>
+              </form>
+            </div>
+
+            {/* Change Password Card */}
+            <div className="card">
+              <div className="card-title"><i className="fas fa-key"></i> تغيير كلمة المرور</div>
+              <form onSubmit={handlePasswordUpdate}>
+                <div className="form-grid">
+                  <div className="form-group">
+                    <label>كلمة المرور الحالية</label>
+                    <input 
+                      type="password" 
+                      className="form-control" 
+                      placeholder="••••••••"
+                      required 
+                      value={passwordForm.currentPassword} 
+                      onChange={e => setPasswordForm({ ...passwordForm, currentPassword: e.target.value })} 
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>كلمة المرور الجديدة</label>
+                    <input 
+                      type="password" 
+                      className="form-control" 
+                      placeholder="••••••••"
+                      required 
+                      value={passwordForm.newPassword} 
+                      onChange={e => setPasswordForm({ ...passwordForm, newPassword: e.target.value })} 
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>تأكيد كلمة المرور الجديدة</label>
+                    <input 
+                      type="password" 
+                      className="form-control" 
+                      placeholder="••••••••"
+                      required 
+                      value={passwordForm.confirmPassword} 
+                      onChange={e => setPasswordForm({ ...passwordForm, confirmPassword: e.target.value })} 
+                    />
+                  </div>
+                </div>
+                <button type="submit" className="btn-save">تحديث كلمة المرور</button>
               </form>
             </div>
           </div>
