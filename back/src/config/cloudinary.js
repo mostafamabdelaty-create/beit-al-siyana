@@ -23,11 +23,16 @@ const storage = new CloudinaryStorage({
       resource_type = 'video';
     }
 
+    const sanitizedName = file.originalname
+      .split('.')[0]
+      .replace(/[^a-zA-Z0-9]/g, '-') // استبدال أي رمز غير الحروف والأرقام بشرطة
+      .substring(0, 50); // تحديد الطول ليكون 50 حرفاً فقط
+
     return {
       folder: folder,
       resource_type: resource_type,
       allowed_formats: ['jpg', 'png', 'jpeg', 'mp4', 'mov', 'webm'],
-      public_id: `${Date.now()}-${file.originalname.split('.')[0]}`
+      public_id: `${Date.now()}-${sanitizedName}`
     };
   }
 });
