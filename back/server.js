@@ -50,7 +50,7 @@ app.get('/', (req, res) => {
 
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  res.status(500).json({ success: false, message: 'Something went wrong!' });
+  res.status(500).json({ success: false, message: err.message || 'Something went wrong!' });
 });
 
 const PORT = process.env.PORT || 5000;
