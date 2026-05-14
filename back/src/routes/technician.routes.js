@@ -14,23 +14,7 @@ const { protect } = require('../middleware/auth.middleware');
 const { authorize } = require('../middleware/role.middleware');
 const { mustChangePassword } = require('../middleware/mustChangePassword.middleware');
 const multer = require('multer');
-const path = require('path');
-
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    let dir = 'uploads/gallery/';
-    if (req.originalUrl.includes('profile-image')) {
-      dir = 'uploads/profiles/';
-    } else if (file.mimetype.startsWith('video')) {
-      dir = 'uploads/videos/';
-    }
-    cb(null, dir);
-  },
-  filename: function (req, file, cb) {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-    cb(null, file.fieldname + '-' + uniqueSuffix + path.extname(file.originalname));
-  }
-});
+const { storage } = require('../config/cloudinary');
 
 const upload = multer({ storage: storage });
 
