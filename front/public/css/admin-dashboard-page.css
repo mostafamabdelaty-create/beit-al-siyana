@@ -338,6 +338,46 @@ body.admin-body {
 .modal-close:hover { color: var(--primary); transform: scale(1.1); }
 
 @media (max-width: 1024px) {
-  .admin-sidebar { display: none; }
+  .admin-sidebar { 
+    transform: translateX(100%);
+    transition: transform 0.3s ease-in-out;
+    display: block; /* Ensure it's in the DOM but hidden off-screen */
+  }
+  .admin-sidebar.active {
+    transform: translateX(0);
+  }
   .admin-main { margin-right: 0; padding: 20px; width: 100%; }
+  
+  .hamburger-menu {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 45px;
+    height: 45px;
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    color: var(--dark-section);
+    z-index: 1001;
+  }
+  
+  .sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 99;
+    display: none;
+  }
+  .sidebar-overlay.active {
+    display: block;
+  }
+}
+
+@media (min-width: 1025px) {
+  .hamburger-menu { display: none; }
 }

@@ -32,8 +32,7 @@ const centers = [
   'مركز إهناسيا',
   'مركز سمسطا',
   'مركز الفشن',
-  'مركز بني سويف',
-  'مدينة بني سويف'
+  'مركز بني سويف'
 ];
 
 const normalizeDigits = (value) => String(value || '').replace(/\D/g, '');
@@ -117,42 +116,7 @@ function TechniciansPage() {
     appendHeadLink('/css/services.css');
     appendHeadLink('/css/plumbing.css');
 
-    const userRole = localStorage.getItem('userRole');
-    const navCta = document.querySelector('.nav-cta');
-
-    if (userToken && navCta) {
-      navCta.innerText = userRole === 'admin' ? 'لوحة التحكم' : 'حسابي';
-      if (userRole === 'customer') navCta.href = 'customer-profile.html';
-      if (userRole === 'technician') navCta.href = 'technician-dashboard.html';
-      if (userRole === 'admin') navCta.href = 'admin-dashboard.html';
-    }
-
-    const menuToggle = document.querySelector('.menu-toggle');
-    const navLinks = document.querySelector('.nav-links');
-    const navItems = document.querySelectorAll('.nav-links a');
-
-    const toggleMenu = () => navLinks?.classList.toggle('active');
-    const closeMenu = () => navLinks?.classList.remove('active');
-
-    menuToggle?.addEventListener('click', toggleMenu);
-    navItems.forEach((item) => item.addEventListener('click', closeMenu));
-
-    const handleScroll = () => {
-      const header = document.querySelector('.header');
-      if (!header) return;
-      header.style.boxShadow =
-        window.scrollY > 50
-          ? '0 10px 15px -3px rgba(0, 0, 0, 0.4)'
-          : '0 4px 6px -1px rgba(0, 0, 0, 0.3)';
-    };
-
-    window.addEventListener('scroll', handleScroll);
-
-    return () => {
-      menuToggle?.removeEventListener('click', toggleMenu);
-      navItems.forEach((item) => item.removeEventListener('click', closeMenu));
-      window.removeEventListener('scroll', handleScroll);
-    };
+    return () => {};
   }, [serviceLabel, userToken]);
 
   useEffect(() => {

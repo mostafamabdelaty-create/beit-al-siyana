@@ -69,6 +69,7 @@ function AdminDashboardPage() {
   const [planForm, setPlanForm] = useState({ ...defaultPlanForm });
   const [planStatus, setPlanStatus] = useState({ message: '', type: '' });
   const [collapsedGroups, setCollapsedGroups] = useState({});
+  const [sidebarActive, setSidebarActive] = useState(false);
 
   const token = localStorage.getItem('token');
 
@@ -579,15 +580,16 @@ function AdminDashboardPage() {
 
   return (
     <>
-      <aside className="admin-sidebar">
-        <a href="index.html" className="logo"><img src="/Images/logo.svg" alt="بيت الصيانة" /></a>
+      <div className={`sidebar-overlay ${sidebarActive ? 'active' : ''}`} onClick={() => setSidebarActive(false)}></div>
+      <aside className={`admin-sidebar ${sidebarActive ? 'active' : ''}`}>
+        <a href="index.html" className="logo"><img src="/Images/beit-siyana-logo.png" alt="بيت الصيانة" style={{ filter: 'brightness(0) invert(1)' }} /></a>
         <nav>
           <ul className="admin-nav">
-            <li><a onClick={() => handleSectionSwitch('overview')} className={activeSection === 'overview' ? 'active' : ''}><i className="fas fa-chart-line"></i> نظرة عامة</a></li>
-            <li><a onClick={() => handleSectionSwitch('join-requests')} className={activeSection === 'join-requests' ? 'active' : ''}><i className="fas fa-user-plus"></i> طلبات الانضمام</a></li>
-            <li><a onClick={() => handleSectionSwitch('customers')} className={activeSection === 'customers' ? 'active' : ''}><i className="fas fa-users"></i> العملاء</a></li>
-            <li><a onClick={() => handleSectionSwitch('technicians')} className={activeSection === 'technicians' ? 'active' : ''}><i className="fas fa-tools"></i> الفنيين</a></li>
-            <li><a onClick={() => handleSectionSwitch('packages')} className={activeSection === 'packages' ? 'active' : ''}><i className="fas fa-box"></i> الباقات</a></li>
+            <li><a onClick={() => { handleSectionSwitch('overview'); setSidebarActive(false); }} className={activeSection === 'overview' ? 'active' : ''}><i className="fas fa-chart-line"></i> نظرة عامة</a></li>
+            <li><a onClick={() => { handleSectionSwitch('join-requests'); setSidebarActive(false); }} className={activeSection === 'join-requests' ? 'active' : ''}><i className="fas fa-user-plus"></i> طلبات الانضمام</a></li>
+            <li><a onClick={() => { handleSectionSwitch('customers'); setSidebarActive(false); }} className={activeSection === 'customers' ? 'active' : ''}><i className="fas fa-users"></i> العملاء</a></li>
+            <li><a onClick={() => { handleSectionSwitch('technicians'); setSidebarActive(false); }} className={activeSection === 'technicians' ? 'active' : ''}><i className="fas fa-tools"></i> الفنيين</a></li>
+            <li><a onClick={() => { handleSectionSwitch('packages'); setSidebarActive(false); }} className={activeSection === 'packages' ? 'active' : ''}><i className="fas fa-box"></i> الباقات</a></li>
             <li style={{ marginTop: '50px' }}><a onClick={handleLogout} style={{ color: 'var(--danger)' }}><i className="fas fa-sign-out-alt"></i> خروج</a></li>
           </ul>
         </nav>
@@ -595,8 +597,13 @@ function AdminDashboardPage() {
 
       <main className="admin-main">
         <header className="admin-header">
-          <h1>{sectionTitleMap[activeSection]}</h1>
-          <div style={{ color: '#64748b', fontWeight: '600' }}>مرحباً، {adminName}</div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+            <button className="hamburger-menu" onClick={() => setSidebarActive(true)}>
+              <i className="fas fa-bars"></i>
+            </button>
+            <h1>{sectionTitleMap[activeSection]}</h1>
+          </div>
+          <div className="admin-header-user" style={{ color: '#64748b', fontWeight: '600' }}>مرحباً، {adminName}</div>
         </header>
 
         {/* 1. Overview Section */}

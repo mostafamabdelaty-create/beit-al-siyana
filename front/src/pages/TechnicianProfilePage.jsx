@@ -144,16 +144,29 @@ function TechnicianProfilePage() {
     
     const specialtyMap = {
       'سباكة': 'plumbing',
+      'السباكة': 'plumbing',
+      'plumbing': 'plumbing',
       'كهرباء': 'electricity',
+      'الكهرباء': 'electricity',
+      'electricity': 'electricity',
       'نجارة': 'carpentry',
+      'النجارة': 'carpentry',
+      'carpentry': 'carpentry',
       'دهانات': 'paint',
+      'الدهانات': 'paint',
+      'paint': 'paint',
       'أرضيات': 'flooring',
+      'الأرضيات': 'flooring',
+      'flooring': 'flooring',
       'تشطيب': 'finishing',
-      'أخرى': 'other'
+      'التشطيب': 'finishing',
+      'finishing': 'finishing',
+      'أخرى': 'other',
+      'other': 'other'
     };
 
-    const specialty = profile.specialty || profile.profile?.specialty || 'plumbing';
-    const service = specialtyMap[specialty] || 'plumbing';
+    const specialtyRaw = profile.specialty || profile.profile?.specialty || (profile.services && profile.services[0]) || '';
+    const service = specialtyMap[specialtyRaw] || specialtyMap[specialtyRaw.toLowerCase()] || 'plumbing';
     return `technicians.html?service=${service}`;
   }, [profile]);
 
@@ -186,40 +199,7 @@ function TechnicianProfilePage() {
     appendHeadLink('/css/services.css');
     appendHeadLink('/css/technician-profile.css');
 
-    const navCta = document.querySelector('.nav-cta');
-    if (isLoggedIn && navCta) {
-      navCta.innerText = userRole === 'admin' ? 'لوحة التحكم' : 'حسابي';
-      if (userRole === 'customer') navCta.href = 'customer-profile.html';
-      if (userRole === 'technician') navCta.href = 'technician-dashboard.html';
-      if (userRole === 'admin') navCta.href = 'admin-dashboard.html';
-    }
-
-    const menuToggle = document.querySelector('.menu-toggle');
-    const navLinks = document.querySelector('.nav-links');
-    const navItems = document.querySelectorAll('.nav-links a');
-
-    const toggleMenu = () => navLinks?.classList.toggle('active');
-    const closeMenu = () => navLinks?.classList.remove('active');
-
-    menuToggle?.addEventListener('click', toggleMenu);
-    navItems.forEach((link) => link.addEventListener('click', closeMenu));
-
-    const onScroll = () => {
-      const header = document.querySelector('.header');
-      if (!header) return;
-      header.style.boxShadow =
-        window.scrollY > 50
-          ? '0 10px 15px -3px rgba(0, 0, 0, 0.4)'
-          : '0 4px 6px -1px rgba(0, 0, 0, 0.3)';
-    };
-
-    window.addEventListener('scroll', onScroll);
-
-    return () => {
-      menuToggle?.removeEventListener('click', toggleMenu);
-      navItems.forEach((link) => link.removeEventListener('click', closeMenu));
-      window.removeEventListener('scroll', onScroll);
-    };
+    return () => {};
   }, [isLoggedIn, userRole]);
 
   useEffect(() => {

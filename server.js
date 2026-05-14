@@ -1,11 +1,15 @@
+// 🔥 مهم جدًا يكون أول سطر
+require('dns').setDefaultResultOrder('ipv4first');
+
 const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
-const fs = require('fs'); // نقلناها فوق عشان تبقى جاهزة
+const fs = require('fs');
 
 const connectDB = require('./src/config/db');
+
 dotenv.config();
 
 // Ensure upload directories exist
@@ -27,11 +31,11 @@ app.use(cors({
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// --- [التعديل الجوهري هنا] ---
-// تعريف مسارات الملفات الثابتة بشكل صريح لضمان ظهور الصور والتنسيق
+// Static الملفات
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 if (hasReactBuild) {
@@ -54,17 +58,16 @@ app.use('/api/join', require('./src/routes/join.routes'));
 app.use('/api/customers', require('./src/routes/customer.routes'));
 app.use('/api/reviews', require('./src/routes/review.routes'));
 
+// React build أو HTML fallback
 if (hasReactBuild) {
   app.get('*', (req, res) => {
     res.sendFile(path.join(reactDistPath, 'index.html'));
   });
 } else {
-  // Serve HTML pages
   app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
   });
 
-  // Catch-all: serve index.html for any unmatched route (SPA behavior)
   app.get('*', (req, res) => {
     const filePath = path.join(__dirname, req.path);
     if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
@@ -81,13 +84,13 @@ app.use((err, req, res, next) => {
   res.status(500).json({ success: false, message: 'Something went wrong!' });
 });
 
-// For local dev
+// Run server
 const PORT = process.env.PORT || 5000;
+
 if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
   app.listen(PORT, () => {
     console.log(`🚀 Server running on: http://localhost:${PORT}`);
   });
 }
 
-// Export for Vercel Serverless
 module.exports = app;

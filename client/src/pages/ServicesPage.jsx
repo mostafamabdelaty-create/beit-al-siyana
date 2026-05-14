@@ -198,7 +198,7 @@ function ServicesPage() {
                 </div>
               </div>
               <div className="cta-image-side">
-                <img src="/Images/toolbox.png" alt="أدوات الصيانة" />
+                <img src="https://images.unsplash.com/photo-1621905251918-48416bd8575a?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="فنيو بيت الصيانة" />
               </div>
             </div>
           </div>

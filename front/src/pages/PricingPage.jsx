@@ -211,8 +211,8 @@ function PricingPage() {
                 <a href="join-technician.html" className="btn-orange"><i className="ph ph-user" /> سجل الآن وابدأ</a>
               </div>
             </div>
-            <div className="dark-cta-image">
-              <img src="/Images/toolbox.png" alt="Toolbox" />
+            <div className="dark-cta-image" style={{ flex: '0 0 auto', width: '320px' }}>
+              <img src="/Images/pricing-cta-team.jpg" alt="Beit Al Siyana Team" style={{ borderRadius: '20px', width: '100%', height: 'auto', boxShadow: '0 10px 20px rgba(0,0,0,0.3)' }} />
             </div>
           </div>
         </div>

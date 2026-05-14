@@ -9,6 +9,7 @@ const technicianProfileSchema = new mongoose.Schema(
       unique: true 
     },
     specialty: { type: String, required: true },
+    customSpecialty: { type: String },
     yearsOfExperience: { type: Number, required: true },
     bio: { type: String, required: true },
     city: { type: String, required: true },

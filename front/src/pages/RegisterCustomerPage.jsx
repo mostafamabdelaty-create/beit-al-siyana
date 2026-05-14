@@ -91,77 +91,79 @@ function RegisterCustomerPage() {
         : { background: '#eff6ff', color: '#1d4ed8' };
 
   return (
-    <div className="card">
-      <div className="header">
-        <img src="/Images/logo.svg" alt="بيت الصيانة" />
-        <h1>إنشاء حساب عميل جديد</h1>
-        <p style={{ color: '#64748b', fontSize: '0.9rem', marginTop: '5px' }}>
-          سجل لتتمكن من طلب الخدمات والتقييم
-        </p>
-      </div>
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', padding: '20px', width: '100%' }}>
+      <div className="card">
+        <div className="header">
+          <img src="/Images/logo.svg" alt="بيت الصيانة" />
+          <h1>إنشاء حساب عميل جديد</h1>
+          <p style={{ color: '#64748b', fontSize: '0.9rem', marginTop: '5px' }}>
+            سجل لتتمكن من طلب الخدمات والتقييم
+          </p>
+        </div>
 
-      {status.message ? (
-        <div id="status" style={{ display: 'block', ...statusStyle }}>
-          {status.message}
-        </div>
-      ) : null}
+        {status.message ? (
+          <div id="status" style={{ display: 'block', ...statusStyle }}>
+            {status.message}
+          </div>
+        ) : null}
 
-      <form id="regForm" onSubmit={onSubmit}>
-        <div className="form-group">
-          <label htmlFor="name">الاسم بالكامل</label>
-          <input
-            id="name"
-            type="text"
-            required
-            placeholder="مثال: أحمد محمد"
-            value={form.fullName}
-            onChange={(event) => setForm((prev) => ({ ...prev, fullName: event.target.value }))}
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="email">البريد الإلكتروني</label>
-          <input
-            id="email"
-            type="email"
-            required
-            placeholder="name@example.com"
-            value={form.email}
-            onChange={(event) => setForm((prev) => ({ ...prev, email: event.target.value }))}
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="phone">رقم الهاتف</label>
-          <input
-            id="phone"
-            type="tel"
-            required
-            placeholder="01xxxxxxxxx"
-            value={form.phone}
-            onChange={(event) => setForm((prev) => ({ ...prev, phone: event.target.value }))}
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="pass">كلمة المرور</label>
-          <input
-            id="pass"
-            type="password"
-            required
-            placeholder="••••••••"
-            minLength={6}
-            value={form.password}
-            onChange={(event) => setForm((prev) => ({ ...prev, password: event.target.value }))}
-          />
-        </div>
-        <button type="submit" className="btn" disabled={isSubmitting}>
-          {isSubmitting ? 'جاري المعالجة...' : 'إنشاء الحساب'}
-        </button>
-      </form>
+        <form id="regForm" onSubmit={onSubmit}>
+          <div className="form-group">
+            <label htmlFor="name">الاسم بالكامل</label>
+            <input
+              id="name"
+              type="text"
+              required
+              placeholder="مثال: أحمد محمد"
+              value={form.fullName}
+              onChange={(event) => setForm((prev) => ({ ...prev, fullName: event.target.value }))}
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="email">البريد الإلكتروني</label>
+            <input
+              id="email"
+              type="email"
+              required
+              placeholder="name@example.com"
+              value={form.email}
+              onChange={(event) => setForm((prev) => ({ ...prev, email: event.target.value }))}
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="phone">رقم الهاتف</label>
+            <input
+              id="phone"
+              type="tel"
+              required
+              placeholder="01xxxxxxxxx"
+              value={form.phone}
+              onChange={(event) => setForm((prev) => ({ ...prev, phone: event.target.value }))}
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="pass">كلمة المرور</label>
+            <input
+              id="pass"
+              type="password"
+              required
+              placeholder="••••••••"
+              minLength={6}
+              value={form.password}
+              onChange={(event) => setForm((prev) => ({ ...prev, password: event.target.value }))}
+            />
+          </div>
+          <button type="submit" className="btn" disabled={isSubmitting}>
+            {isSubmitting ? 'جاري المعالجة...' : 'إنشاء الحساب'}
+          </button>
+        </form>
 
-      <div className="footer">
-        لديك حساب بالفعل؟ <a href="login.html">تسجيل الدخول</a>
-        <br />
-        <br />
-        <a href="index.html" style={{ color: '#94a3b8' }}><i className="ph ph-arrow-right" /> العودة للرئيسية</a>
+        <div className="footer">
+          لديك حساب بالفعل؟ <a href="login.html">تسجيل الدخول</a>
+          <br />
+          <br />
+          <a href="index.html" style={{ color: '#94a3b8' }}><i className="ph ph-arrow-right" /> العودة للرئيسية</a>
+        </div>
       </div>
     </div>
   );

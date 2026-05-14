@@ -111,7 +111,9 @@ const toTechnicianCard = (profile) => {
     name: profile.userId.fullName,
     phone: profile.userId.phone,
     profileImage: profile.profileImage,
-    services: splitServices(profile.specialty),
+    specialty: profile.specialty,
+    customSpecialty: profile.customSpecialty || '',
+    services: splitServices(profile.specialty).map(s => (s === 'أخرى' && profile.customSpecialty) ? profile.customSpecialty : s),
     experience: profile.yearsOfExperience,
     location: profile.city,
     bio: profile.bio,
@@ -187,6 +189,8 @@ exports.getTechnicianById = async (req, res) => {
       email: profile.userId.email,
       phone: profile.userId.phone,
       profileImage: profile.profileImage,
+      specialty: profile.specialty,
+      customSpecialty: profile.customSpecialty || '',
       services: splitServices(profile.specialty),
       experience: profile.yearsOfExperience,
       location: profile.city,
@@ -243,6 +247,7 @@ exports.getMe = async (req, res) => {
       },
       profile: {
         specialty: profile.specialty || '',
+        customSpecialty: profile.customSpecialty || '',
         yearsOfExperience: profile.yearsOfExperience || 0,
         bio: profile.bio || '',
         city: profile.city || '',
@@ -268,11 +273,26 @@ exports.getMe = async (req, res) => {
 // @PUT /api/technicians/profile (Technician Only)
 exports.updateProfile = async (req, res) => {
   try {
+    const { fullName, phone, whatsapp, ...profileData } = req.body;
+
+    // Update User data
+    if (fullName || phone) {
+      const userUpdate = {};
+      if (fullName) userUpdate.fullName = fullName;
+      if (phone) userUpdate.phone = phone;
+      await User.findByIdAndUpdate(req.user._id, userUpdate);
+    }
+
+    // Update Profile data
+    const profileUpdate = { ...profileData };
+    if (whatsapp) profileUpdate.whatsapp = whatsapp;
+
     const profile = await TechnicianProfile.findOneAndUpdate(
       { userId: req.user._id },
-      req.body,
+      profileUpdate,
       { new: true }
     );
+
     res.json({ success: true, data: profile });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });

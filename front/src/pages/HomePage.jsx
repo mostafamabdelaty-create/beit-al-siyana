@@ -25,15 +25,6 @@ function HomePage() {
     appendHeadLink('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
     appendHeadLink('/css/style.css?v=4');
 
-    let currentPath = window.location.pathname.split('/').pop() || 'index.html';
-    currentPath = currentPath.split('?')[0].split('#')[0] || 'index.html';
-
-    document.querySelectorAll('.nav-links a').forEach((link) => {
-      if (link.getAttribute('href') === currentPath) {
-        link.classList.add('active');
-      }
-    });
-
     const userToken = localStorage.getItem('token');
     const userRole = localStorage.getItem('userRole');
     const navCta = document.querySelector('.nav-cta');
@@ -51,30 +42,6 @@ function HomePage() {
         btn.href = 'login.html';
       }
     });
-
-    const menuToggle = document.querySelector('.menu-toggle');
-    const navLinks = document.querySelector('.nav-links');
-    const navItems = document.querySelectorAll('.nav-links a');
-
-    const toggleMenu = () => navLinks?.classList.toggle('active');
-    const closeMenu = () => navLinks?.classList.remove('active');
-
-    menuToggle?.addEventListener('click', toggleMenu);
-    navItems.forEach((item) => item.addEventListener('click', closeMenu));
-
-
-
-    const handleScroll = () => {
-      const header = document.querySelector('.header');
-      if (!header) return;
-
-      header.style.boxShadow =
-        window.scrollY > 50
-          ? '0 10px 15px -3px rgba(0, 0, 0, 0.4)'
-          : '0 4px 6px -1px rgba(0, 0, 0, 0.3)';
-    };
-
-    window.addEventListener('scroll', handleScroll);
 
     const cards = document.querySelectorAll('#services .service-card[data-service]');
     const navigateHandlers = [];
@@ -104,10 +71,6 @@ function HomePage() {
     });
 
     return () => {
-      menuToggle?.removeEventListener('click', toggleMenu);
-      navItems.forEach((item) => item.removeEventListener('click', closeMenu));
-      window.removeEventListener('scroll', handleScroll);
-
       navigateHandlers.forEach(({ card, onClick, onKeyDown }) => {
         card.removeEventListener('click', onClick);
         card.removeEventListener('keydown', onKeyDown);
@@ -234,7 +197,7 @@ function HomePage() {
           <div className="services-grid-new">
             <a href="technicians.html?service=plumbing" className="service-card-new" data-service="plumbing" data-aos="fade-up" data-aos-delay="100">
               <div className="service-img-wrapper">
-                <img src="/Images/plumber.webp" alt="السباكة" />
+                <img src="/Images/plumbing-new.jpg" alt="السباكة" />
                 <div className="service-icon-circle"><i className="ph ph-drop" /></div>
               </div>
               <div className="service-content-new">
@@ -244,7 +207,7 @@ function HomePage() {
             </a>
             <a href="technicians.html?service=electricity" className="service-card-new" data-service="electricity" data-aos="fade-up" data-aos-delay="200">
               <div className="service-img-wrapper">
-                <img src="/Images/electrician.webp" alt="الكهرباء" />
+                 <img src="/Images/electricity-new.jpg" alt="الكهرباء" />
                 <div className="service-icon-circle"><i className="ph ph-lightning" /></div>
               </div>
               <div className="service-content-new">
@@ -254,7 +217,7 @@ function HomePage() {
             </a>
             <a href="technicians.html?service=carpentry" className="service-card-new" data-service="carpentry" data-aos="fade-up" data-aos-delay="300">
               <div className="service-img-wrapper">
-                <img src="/Images/carpenter.webp" alt="النجارة" />
+                <img src="/Images/carpentry-new.jpg" alt="النجارة" />
                 <div className="service-icon-circle"><i className="ph ph-ruler" /></div>
               </div>
               <div className="service-content-new">
@@ -284,7 +247,7 @@ function HomePage() {
             </a>
             <a href="technicians.html?service=finishing" className="service-card-new" data-service="finishing" data-aos="fade-up" data-aos-delay="600">
               <div className="service-img-wrapper">
-                <img src="/Images/Full Finishing.webp" alt="التشطيب المتكامل" />
+                <img src="/Images/finishing-new.jpg" alt="التشطيب المتكامل" />
                 <div className="service-icon-circle"><i className="ph ph-house" /></div>
               </div>
               <div className="service-content-new">

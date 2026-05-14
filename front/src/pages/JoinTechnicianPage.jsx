@@ -20,8 +20,7 @@ const centers = [
   'مركز إهناسيا',
   'مركز سمسطا',
   'مركز الفشن',
-  'مركز بني سويف',
-  'مدينة بني سويف'
+  'مركز بني سويف'
 ];
 
 const specialties = ['سباكة', 'كهرباء', 'نجارة', 'دهانات', 'أرضيات', 'تشطيب', 'أخرى'];
@@ -98,27 +97,6 @@ function JoinTechnicianPage() {
     appendHeadLink('/css/style.css');
     appendHeadLink('/css/join-technician-page.css');
 
-    const userToken = localStorage.getItem('token');
-    const userRole = localStorage.getItem('userRole');
-    const navCta = document.querySelector('.nav-cta');
-
-    if (userToken && navCta) {
-      navCta.innerText = userRole === 'admin' ? 'لوحة التحكم' : 'حسابي';
-      if (userRole === 'customer') navCta.href = 'customer-profile.html';
-      if (userRole === 'technician') navCta.href = 'technician-dashboard.html';
-      if (userRole === 'admin') navCta.href = 'admin-dashboard.html';
-    }
-
-    const menuToggle = document.querySelector('.menu-toggle');
-    const navLinks = document.querySelector('.nav-links');
-    const navItems = document.querySelectorAll('.nav-links a');
-
-    const toggleMenu = () => navLinks?.classList.toggle('active');
-    const closeMenu = () => navLinks?.classList.remove('active');
-
-    menuToggle?.addEventListener('click', toggleMenu);
-    navItems.forEach((item) => item.addEventListener('click', closeMenu));
-
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -135,8 +113,6 @@ function JoinTechnicianPage() {
     animated.forEach((element) => observer.observe(element));
 
     return () => {
-      menuToggle?.removeEventListener('click', toggleMenu);
-      navItems.forEach((item) => item.removeEventListener('click', closeMenu));
       observer.disconnect();
     };
   }, []);

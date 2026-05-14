@@ -18,6 +18,7 @@ function TechnicianDashboardPage() {
   const [loading, setLoading] = useState(true);
   const [activeSection, setActiveSection] = useState('profile');
   const [techData, setTechData] = useState(null);
+  const [sidebarActive, setSidebarActive] = useState(false);
   
   const [statusMsg, setStatusMsg] = useState({ msg: '', type: '' });
   
@@ -25,6 +26,7 @@ function TechnicianDashboardPage() {
   const [profileForm, setProfileForm] = useState({
     fullName: '',
     phone: '',
+    whatsapp: '',
     specialty: 'سباكة',
     customSpecialty: '',
     city: 'مدينة بني سويف',
@@ -159,6 +161,7 @@ function TechnicianDashboardPage() {
       setProfileForm({
         fullName: data.user.fullName || '',
         phone: data.user.phone || '',
+        whatsapp: data.profile.whatsapp || data.user.phone || '',
         specialty: data.profile.specialty || 'سباكة',
         customSpecialty: data.profile.customSpecialty || '',
         city: data.profile.city || 'القاهرة',
@@ -412,13 +415,14 @@ function TechnicianDashboardPage() {
 
   return (
     <>
-      <aside className="tech-sidebar">
-        <a href="index.html" className="logo"><img src="Images/logo.svg" alt="بيت الصيانة" /></a>
+      <div className={`sidebar-overlay ${sidebarActive ? 'active' : ''}`} onClick={() => setSidebarActive(false)}></div>
+      <aside className={`tech-sidebar ${sidebarActive ? 'active' : ''}`}>
+        <a href="index.html" className="logo"><img src="/Images/beit-siyana-logo.png" alt="بيت الصيانة" style={{ filter: 'brightness(0) invert(1)' }} /></a>
         <nav>
           <ul className="tech-nav">
-            <li><a onClick={() => setActiveSection('profile')} className={activeSection === 'profile' ? 'active' : ''}><i className="fas fa-user-circle"></i> الملف الشخصي</a></li>
-            <li><a onClick={() => setActiveSection('gallery')} className={activeSection === 'gallery' ? 'active' : ''}><i className="fas fa-images"></i> معرض الأعمال</a></li>
-            <li><a onClick={() => setActiveSection('subscription')} className={activeSection === 'subscription' ? 'active' : ''}><i className="fas fa-crown"></i> اشتراكي</a></li>
+            <li><a onClick={() => { setActiveSection('profile'); setSidebarActive(false); }} className={activeSection === 'profile' ? 'active' : ''}><i className="fas fa-user-circle"></i> الملف الشخصي</a></li>
+            <li><a onClick={() => { setActiveSection('gallery'); setSidebarActive(false); }} className={activeSection === 'gallery' ? 'active' : ''}><i className="fas fa-images"></i> معرض الأعمال</a></li>
+            <li><a onClick={() => { setActiveSection('subscription'); setSidebarActive(false); }} className={activeSection === 'subscription' ? 'active' : ''}><i className="fas fa-crown"></i> اشتراكي</a></li>
             <li style={{ marginTop: '50px' }}><a onClick={handleLogout} style={{ color: '#ef4444' }}><i className="fas fa-sign-out-alt"></i> خروج</a></li>
           </ul>
           {techData?.user?.id && (
@@ -431,7 +435,12 @@ function TechnicianDashboardPage() {
 
       <main className="tech-main">
         <header className="tech-header">
-          <h1>مرحباً، {techData?.user?.fullName || '...'}</h1>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+            <button className="hamburger-menu" onClick={() => setSidebarActive(true)}>
+              <i className="fas fa-bars"></i>
+            </button>
+            <h1>مرحباً، {techData?.user?.fullName || '...'}</h1>
+          </div>
           <div className="plan-badge">{techData?.plan?.name || 'بدون باقة'}</div>
         </header>
 
@@ -487,7 +496,7 @@ function TechnicianDashboardPage() {
                   </div>
                   <div className="form-group">
                     <label>رقم الهاتف (الواتساب)</label>
-                    <input type="tel" className="form-control" required value={profileForm.phone} onChange={e => setProfileForm({ ...profileForm, phone: e.target.value })} />
+                    <input type="tel" className="form-control" required value={profileForm.whatsapp} onChange={e => setProfileForm({ ...profileForm, whatsapp: e.target.value, phone: e.target.value })} />
                   </div>
                   <div className="form-group">
                     <label>التخصص</label>
@@ -510,7 +519,7 @@ function TechnicianDashboardPage() {
                   <div className="form-group">
                     <label>المركز / المنطقة</label>
                     <select className="form-control" required value={profileForm.city} onChange={e => setProfileForm({ ...profileForm, city: e.target.value })}>
-                      {["مركز ناصر", "مركز ببا", "مركز إهناسيا", "مركز سمسطا", "مركز الفشن", "مركز بني سويف", "مدينة بني سويف"].map(city => (
+                      {["مركز ناصر", "مركز ببا", "مركز إهناسيا", "مركز سمسطا", "مركز الفشن", "مركز بني سويف"].map(city => (
                         <option key={city} value={city}>{city}</option>
                       ))}
                     </select>

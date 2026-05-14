@@ -44,7 +44,7 @@ exports.updateCustomerProfile = async (req, res) => {
     const profile = await CustomerProfile.findOneAndUpdate(
       { userId: req.user._id },
       { address, city },
-      { new: true }
+      { upsert: true, new: true, setDefaultsOnInsert: true }
     );
     
     res.json({ success: true, data: profile });
@@ -65,7 +65,7 @@ exports.uploadProfileImage = async (req, res) => {
     const profile = await CustomerProfile.findOneAndUpdate(
       { userId: req.user._id },
       { profileImage: imagePath },
-      { new: true }
+      { upsert: true, new: true, setDefaultsOnInsert: true }
     );
 
     res.json({ success: true, data: profile });

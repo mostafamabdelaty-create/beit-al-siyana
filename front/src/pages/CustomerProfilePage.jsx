@@ -19,15 +19,22 @@ function CustomerProfilePage() {
   const [user, setUser] = useState(null);
   const [profile, setProfile] = useState(null);
   const [showEditModal, setShowEditModal] = useState(false);
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [isChangingPassword, setIsChangingPassword] = useState(false);
   const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
   const [form, setForm] = useState({
     fullName: '',
     email: '',
-    password: '',
     phone: '',
     city: '',
     address: ''
+  });
+
+  const [passwordForm, setPasswordForm] = useState({
+    currentPassword: '',
+    newPassword: '',
+    confirmPassword: ''
   });
 
   const token = localStorage.getItem('token');
@@ -48,31 +55,7 @@ function CustomerProfilePage() {
       return;
     }
 
-    const menuToggle = document.querySelector('.menu-toggle');
-    const navLinks = document.querySelector('.nav-links');
-    const navItems = document.querySelectorAll('.nav-links a');
-
-    const toggleMenu = () => navLinks?.classList.toggle('active');
-    const closeMenu = () => navLinks?.classList.remove('active');
-
-    menuToggle?.addEventListener('click', toggleMenu);
-    navItems.forEach((item) => item.addEventListener('click', closeMenu));
-
-    const onScroll = () => {
-      const header = document.querySelector('.header');
-      if (!header) return;
-      header.style.boxShadow =
-        window.scrollY > 50
-          ? '0 10px 15px -3px rgba(0, 0, 0, 0.4)'
-          : '0 4px 6px -1px rgba(0, 0, 0, 0.3)';
-    };
-    window.addEventListener('scroll', onScroll);
-
-    return () => {
-      menuToggle?.removeEventListener('click', toggleMenu);
-      navItems.forEach((item) => item.removeEventListener('click', closeMenu));
-      window.removeEventListener('scroll', onScroll);
-    };
+    return () => {};
   }, [token]);
 
   const loadUserData = async () => {
@@ -95,12 +78,12 @@ function CustomerProfilePage() {
       setForm({
         fullName: fetchedUser.fullName || '',
         email: fetchedUser.email || '',
-        password: '',
         phone: fetchedUser.phone || '',
         city: fetchedProfile.city || '',
         address: fetchedProfile.address || ''
       });
     } catch (err) {
+      console.error('Load user data error:', err);
       setTimeout(() => {
         window.location.href = 'login.html';
       }, 1200);
@@ -143,6 +126,7 @@ function CustomerProfilePage() {
 
       await loadUserData();
     } catch (err) {
+      console.error('Avatar upload error:', err);
       alert('حدث خطأ أثناء رفع الصورة');
     } finally {
       setIsUploadingAvatar(false);
@@ -157,7 +141,6 @@ function CustomerProfilePage() {
     const updatedData = {
       fullName: form.fullName,
       email: form.email,
-      password: form.password,
       phone: form.phone,
       city: form.city,
       address: form.address
@@ -187,6 +170,40 @@ function CustomerProfilePage() {
       alert('حدث خطأ أثناء تحديث البيانات');
     } finally {
       setIsSaving(false);
+    }
+  };
+
+  const changePassword = async (event) => {
+    event.preventDefault();
+    if (passwordForm.newPassword !== passwordForm.confirmPassword) {
+      alert('كلمة المرور الجديدة غير متطابقة');
+      return;
+    }
+
+    setIsChangingPassword(true);
+    try {
+      const response = await fetch(toApiUrl('/auth/change-password'), {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(passwordForm)
+      });
+      const result = await response.json();
+
+      if (!result.success) {
+        alert(`فشل التغيير: ${result.message || ''}`);
+        return;
+      }
+
+      alert('تم تغيير كلمة المرور بنجاح');
+      setShowPasswordModal(false);
+      setPasswordForm({ currentPassword: '', newPassword: '', confirmPassword: '' });
+    } catch (err) {
+      alert('حدث خطأ أثناء تغيير كلمة المرور');
+    } finally {
+      setIsChangingPassword(false);
     }
   };
 
@@ -264,13 +281,22 @@ function CustomerProfilePage() {
             <div className="role-badge"><i className="fas fa-user" /> حساب عميل</div>
             <h1 className="profile-name">{user?.fullName || '...'}</h1>
             <p className="profile-email">{user?.email || '...'}</p>
-            <button
-              className="btn btn-primary"
-              onClick={() => setShowEditModal(true)}
-              style={{ marginTop: '20px', borderRadius: '12px', padding: '10px 25px' }}
-            >
-              <i className="fas fa-edit" /> تعديل البيانات
-            </button>
+            <div style={{ display: 'flex', gap: '10px', marginTop: '20px', flexWrap: 'wrap', justifyContent: 'center' }}>
+              <button
+                className="btn btn-primary"
+                onClick={() => setShowEditModal(true)}
+                style={{ borderRadius: '12px', padding: '10px 25px' }}
+              >
+                <i className="fas fa-edit" /> تعديل البيانات
+              </button>
+              <button
+                className="btn"
+                onClick={() => setShowPasswordModal(true)}
+                style={{ borderRadius: '12px', padding: '10px 25px', background: '#334155', color: 'white' }}
+              >
+                <i className="fas fa-key" /> تغيير كلمة المرور
+              </button>
+            </div>
           </div>
 
           <h2 className="section-title"><i className="fas fa-id-card" /> المعلومات الشخصية</h2>
@@ -295,7 +321,7 @@ function CustomerProfilePage() {
               <div className="detail-card">
                 <div className="detail-icon"><i className="fas fa-map-marker-alt" /></div>
                 <div className="detail-info">
-                  <span className="detail-label">المدينة</span>
+                  <span className="detail-label">المركز / المنطقة</span>
                   <span className="detail-value">{profile.city}</span>
                 </div>
               </div>
@@ -361,15 +387,6 @@ function CustomerProfilePage() {
               />
             </div>
             <div className="form-group">
-              <label>كلمة المرور الجديدة (اتركها فارغة إذا لا تريد التغيير)</label>
-              <input
-                type="password"
-                placeholder="••••••••"
-                value={form.password}
-                onChange={(event) => setForm((prev) => ({ ...prev, password: event.target.value }))}
-              />
-            </div>
-            <div className="form-group">
               <label>رقم الهاتف</label>
               <input
                 type="text"
@@ -379,17 +396,26 @@ function CustomerProfilePage() {
               />
             </div>
             <div className="form-group">
-              <label>المدينة</label>
-              <input
-                type="text"
+              <label>المركز / المنطقة</label>
+              <select
+                className="form-control"
+                style={{ width: '100%', padding: '12px', borderRadius: '12px', border: '1px solid #e2e8f0', outline: 'none' }}
                 value={form.city}
                 onChange={(event) => setForm((prev) => ({ ...prev, city: event.target.value }))}
-              />
+              >
+                <option value="" disabled>اختر المركز...</option>
+                {["مركز ناصر", "مركز ببا", "مركز إهناسيا", "مركز سمسطا", "مركز الفشن", "مركز بني سويف"].map(center => (
+                  <option key={center} value={center}>{center}</option>
+                ))}
+              </select>
             </div>
             <div className="form-group">
               <label>العنوان بالتفصيل</label>
               <input
                 type="text"
+                className="form-control"
+                style={{ width: '100%', padding: '12px', borderRadius: '12px', border: '1px solid #e2e8f0', outline: 'none' }}
+                placeholder="مثال: الحي الرابع، شارع 10"
                 value={form.address}
                 onChange={(event) => setForm((prev) => ({ ...prev, address: event.target.value }))}
               />
@@ -399,6 +425,62 @@ function CustomerProfilePage() {
                 {isSaving ? 'جاري الحفظ...' : 'حفظ التغييرات'}
               </button>
               <button type="button" className="btn-cancel" onClick={() => setShowEditModal(false)}>
+                إلغاء
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div
+        id="passwordModal"
+        className="modal"
+        style={{ display: showPasswordModal ? 'flex' : 'none' }}
+        onClick={(event) => {
+          if (event.target.id === 'passwordModal') setShowPasswordModal(false);
+        }}
+      >
+        <div className="modal-content">
+          <div className="modal-header">
+            <h2>تغيير كلمة المرور</h2>
+            <span className="close-modal" onClick={() => setShowPasswordModal(false)}>&times;</span>
+          </div>
+          <form id="changePasswordForm" onSubmit={changePassword}>
+            <div className="form-group">
+              <label>كلمة المرور الحالية</label>
+              <input
+                type="password"
+                required
+                placeholder="••••••••"
+                value={passwordForm.currentPassword}
+                onChange={(event) => setPasswordForm((prev) => ({ ...prev, currentPassword: event.target.value }))}
+              />
+            </div>
+            <div className="form-group">
+              <label>كلمة المرور الجديدة</label>
+              <input
+                type="password"
+                required
+                placeholder="••••••••"
+                value={passwordForm.newPassword}
+                onChange={(event) => setPasswordForm((prev) => ({ ...prev, newPassword: event.target.value }))}
+              />
+            </div>
+            <div className="form-group">
+              <label>تأكيد كلمة المرور الجديدة</label>
+              <input
+                type="password"
+                required
+                placeholder="••••••••"
+                value={passwordForm.confirmPassword}
+                onChange={(event) => setPasswordForm((prev) => ({ ...prev, confirmPassword: event.target.value }))}
+              />
+            </div>
+            <div className="modal-actions">
+              <button type="submit" className="btn-save" disabled={isChangingPassword}>
+                {isChangingPassword ? 'جاري التغيير...' : 'تحديث كلمة المرور'}
+              </button>
+              <button type="button" className="btn-cancel" onClick={() => setShowPasswordModal(false)}>
                 إلغاء
               </button>
             </div>

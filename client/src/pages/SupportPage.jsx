@@ -186,7 +186,7 @@ function SupportPage() {
                 <p style={{ color: '#666', marginBottom: '20px', lineHeight: 1.6 }}>إذا كنت تعمل في مجال السباكة، الكهرباء، النجارة، الدهانات، الأرضيات أو التشطيب وترغب في الوصول إلى عملاء جدد، يمكنك الانضمام إلى منصة بيت الصيانة.</p>
                 <p style={{ color: '#666', marginBottom: '20px', lineHeight: 1.6 }}>نحن نعرض الحرفيين المتخصصين على الموقع ليتمكن العملاء من العثور عليهم بسهولة والتواصل معهم مباشرة.</p>
                 <div style={{ backgroundColor: '#f8f9fa', padding: '15px', borderRadius: '10px', marginBottom: '25px', borderRight: '4px solid var(--primary-color)' }}>
-                  <p style={{ margin: 0, fontWeight: 600, color: 'var(--dark-section)', fontSize: '0.95rem' }}>للانضمام إلى المنصة، يمكنك التواصل معنا وإرسال بياناتك وسنقوم بإضافة ملفك التعريفي إلى الموقع.</p>
+                  <p style={{ margin: 0, fontWeight: 600, color: 'var(--dark-section)', fontSize: '0.95rem' }}>يمكنك الآن الانضمام كفني مباشرة من خلال الموقع؛ قم بإنشاء حسابك وإضافة بياناتك وتخصصك، وسنقوم بمراجعة ملفك وتفعيله لتظهر للعملاء فوراً.</p>
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '15px', marginTop: 'auto' }}>
                   <a href="join-technician.html" className="btn btn-primary" style={{ textAlign: 'center', padding: '12px', borderRadius: '8px', width: '100%', color: 'white', border: 'none' }}>انضم كفني في بيت الصيانة</a>
