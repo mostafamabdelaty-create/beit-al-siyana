@@ -7,6 +7,18 @@ const bcrypt = require('bcryptjs');
 exports.submitJoinRequest = async (req, res) => {
   try {
     const data = { ...req.body };
+
+    // New Fix: Prevent duplicate email registration before submission
+    if (data.type !== 'renew') {
+      const existingUser = await User.findOne({ email: data.email });
+      if (existingUser) {
+        return res.status(400).json({ 
+          success: false, 
+          message: 'هذا البريد الإلكتروني مسجل بالفعل. يرجى تسجيل الدخول أو استخدام بريد آخر.' 
+        });
+      }
+    }
+
     if (req.file) {
       data.paymentScreenshot = req.file.path;
     }
@@ -95,47 +107,41 @@ exports.approveJoinRequest = async (req, res) => {
       );
     } else {
       // HANDLE NEW JOIN
-      // Check if user already exists
-      let user = await User.findOne({ email: request.email });
-      
-      if (user) {
-        // User exists, update role and info
-        user.role = 'technician';
-        user.fullName = request.fullName;
-        user.phone = request.phone;
-        user.status = 'active';
-        await user.save();
-      } else {
-        // Create new User
-        user = await User.create({
-          fullName: request.fullName,
-          email: request.email,
-          phone: request.phone,
-          password: request.password,
-          role: 'technician',
-          status: 'active',
-          mustChangePassword: false
+      // Strict Check: If user exists, don't allow approving a "New Join" with same email
+      const existingUser = await User.findOne({ email: request.email });
+      if (existingUser) {
+        return res.status(400).json({ 
+          success: false, 
+          message: `فشل القبول: يوجد مستخدم مسجل بالفعل بهذا البريد الإلكتروني (${request.email}).` 
         });
       }
 
-      // 2. Create or Update Technician Profile
-      await TechnicianProfile.findOneAndUpdate(
-        { userId: user._id },
-        {
-          specialty: request.specialty,
-          yearsOfExperience: request.yearsOfExperience,
-          bio: request.bio,
-          city: request.city,
-          address: request.address,
-          whatsapp: request.whatsapp,
-          profileImage: request.profileImage,
-          galleryImages: request.workImages,
-          currentPlanId: planId,
-          subscriptionStartDate: startDate,
-          subscriptionExpiry: expiryDate
-        },
-        { upsert: true, new: true }
-      );
+      // Create new User
+      const user = await User.create({
+        fullName: request.fullName,
+        email: request.email,
+        phone: request.phone,
+        password: request.password,
+        role: 'technician',
+        status: 'active',
+        mustChangePassword: false
+      });
+
+      // 2. Create Technician Profile
+      await TechnicianProfile.create({
+        userId: user._id,
+        specialty: request.specialty,
+        yearsOfExperience: request.yearsOfExperience,
+        bio: request.bio,
+        city: request.city,
+        address: request.address,
+        whatsapp: request.whatsapp,
+        profileImage: request.profileImage,
+        galleryImages: request.workImages,
+        currentPlanId: planId,
+        subscriptionStartDate: startDate,
+        subscriptionExpiry: expiryDate
+      });
     }
 
     // 3. Update Request Status
