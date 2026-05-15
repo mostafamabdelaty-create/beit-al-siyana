@@ -95,32 +95,47 @@ exports.approveJoinRequest = async (req, res) => {
       );
     } else {
       // HANDLE NEW JOIN
-      // 1. Create User
-      const user = await User.create({
-        fullName: request.fullName,
-        email: request.email,
-        phone: request.phone,
-        password: request.password,
-        role: 'technician',
-        status: 'active',
-        mustChangePassword: false
-      });
+      // Check if user already exists
+      let user = await User.findOne({ email: request.email });
+      
+      if (user) {
+        // User exists, update role and info
+        user.role = 'technician';
+        user.fullName = request.fullName;
+        user.phone = request.phone;
+        user.status = 'active';
+        await user.save();
+      } else {
+        // Create new User
+        user = await User.create({
+          fullName: request.fullName,
+          email: request.email,
+          phone: request.phone,
+          password: request.password,
+          role: 'technician',
+          status: 'active',
+          mustChangePassword: false
+        });
+      }
 
-      // 2. Create Technician Profile
-      await TechnicianProfile.create({
-        userId: user._id,
-        specialty: request.specialty,
-        yearsOfExperience: request.yearsOfExperience,
-        bio: request.bio,
-        city: request.city,
-        address: request.address,
-        whatsapp: request.whatsapp,
-        profileImage: request.profileImage,
-        galleryImages: request.workImages,
-        currentPlanId: planId,
-        subscriptionStartDate: startDate,
-        subscriptionExpiry: expiryDate
-      });
+      // 2. Create or Update Technician Profile
+      await TechnicianProfile.findOneAndUpdate(
+        { userId: user._id },
+        {
+          specialty: request.specialty,
+          yearsOfExperience: request.yearsOfExperience,
+          bio: request.bio,
+          city: request.city,
+          address: request.address,
+          whatsapp: request.whatsapp,
+          profileImage: request.profileImage,
+          galleryImages: request.workImages,
+          currentPlanId: planId,
+          subscriptionStartDate: startDate,
+          subscriptionExpiry: expiryDate
+        },
+        { upsert: true, new: true }
+      );
     }
 
     // 3. Update Request Status
